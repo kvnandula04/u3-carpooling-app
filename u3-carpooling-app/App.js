@@ -1,14 +1,23 @@
-import { StatusBar } from "expo-status-bar";
-import { SafeAreaView, StyleSheet, Text } from "react-native";
-import HomePage from "./pages/HomePage";
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View, Button } from 'react-native';
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import MyStack from './Navigators/StackNavigator';
 
 export default function App() {
-    return (
-        <SafeAreaView>
-            <HomePage />
-            <StatusBar style="auto" />
-        </SafeAreaView>
-    );
+  return (
+    <NavigationContainer>
+      <MyStack/>  
+      <StatusBar style="dark" />
+    </NavigationContainer>
+  );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
