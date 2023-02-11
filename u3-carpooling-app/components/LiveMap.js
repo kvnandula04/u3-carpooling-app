@@ -21,19 +21,17 @@ const styles = StyleSheet.create({
     card: {
         position: "absolute",
         width: "100%",
-        height: "100%",
-        backgroundColor: "gray",
+        height: "150%",
+        backgroundColor: "white",
         borderColor: green,
         borderWidth: 5,
         borderRadius: 32,
-        borderTopLeftRadius: 0,
-        borderTopRightRadius: 0,
     },
     shadow: {
         backgroundColor: greenShadow,
         borderColor: greenShadow,
-        right: -6,
-        bottom: -6,
+        top: 6,
+        left: 6,
     },
     text: {
         color: "black",
