@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
 
 const charcoal = "#3F3F3F";
@@ -8,11 +8,11 @@ const purpleShadow = "#9747FF";
 
 const LiveToPickup = (props) => {
     return (
-        <View style={[props.style, styles.frame]}>
+        <Pressable style={[props.style, styles.frame]}>
             <View style={[styles.card, styles.shadow]}></View>
             <View style={[styles.card]}></View>
             <Text style={[styles.text]}>to pick up.</Text>
-        </View>
+        </Pressable>
     );
 };
 

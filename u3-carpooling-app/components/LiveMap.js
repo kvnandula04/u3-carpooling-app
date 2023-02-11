@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
 
 const green = "#4CD835";
@@ -6,11 +6,11 @@ const greenShadow = "#278A17";
 
 const LiveMap = (props) => {
     return (
-        <View style={[props.style, styles.frame]}>
+        <Pressable style={[props.style, styles.frame]}>
             <View style={[styles.card, styles.shadow]}></View>
             <View style={[styles.card]}></View>
             <Text style={[styles.text]}>U3</Text>
-        </View>
+        </Pressable>
     );
 };
 

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
 
 const cream = "#F7F3EB";
@@ -6,11 +6,11 @@ const charcoal = "#3F3F3F";
 
 const LiveTripDuration = (props) => {
     return (
-        <View style={[props.style, styles.frame]}>
+        <Pressable style={[props.style, styles.frame]}>
             <View style={[styles.card, styles.shadow]}></View>
             <View style={[styles.card]}></View>
             <Text style={[styles.text]}>trip length.</Text>
-        </View>
+        </Pressable>
     );
 };
 
