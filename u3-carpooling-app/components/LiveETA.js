@@ -7,7 +7,7 @@ const charcoal = "#3F3F3F";
 
 const LiveETA = (props) => {
     return (
-        <Pressable style={[props.style, styles.frame]}>
+        <Pressable style={[props.style, styles.frame]} onPress={props.onPress}>
             <View style={[styles.card, styles.shadow]}></View>
             <View style={[styles.card]}></View>
             <Text style={[styles.text]}>eta.</Text>
@@ -22,11 +22,13 @@ const styles = StyleSheet.create({
     card: {
         position: "absolute",
         width: "100%",
-        height: "150%",
+        height: "125%",
         backgroundColor: blue,
         borderColor: charcoal,
         borderWidth: 5,
         borderRadius: 32,
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0,
     },
     shadow: {
         backgroundColor: "black",

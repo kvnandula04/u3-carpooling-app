@@ -6,7 +6,7 @@ import {
     Text,
     View,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import GridBackground from "../assets/grid-background";
 import LiveMap from "../components/LiveMap";
 import LiveTripDuration from "../components/LiveTripDuration";
@@ -15,12 +15,23 @@ import LiveToPickup from "../components/LiveToPickup";
 
 const cream = "#F7F3EB";
 
-const onPress = () => {
-    if (index === 0) {
-    }
-};
+// var inFocus = [1, 0, 0, 0];
 
 const LiveTripPage = () => {
+    const [inFocus, setInFocus] = useState([1, 0, 0, 0]);
+    const onPressMap = () => {
+        setInFocus([1, 0, 0, 0]);
+    };
+    const onPressDur = () => {
+        setInFocus([0, 1, 0, 0]);
+    };
+    const onPressETA = () => {
+        setInFocus([0, 0, 1, 0]);
+    };
+    const onPressPick = () => {
+        setInFocus([0, 0, 0, 1]);
+    };
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <GridBackground
@@ -40,15 +51,33 @@ const LiveTripPage = () => {
                     margin: "15%",
                     width: "100%",
                     height: "82%",
-                    justifyContent: "center",
-                    alignContent: "center",
-                    backgroundColor: "red",
+                    // backgroundColor: "red",
                 }}
             >
-                <LiveMap style={styles.selected} />
-                <LiveTripDuration style={styles.notSelected} />
-                <LiveETA style={styles.notSelected} />
-                <LiveToPickup style={styles.notSelected} />
+                <LiveMap
+                    style={
+                        inFocus[0] === 1 ? styles.selected : styles.notSelected
+                    }
+                    onPress={onPressMap}
+                />
+                <LiveTripDuration
+                    style={
+                        inFocus[1] === 1 ? styles.selected : styles.notSelected
+                    }
+                    onPress={onPressDur}
+                />
+                <LiveETA
+                    style={
+                        inFocus[2] === 1 ? styles.selected : styles.notSelected
+                    }
+                    onPress={onPressETA}
+                />
+                <LiveToPickup
+                    style={
+                        inFocus[3] === 1 ? styles.selected : styles.notSelected
+                    }
+                    onPress={onPressPick}
+                />
             </View>
         </SafeAreaView>
     );
@@ -74,9 +103,9 @@ const styles = StyleSheet.create({
         color: cream,
     },
     selected: {
-        flex: 2,
+        flex: 5,
     },
     notSelected: {
-        flex: 1,
+        flex: 2,
     },
 });

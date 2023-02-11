@@ -6,7 +6,7 @@ const greenShadow = "#278A17";
 
 const LiveMap = (props) => {
     return (
-        <Pressable style={[props.style, styles.frame]}>
+        <Pressable style={[props.style, styles.frame]} onPress={props.onPress}>
             <View style={[styles.card, styles.shadow]}></View>
             <View style={[styles.card]}></View>
             <Text style={[styles.text]}>U3</Text>
@@ -21,11 +21,13 @@ const styles = StyleSheet.create({
     card: {
         position: "absolute",
         width: "100%",
-        height: "150%",
+        height: "125%",
         backgroundColor: "white",
         borderColor: green,
         borderWidth: 5,
         borderRadius: 32,
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0,
     },
     shadow: {
         backgroundColor: greenShadow,

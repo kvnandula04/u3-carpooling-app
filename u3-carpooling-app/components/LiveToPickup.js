@@ -8,7 +8,7 @@ const purpleShadow = "#9747FF";
 
 const LiveToPickup = (props) => {
     return (
-        <Pressable style={[props.style, styles.frame]}>
+        <Pressable style={[props.style, styles.frame]} onPress={props.onPress}>
             <View style={[styles.card, styles.shadow]}></View>
             <View style={[styles.card]}></View>
             <Text style={[styles.text]}>to pick up.</Text>
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     card: {
         position: "absolute",
         width: "100%",
-        height: "110%",
+        height: "100%",
         backgroundColor: yellow,
         borderColor: purple,
         borderWidth: 5,
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
         color: charcoal,
         fontSize: 36,
         position: "absolute",
-        bottom: 0,
+        bottom: 10,
         left: 20,
     },
 });
