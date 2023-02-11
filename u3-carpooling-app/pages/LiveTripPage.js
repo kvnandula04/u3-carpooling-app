@@ -8,8 +8,17 @@ import {
 } from "react-native";
 import React from "react";
 import GridBackground from "../assets/grid-background";
+import LiveMap from "../components/LiveMap";
+import LiveTripDuration from "../components/LiveTripDuration";
+import LiveETA from "../components/LiveETA";
+import LiveToPickup from "../components/LiveToPickup";
 
 const cream = "#F7F3EB";
+
+const onPress = () => {
+    if (index === 0) {
+    }
+};
 
 const LiveTripPage = () => {
     return (
@@ -30,16 +39,16 @@ const LiveTripPage = () => {
                     alignSelf: "center",
                     margin: "15%",
                     width: "100%",
-                    height: "80%",
+                    height: "82%",
                     justifyContent: "center",
                     alignContent: "center",
                     backgroundColor: "red",
                 }}
             >
-                <View style={{ flex: 2, backgroundColor: "green" }} />
-                <View style={{ flex: 1, backgroundColor: "cream" }} />
-                <View style={{ flex: 1, backgroundColor: "blue" }} />
-                <View style={{ flex: 1, backgroundColor: "purple" }} />
+                <LiveMap style={styles.selected} />
+                <LiveTripDuration style={styles.notSelected} />
+                <LiveETA style={styles.notSelected} />
+                <LiveToPickup style={styles.notSelected} />
             </View>
         </SafeAreaView>
     );
@@ -63,5 +72,11 @@ const styles = StyleSheet.create({
         fontWeight: "300",
         fontStyle: "italic",
         color: cream,
+    },
+    selected: {
+        flex: 2,
+    },
+    notSelected: {
+        flex: 1,
     },
 });
