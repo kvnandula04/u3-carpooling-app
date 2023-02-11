@@ -7,7 +7,7 @@ export default function App() {
     return (
         <SafeAreaView style={{ flex: 1 }}>
             {/* <HomePage /> */}
-            <LiveTripPage />
+            {/* <LiveTripPage /> */}
             <StatusBar style="auto" />
         </SafeAreaView>
     );
