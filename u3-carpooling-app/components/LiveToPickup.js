@@ -4,7 +4,7 @@ import React from "react";
 const charcoal = "#3F3F3F";
 const yellow = "#EBB017";
 const purple = "#C293FF";
-const purpleShadow = "#A37BFF";
+const purpleShadow = "#9747FF";
 
 const LiveToPickup = (props) => {
     return (
