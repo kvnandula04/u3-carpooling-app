@@ -15,9 +15,11 @@ import LiveToPickup from "../components/LiveToPickup";
 
 const cream = "#F7F3EB";
 
-// var inFocus = [1, 0, 0, 0];
-
 const LiveTripPage = () => {
+    const onPressReport = () => {
+        console.log("Take to Report Page / Card");
+    };
+
     const [inFocus, setInFocus] = useState([1, 0, 0, 0]);
     const onPressMap = () => {
         setInFocus([1, 0, 0, 0]);
@@ -38,7 +40,7 @@ const LiveTripPage = () => {
                 lineColor={cream}
                 style={{ backgroundColor: "#272727" }}
             />
-            <Pressable style={styles.reportButton}>
+            <Pressable style={styles.reportButton} onPress={onPressReport}>
                 <Text style={[styles.reportText, { fontWeight: "900" }]}>
                     Report
                 </Text>

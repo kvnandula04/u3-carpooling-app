@@ -6,11 +6,18 @@ const blue = "#1774FF";
 const charcoal = "#3F3F3F";
 
 const LiveETA = (props) => {
+    var arrivalTime = "12:43";
+
     return (
         <Pressable style={[props.style, styles.frame]} onPress={props.onPress}>
-            <View style={[styles.card, styles.shadow]}></View>
-            <View style={[styles.card]}></View>
-            <Text style={[styles.text]}>eta.</Text>
+            <View id="card" style={[styles.card, styles.shadow]}></View>
+            <View id="cardShadow" style={[styles.card]}></View>
+            <Text id="title" style={[styles.title]}>
+                eta.
+            </Text>
+            <Text id="arrivalTime" style={[styles.time]}>
+                {arrivalTime}
+            </Text>
         </Pressable>
     );
 };
@@ -36,11 +43,20 @@ const styles = StyleSheet.create({
         top: 6,
         left: 6,
     },
-    text: {
+    title: {
         color: cream,
         fontSize: 36,
         position: "absolute",
         bottom: 0,
         left: 20,
+    },
+    time: {
+        color: cream,
+        fontSize: 64,
+        fontStyle: "italic",
+        fontWeight: "300",
+        position: "absolute",
+        bottom: 0,
+        right: 20,
     },
 });

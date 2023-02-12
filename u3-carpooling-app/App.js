@@ -5,7 +5,7 @@ import LiveTripPage from "./pages/LiveTripPage";
 export default function App() {
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            {/* <LiveTripPage /> */}
+            <LiveTripPage />
             <StatusBar style="auto" />
         </SafeAreaView>
     );
