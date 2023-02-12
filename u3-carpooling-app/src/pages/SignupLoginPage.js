@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import useFonts from "../hooks/UseFonts";
+import * as SplashScreen from "expo-splash-screen";
 import {
   StyleSheet,
   Text,
@@ -10,10 +10,16 @@ import {
   TouchableOpacity,
   Pressable,
 } from "react-native";
+import useFonts from "../hooks/UseFonts";
 import Logo from "../components/Logo";
+import { useNavigation } from "@react-navigation/native";
 
 export default function SignupLoginPage() {
   const [IsReady, SetIsReady] = useState(false);
+  const navigation = useNavigation();
+  const onSignupPressed = () => {
+    navigation.navigate("StudentVerification");
+  };
 
   useEffect(() => {
     async function prepare() {
@@ -43,7 +49,7 @@ export default function SignupLoginPage() {
     <View style={styles.container}>
       <Logo />
       <Text style={styles.heading}>Student{"\n"}Car Pooling</Text>
-      <Pressable style={styles.button}>
+      <Pressable style={styles.button} onPress={onSignupPressed}>
         <Text style={styles.text}>Join.</Text>
       </Pressable>
       <TouchableOpacity>

@@ -1,8 +1,8 @@
 import { StyleSheet } from "react-native";
-import SignupLoginPage from "./src/pages/SignupLoginPage";
+import Navigation from "./src/components/Navigation";
 
 export default function App() {
-  return <SignupLoginPage />;
+  return <Navigation />;
 }
 
 const styles = StyleSheet.create({});
