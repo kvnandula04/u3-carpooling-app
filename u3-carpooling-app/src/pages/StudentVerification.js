@@ -9,6 +9,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import Logo from "../components/Logo";
 import GridBackground from "../../assets/grid-background";
+import { Circle } from "react-native-svg";
 
 export default function StudentVerification() {
   const navigation = useNavigation();
@@ -62,6 +63,8 @@ export default function StudentVerification() {
       <Pressable style={styles.button} onPress={onSigninPressed}>
         <Text style={styles.text}>UoB Sign In</Text>
       </Pressable>
+      <View style={styles.circle1}></View>
+      <View style={styles.circle2}></View>
     </View>
   );
 }
@@ -115,5 +118,29 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: "atkinson",
     color: "#1774ff",
+  },
+  circle1: {
+    position: "absolute",
+    bottom: 50,
+    left: 182,
+    width: 30,
+    height: 30,
+    borderRadius: 1000,
+    borderWidth: 6,
+    borderColor: "#000000",
+    backgroundColor: "#ffb800",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  circle2: {
+    position: "absolute",
+    bottom: 50,
+    left: 220,
+    width: 30,
+    height: 30,
+    borderRadius: 1000,
+    backgroundColor: "#000000",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

@@ -70,17 +70,13 @@ export default function DriverVerification() {
       <TouchableOpacity style={styles.button}>
         <Text style={styles.text}>skip.</Text>
       </TouchableOpacity>
+      <View style={styles.circle1}></View>
+      <View style={styles.circle2}></View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#2e73da",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   heading: {
     position: "absolute",
     top: 320,
@@ -158,5 +154,29 @@ const styles = StyleSheet.create({
     fontFamily: "atkinson",
     fontSize: 24,
     color: "#f7f3eb",
+  },
+  circle1: {
+    position: "absolute",
+    bottom: 50,
+    left: 182,
+    width: 30,
+    height: 30,
+    borderRadius: 1000,
+    backgroundColor: "#000000",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  circle2: {
+    position: "absolute",
+    bottom: 50,
+    left: 220,
+    width: 30,
+    height: 30,
+    borderRadius: 1000,
+    borderWidth: 6,
+    borderColor: "#000000",
+    backgroundColor: "#ffb800",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
