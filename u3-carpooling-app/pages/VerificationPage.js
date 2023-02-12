@@ -1,44 +1,38 @@
 import React, { useState } from 'react';
-import { View, Text, Button, WebView, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
-const VerificationPage = () => {
-  const [showWebView, setShowWebView] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [error, setError] = useState(false);
+const App = () => {
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState('Email not verified');
 
-  const handleNavigationStateChange = (webViewState) => {
-    if (webViewState.url.includes('auth.bath.ac.uk')) {
-      setLoggedIn(true);
-      setShowWebView(false);
-    } else {
-      setError(true);
+  const handleSubmit = () => {
+    if (!email.endsWith('@bath.ac.uk')) {
+      setStatus('Invalid email');
+      return;
     }
+
+    setStatus('Email verification link sent');
+    // code to send email verification link here
+
+    // once the user clicks the verification link, call this function
+    // to update the status
+    const handleVerificationSuccess = () => {
+      setStatus('Your email is verified');
+    };
   };
 
   return (
     <View style={styles.container}>
-      {!showWebView ? (
-        <View>
-          <Text>Not Logged In</Text>
-          <Button
-            title="Sign In"
-            onPress={() => setShowWebView(true)}
-          />
-        </View>
-      ) : error ? (
-        <View>
-          <Text>Login Not Successful</Text>
-        </View>
-      ) : loggedIn ? (
-        <View>
-          <Text>Logged In</Text>
-        </View>
-      ) : (
-        <WebView
-          source={{ uri: 'https://auth.bath.ac.uk/login' }}
-          onNavigationStateChange={handleNavigationStateChange}
-        />
-      )}
+      <Text style={styles.statusText}>{status}</Text>
+      <TextInput
+        style={styles.input}
+        value={email}
+        onChangeText={setEmail}
+        placeholder="Email"
+      />
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+        <Text style={styles.buttonText}>Verify</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -46,9 +40,33 @@ const VerificationPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+  },
+  statusText: {
+    fontSize: 20,
+    marginBottom: 20,
+  },
+  input: {
+    width: 200,
+    height: 44,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: 'black',
+    marginBottom: 10,
+  },
+  button: {
+    width: 100,
+    height: 44,
+    backgroundColor: 'blue',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 5,
+  },
+  buttonText: {
+    fontSize: 20,
+    color: 'white',
+  },
 });
 
-export default VerificationPage;
+export default App;

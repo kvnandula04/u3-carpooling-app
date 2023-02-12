@@ -1,6 +1,6 @@
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import React from "react";
-import GridBackground from "../assets/grid-background";
+//import GridBackground from "../assets/grid-background";
 
 const HomePage = () => {
     return (
