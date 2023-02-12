@@ -4,12 +4,14 @@ import {
   StyleSheet,
   Text,
   View,
+  SafeAreaView,
   TouchableOpacity,
   Pressable,
 } from "react-native";
 import useFonts from "../hooks/UseFonts";
 import Logo from "../components/Logo";
 import { useNavigation } from "@react-navigation/native";
+import GridBackground from "../../assets/grid-background";
 
 export default function SignupLoginPage() {
   const [IsReady, SetIsReady] = useState(false);
@@ -43,33 +45,67 @@ export default function SignupLoginPage() {
   }
 
   return (
-    <View style={styles.container}>
-      <Logo fontSize="86" />
+    <View>
+      <GridBackground
+        lineColor={"black"}
+        style={{ backgroundColor: "#f7f3eb" }}
+      />
+      <Text
+        style={{
+          color: "#000000",
+          fontSize: 86,
+          lineHeight: 0,
+          fontFamily: "syne",
+          top: 150,
+          left: 0,
+          right: 100,
+          bottom: 0,
+          position: "absolute",
+          alignContent: "center",
+          justifyContent: "center",
+          textAlign: "center",
+        }}
+      >
+        U
+      </Text>
+      <Text
+        style={{
+          color: "#000000",
+          fontSize: 86,
+          lineHeight: -10,
+          fontFamily: "syne",
+          top: 150,
+          left: 100,
+          right: 0,
+          bottom: 0,
+          position: "absolute",
+          alignContent: "center",
+          justifyContent: "center",
+          textAlign: "center",
+        }}
+      >
+        3
+      </Text>
       <Text style={styles.heading}>Student{"\n"}Car Pooling</Text>
       <Pressable style={styles.button} onPress={onSignupPressed}>
         <Text style={styles.text}>Join.</Text>
       </Pressable>
-      <TouchableOpacity>
-        <Text style={styles.signinBtn}>sign in.</Text>
+      <TouchableOpacity style={styles.button2} onPress={onSignupPressed}>
+        <Text style={styles.text2}>sign in.</Text>
       </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#f7f3eb",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  image: {
-    marginTop: -150,
-  },
   heading: {
+    position: "absolute",
+    top: 320,
+    left: 0,
+    bottom: 0,
+    right: 0,
     fontFamily: "syne",
     fontSize: 40,
-    marginTop: 50,
     shadowColor: "#3dd37a",
     shadowOpacity: 1,
     shadowRadius: 2,
@@ -78,36 +114,51 @@ const styles = StyleSheet.create({
       width: 4,
     },
     justifyContent: "center",
+    alignItems: "center",
     textAlign: "center",
   },
   button: {
+    position: "absolute",
+    top: 500,
+    left: 90,
+    bottom: 0,
+    right: 0,
     width: 250,
     height: 80,
-    marginTop: 100,
     borderRadius: 32,
-    borderColor: "black",
+    borderColor: "#000000",
     borderWidth: 5,
-    shadowColor: "black",
+    backgroundColor: "#3dd37a",
+    shadowColor: "#000000",
     shadowOpacity: 1,
     shadowRadius: 2,
     shadowOffset: {
       height: 5,
       width: 5,
     },
-    backgroundColor: "#3dd37a",
-    alignItems: "center",
     justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
   },
   text: {
     fontSize: 36,
     fontFamily: "atkinson",
-    color: "white",
+    color: "#ffffff",
   },
-  signinBtn: {
-    fontFamily: "atkinson",
-    fontSize: 24,
-    marginTop: 80,
-    alignItems: "center",
+  button2: {
+    position: "absolute",
+    top: 680,
+    left: 172,
+    bottom: 0,
+    right: 0,
+    width: "20%",
+    height: "5%",
     justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+  },
+  text2: {
+    fontSize: 24,
+    fontFamily: "atkinson",
   },
 });

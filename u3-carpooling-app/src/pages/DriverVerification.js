@@ -9,14 +9,54 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Logo from "../components/Logo";
+import GridBackground from "../../assets/grid-background";
 
 export default function DriverVerification() {
   const navigation = useNavigation();
   const [text, setText] = React.useState("");
 
   return (
-    <View style={styles.container}>
-      <Logo color="white" fontSize="40" />
+    <View>
+      <GridBackground
+        lineColor={"black"}
+        style={{ backgroundColor: "#2e73da" }}
+      />
+      <Text
+        style={{
+          color: "#f7f3eb",
+          fontSize: 40,
+          lineHeight: 0,
+          fontFamily: "syne",
+          top: 100,
+          left: 0,
+          right: 50,
+          bottom: 0,
+          position: "absolute",
+          alignContent: "center",
+          justifyContent: "center",
+          textAlign: "center",
+        }}
+      >
+        U
+      </Text>
+      <Text
+        style={{
+          color: "#f7f3eb",
+          fontSize: 40,
+          lineHeight: -10,
+          fontFamily: "syne",
+          top: 100,
+          left: 50,
+          right: 0,
+          bottom: 0,
+          position: "absolute",
+          alignContent: "center",
+          justifyContent: "center",
+          textAlign: "center",
+        }}
+      >
+        3
+      </Text>
       <Text style={styles.heading}>Be a{"\n"}Driver?</Text>
       <Text style={styles.subheading}> Enter your car's number plate: </Text>
       <View style={styles.textInput}>
@@ -27,8 +67,8 @@ export default function DriverVerification() {
           onChangeText={(text) => setText(text)}
         ></TextInput>
       </View>
-      <TouchableOpacity>
-        <Text style={styles.skipBtn}>skip.</Text>
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.text}>skip.</Text>
       </TouchableOpacity>
     </View>
   );
@@ -42,9 +82,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   heading: {
+    position: "absolute",
+    top: 320,
+    left: 0,
+    bottom: 0,
+    right: 0,
     fontFamily: "atkinson-italic",
     fontSize: 54,
-    marginTop: 50,
     color: "#ffb800",
     lineHeight: 53,
     shadowColor: "#000000",
@@ -55,18 +99,28 @@ const styles = StyleSheet.create({
       width: 4,
     },
     justifyContent: "center",
+    alignItems: "center",
     textAlign: "center",
   },
   subheading: {
+    position: "absolute",
+    top: 450,
+    left: 0,
+    bottom: 0,
+    right: 0,
     fontFamily: "atkinson-italic",
     fontSize: 24,
-    marginTop: 30,
     color: "#f7f3eb",
     lineHeight: 53,
     justifyContent: "center",
     textAlign: "center",
   },
   textInput: {
+    position: "absolute",
+    top: 500,
+    left: 90,
+    bottom: 0,
+    right: 0,
     width: 250,
     height: 80,
     borderRadius: 32,
@@ -80,20 +134,29 @@ const styles = StyleSheet.create({
       width: 5,
     },
     backgroundColor: "#f55726",
-    alignItems: "center",
     justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
   },
   text: {
     fontSize: 24,
     fontFamily: "atkinson-italic",
     color: "#f7f3eb",
   },
-  skipBtn: {
+  button: {
+    position: "absolute",
+    top: 680,
+    left: 172,
+    bottom: 0,
+    right: 0,
+    width: "20%",
+    height: "5%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  text2: {
     fontFamily: "atkinson",
     fontSize: 24,
     color: "#f7f3eb",
-    marginTop: 80,
-    alignItems: "center",
-    justifyContent: "center",
   },
 });

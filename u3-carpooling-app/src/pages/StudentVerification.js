@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Logo from "../components/Logo";
+import GridBackground from "../../assets/grid-background";
 
 export default function StudentVerification() {
   const navigation = useNavigation();
@@ -16,8 +17,47 @@ export default function StudentVerification() {
   };
 
   return (
-    <View style={styles.container}>
-      <Logo color="white" fontSize="40" />
+    <View>
+      <GridBackground
+        lineColor={"black"}
+        style={{ backgroundColor: "#1daf59" }}
+      />
+      <Text
+        style={{
+          color: "#f7f3eb",
+          fontSize: 40,
+          lineHeight: 0,
+          fontFamily: "syne",
+          top: 100,
+          left: 0,
+          right: 50,
+          bottom: 0,
+          position: "absolute",
+          alignContent: "center",
+          justifyContent: "center",
+          textAlign: "center",
+        }}
+      >
+        U
+      </Text>
+      <Text
+        style={{
+          color: "#f7f3eb",
+          fontSize: 40,
+          lineHeight: -10,
+          fontFamily: "syne",
+          top: 100,
+          left: 50,
+          right: 0,
+          bottom: 0,
+          position: "absolute",
+          alignContent: "center",
+          justifyContent: "center",
+          textAlign: "center",
+        }}
+      >
+        3
+      </Text>
       <Text style={styles.heading}>Student{"\n"}Verification</Text>
       <Pressable style={styles.button} onPress={onSigninPressed}>
         <Text style={styles.text}>UoB Sign In</Text>
@@ -27,16 +67,14 @@ export default function StudentVerification() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#1daf59",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   heading: {
+    position: "absolute",
+    top: 320,
+    left: 0,
+    bottom: 0,
+    right: 0,
     fontFamily: "atkinson-italic",
     fontSize: 54,
-    marginTop: 50,
     color: "#f7f3eb",
     lineHeight: 53,
     shadowColor: "#000000",
@@ -47,16 +85,21 @@ const styles = StyleSheet.create({
       width: 4,
     },
     justifyContent: "center",
+    alignContent: "center",
     textAlign: "center",
   },
   button: {
+    position: "absolute",
+    top: 500,
+    left: 90,
+    bottom: 0,
+    right: 0,
     width: 250,
     height: 80,
-    marginTop: 70,
     borderRadius: 32,
-    borderColor: "black",
+    borderColor: "#000000",
     borderWidth: 5,
-    shadowColor: "black",
+    shadowColor: "#000000",
     shadowOpacity: 1,
     shadowRadius: 2,
     shadowOffset: {
@@ -64,8 +107,9 @@ const styles = StyleSheet.create({
       width: 5,
     },
     backgroundColor: "#ffb800",
-    alignItems: "center",
     justifyContent: "center",
+    textAlign: "center",
+    alignItems: "center",
   },
   text: {
     fontSize: 24,
