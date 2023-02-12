@@ -3,25 +3,33 @@ import {
   Text,
   View,
   StyleSheet,
-  Pressable,
+  TextInput,
   TouchableOpacity,
+  Pressable,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Logo from "../components/Logo";
 
-export default function StudentVerification() {
+export default function DriverVerification() {
   const navigation = useNavigation();
-  const onSigninPressed = () => {
-    navigation.navigate("DriverVerification");
-  };
+  const [text, setText] = React.useState("");
 
   return (
     <View style={styles.container}>
       <Logo color="white" fontSize="40" />
-      <Text style={styles.heading}>Student{"\n"}Verification</Text>
-      <Pressable style={styles.button} onPress={onSigninPressed}>
-        <Text style={styles.text}>UoB Sign In</Text>
-      </Pressable>
+      <Text style={styles.heading}>Be a{"\n"}Driver?</Text>
+      <Text style={styles.subheading}> Enter your car's number plate: </Text>
+      <View style={styles.textInput}>
+        <TextInput
+          style={styles.text}
+          placeholder="AB12 CDE"
+          value={text}
+          onChangeText={(text) => setText(text)}
+        ></TextInput>
+      </View>
+      <TouchableOpacity>
+        <Text style={styles.skipBtn}>skip.</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -29,7 +37,7 @@ export default function StudentVerification() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1daf59",
+    backgroundColor: "#2e73da",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -37,7 +45,7 @@ const styles = StyleSheet.create({
     fontFamily: "atkinson-italic",
     fontSize: 54,
     marginTop: 50,
-    color: "#f7f3eb",
+    color: "#ffb800",
     lineHeight: 53,
     shadowColor: "#000000",
     shadowOpacity: 1,
@@ -49,10 +57,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     textAlign: "center",
   },
-  button: {
+  subheading: {
+    fontFamily: "atkinson-italic",
+    fontSize: 24,
+    marginTop: 30,
+    color: "#f7f3eb",
+    lineHeight: 53,
+    justifyContent: "center",
+    textAlign: "center",
+  },
+  textInput: {
     width: 250,
     height: 80,
-    marginTop: 70,
     borderRadius: 32,
     borderColor: "black",
     borderWidth: 5,
@@ -63,13 +79,21 @@ const styles = StyleSheet.create({
       height: 5,
       width: 5,
     },
-    backgroundColor: "#ffb800",
+    backgroundColor: "#f55726",
     alignItems: "center",
     justifyContent: "center",
   },
   text: {
     fontSize: 24,
+    fontFamily: "atkinson-italic",
+    color: "#f7f3eb",
+  },
+  skipBtn: {
     fontFamily: "atkinson",
-    color: "#1774ff",
+    fontSize: 24,
+    color: "#f7f3eb",
+    marginTop: 80,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

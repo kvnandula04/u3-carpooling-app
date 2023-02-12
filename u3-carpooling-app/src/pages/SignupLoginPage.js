@@ -4,9 +4,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
-  TextInput,
-  Button,
   TouchableOpacity,
   Pressable,
 } from "react-native";
@@ -47,7 +44,7 @@ export default function SignupLoginPage() {
 
   return (
     <View style={styles.container}>
-      <Logo />
+      <Logo fontSize="86" />
       <Text style={styles.heading}>Student{"\n"}Car Pooling</Text>
       <Pressable style={styles.button} onPress={onSignupPressed}>
         <Text style={styles.text}>Join.</Text>
@@ -71,7 +68,6 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontFamily: "syne",
-    fontWeight: "750",
     fontSize: 40,
     marginTop: 50,
     shadowColor: "#3dd37a",
