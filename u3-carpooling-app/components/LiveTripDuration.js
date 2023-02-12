@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
         color: charcoal,
         fontSize: 36,
         position: "absolute",
-        bottom: 10,
+        bottom: 0,
         left: 20,
     },
     minutes: {

@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
         fontStyle: "italic",
         fontWeight: "300",
         position: "absolute",
-        bottom: 0,
+        top: 0,
         right: 20,
     },
 });

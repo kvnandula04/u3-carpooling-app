@@ -1,5 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
+import MapView from "react-native-maps";
 
 const green = "#4CD835";
 const greenShadow = "#278A17";
@@ -8,7 +9,9 @@ const LiveMap = (props) => {
     return (
         <Pressable style={[props.style, styles.frame]} onPress={props.onPress}>
             <View style={[styles.card, styles.shadow]}></View>
-            <View style={[styles.card]}></View>
+            <View style={[styles.card]}>
+                <MapView style={[styles.card, styles.map]} />
+            </View>
             <Text style={[styles.text]}>U3</Text>
         </Pressable>
     );
@@ -18,6 +21,7 @@ export default LiveMap;
 
 const styles = StyleSheet.create({
     frame: {},
+    map: {},
     card: {
         position: "absolute",
         width: "100%",
@@ -28,6 +32,7 @@ const styles = StyleSheet.create({
         borderRadius: 32,
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0,
+        overflow: "hidden",
     },
     shadow: {
         backgroundColor: greenShadow,

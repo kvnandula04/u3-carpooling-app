@@ -1,5 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
+import ProfileCircle from "./ProfileCircle";
 
 const charcoal = "#3F3F3F";
 const yellow = "#EBB017";
@@ -12,6 +13,17 @@ const LiveToPickup = (props) => {
             <View style={[styles.card, styles.shadow]}></View>
             <View style={[styles.card]}></View>
             <Text style={[styles.text]}>to pick up.</Text>
+            <View
+                style={{
+                    marginTop: 10,
+                    marginRight: 15,
+                    margin: 20,
+                    flex: 1,
+                    // backgroundColor: "white",
+                }}
+            >
+                <ProfileCircle />
+            </View>
         </Pressable>
     );
 };
