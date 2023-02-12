@@ -7,9 +7,10 @@ const Logo = (props) => {
       <Text
         style={{
           color: props.color,
-          fontSize: 86,
+          fontSize: props.fontSize,
           lineHeight: 0,
           fontFamily: "syne",
+          top: props.top,
         }}
       >
         U
@@ -17,9 +18,10 @@ const Logo = (props) => {
       <Text
         style={{
           color: props.color,
-          fontSize: 86,
+          fontSize: props.fontSize,
           lineHeight: -10,
           fontFamily: "syne",
+          top: props.top,
         }}
       >
         3
