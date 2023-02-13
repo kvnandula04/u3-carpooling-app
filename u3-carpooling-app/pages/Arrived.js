@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     mapFrame: {
-        flex: 1,
+        flex: 2,
         width: "100%",
         justifyContent: "center",
         alignItems: "center",
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     qrFrame: {
-        flex: 2,
+        flex: 3,
         width: "100%",
         justifyContent: "center",
         alignItems: "center",
