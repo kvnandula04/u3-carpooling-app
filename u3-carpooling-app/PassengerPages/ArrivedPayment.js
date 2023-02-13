@@ -1,6 +1,6 @@
 import React,  {useState, useEffect} from 'react';
 import { 
-    Button, View, SafeAreaView, Text, ScrollView, StyleSheet, Dimensions
+    Button, View, SafeAreaView, Text, ScrollView, Linking, Dimensions
 } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import {useNavigation} from '@react-navigation/native';
@@ -22,8 +22,7 @@ export default function ArrivedPayment(){
 
     const handleBarCodeScanned = ({ type, data }) => {
         setScanned(true);
-        alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-        //think this is where we will store the journey
+        Linking.openURL(data);//opens to payment page
     };
 
     if (hasPermission === null) {
