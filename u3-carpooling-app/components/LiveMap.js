@@ -7,12 +7,19 @@ const greenShadow = "#278A17";
 
 const LiveMap = (props) => {
     return (
-        <Pressable style={[props.style, styles.frame]} onPress={props.onPress}>
-            <View style={[styles.card]}>
+        <Pressable
+            id="frame"
+            style={[props.style, styles.frame]}
+            onPress={props.onPress}
+        >
+            <View style={[props.cardStyle]}>
                 <MapView style={[styles.map]} mapType="mutedStandard" />
                 <Text style={[styles.text]}>U3</Text>
             </View>
-            <View style={[styles.card, styles.shadow]}></View>
+            <View
+                id="shadow"
+                style={[props.cardStyle, props.shadowStyle]}
+            ></View>
         </Pressable>
     );
 };
@@ -24,23 +31,7 @@ const styles = StyleSheet.create({
     map: {
         width: "100%",
         height: "100%",
-        marginBottom: 25,
-    },
-    card: {
-        width: "90%",
-        height: "80%",
-        borderColor: green,
-        borderWidth: 5,
-        borderRadius: 32,
-        overflow: "hidden",
-        marginBottom: 5,
-    },
-    shadow: {
-        zIndex: -1,
-        backgroundColor: greenShadow,
-        borderColor: greenShadow,
-        marginTop: -214,
-        marginRight: -12,
+        // marginBottom: 25,
     },
     text: {
         color: "black",

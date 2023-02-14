@@ -4,7 +4,8 @@ import LiveMap from "../components/LiveMap";
 import Svg, { SvgProps, G, Path, Defs } from "react-native-svg";
 
 const cream = "#F7F3EB";
-const green = "#218C4C";
+const green = "#4CD835";
+const greenShadow = "#278A17";
 const charcoal = "#3F3F3F";
 const black = "#272727";
 
@@ -19,7 +20,13 @@ const Arrived = () => {
     return (
         <View id="pageFrame" style={styles.pageFrame}>
             <View id="mapFrame" style={styles.mapFrame}>
-                <LiveMap id="map" style={styles.map} onPress={onPressMap} />
+                <LiveMap
+                    id="map"
+                    style={styles.map}
+                    onPress={onPressMap}
+                    cardStyle={styles.mapCardStyle}
+                    shadowStyle={styles.mapShadowStyle}
+                />
             </View>
             <View id="titleFrame" style={styles.titleFrame}>
                 <Text id="title" style={styles.title}>
@@ -87,6 +94,22 @@ const styles = StyleSheet.create({
         justifyContent: "flex-end",
         alignItems: "center",
     },
+    mapCardStyle: {
+        width: "90%",
+        height: "80%",
+        marginBottom: 5,
+        borderColor: green,
+        borderWidth: 5,
+        borderRadius: 32,
+        overflow: "hidden",
+    },
+    mapShadowStyle: {
+        zIndex: -1,
+        backgroundColor: greenShadow,
+        borderColor: greenShadow,
+        marginTop: -214,
+        marginRight: -12,
+    },
     titleFrame: {
         flex: 1,
         width: "100%",
@@ -101,7 +124,7 @@ const styles = StyleSheet.create({
     },
     titleShadow: {
         zIndex: -1,
-        color: green,
+        color: greenShadow,
         marginTop: -114,
         marginRight: -8,
     },

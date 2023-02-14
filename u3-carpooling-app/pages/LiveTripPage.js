@@ -14,6 +14,8 @@ import LiveETA from "../components/LiveETA";
 import LiveToPickup from "../components/LiveToPickup";
 
 const cream = "#F7F3EB";
+const green = "#4CD835";
+const greenShadow = "#278A17";
 
 const LiveTripPage = () => {
     const onPressReport = () => {
@@ -38,7 +40,7 @@ const LiveTripPage = () => {
         <SafeAreaView style={{ flex: 1 }}>
             <GridBackground
                 lineColor={cream}
-                style={{ backgroundColor: "#272727" }}
+                style={{ zIndex: -5, backgroundColor: "#272727" }}
             />
             <Pressable style={styles.reportButton} onPress={onPressReport}>
                 <Text style={[styles.reportText, { fontWeight: "900" }]}>
@@ -61,6 +63,25 @@ const LiveTripPage = () => {
                         inFocus[0] === 1 ? styles.selected : styles.notSelected
                     }
                     onPress={onPressMap}
+                    cardStyle={{
+                        width: "100%",
+                        height: "110%",
+                        marginBottom: 5,
+                        borderColor: green,
+                        borderWidth: 5,
+                        borderRadius: 32,
+                        borderBottomRightRadius: 0,
+                        borderBottomLeftRadius: 0,
+                        overflow: "hidden",
+                    }}
+                    shadowStyle={{
+                        zIndex: -1,
+                        backgroundColor: greenShadow,
+                        borderColor: greenShadow,
+                        marginTop: -314,
+                        // marginRight: 20,
+                        right: -6,
+                    }}
                 />
                 <LiveTripDuration
                     style={
