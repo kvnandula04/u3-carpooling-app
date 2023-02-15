@@ -25,15 +25,19 @@ const LiveTripPage = () => {
     const [inFocus, setInFocus] = useState([1, 0, 0, 0]);
     const onPressMap = () => {
         setInFocus([1, 0, 0, 0]);
+        console.log("Map Pressed");
     };
     const onPressDur = () => {
         setInFocus([0, 1, 0, 0]);
+        console.log("Duration Pressed");
     };
     const onPressETA = () => {
         setInFocus([0, 0, 1, 0]);
+        console.log("ETA Pressed");
     };
     const onPressPick = () => {
         setInFocus([0, 0, 0, 1]);
+        console.log("Pickup Pressed");
     };
 
     return (
