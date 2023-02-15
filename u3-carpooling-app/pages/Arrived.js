@@ -2,6 +2,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import LiveMap from "../components/LiveMap";
 import Svg, { SvgProps, G, Path, Defs } from "react-native-svg";
+import GridBackground from "../assets/grid-background";
 
 const cream = "#F7F3EB";
 const green = "#4CD835";
@@ -19,6 +20,14 @@ const Arrived = () => {
 
     return (
         <View id="pageFrame" style={styles.pageFrame}>
+            <GridBackground
+                lineColor={cream}
+                style={{
+                    position: "absolute",
+                    zIndex: -5,
+                    backgroundColor: "#272727",
+                }}
+            />
             <View id="mapFrame" style={styles.mapFrame}>
                 <LiveMap
                     id="map"
