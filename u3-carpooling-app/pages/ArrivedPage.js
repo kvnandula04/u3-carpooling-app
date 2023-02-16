@@ -10,7 +10,7 @@ const greenShadow = "#278A17";
 const charcoal = "#3F3F3F";
 const black = "#272727";
 
-const Arrived = () => {
+const ArrivedPage = () => {
     const onPressQR = () => {
         console.log("Take to QR Scanner");
     };
@@ -84,7 +84,7 @@ const Arrived = () => {
     );
 };
 
-export default Arrived;
+export default ArrivedPage;
 
 const styles = StyleSheet.create({
     pageFrame: {
