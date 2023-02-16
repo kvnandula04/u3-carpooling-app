@@ -7,7 +7,9 @@ import VerificationPage from "./pages/VerificationPage";
 
 export default function App() {
     return (
+        
         <VerificationPage />
+
         //<SafeAreaView>
             //<HomePage />
             //<StatusBar style="auto" />
