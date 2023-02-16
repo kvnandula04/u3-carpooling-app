@@ -2,6 +2,17 @@ import React, { useState } from "react";
 import { View, Text, Button} from "react-native";
 import { WebView } from 'react-native-webview';
 
+
+// const VerificationPage = () => {
+    // return(
+    //     <View style = {{flex: 1}}>
+    //         <Text>Verification Page</Text>
+    //         <Button title = "Verify Email" onPress = {() => {}} />
+    //         <WebView source = {{uri: 'https://auth.bath.ac.uk/login?service=http%3A%2F%2Fmoodle.bath.ac.uk%2Flogin%2Findex.php%3Fauthldap_skipntlmsso%3D1'}} />
+    //     </View>
+    // );
+// }
+
 const VerificationPage = () => {
     const [isEmailVerified, setIsEmailVerified] = useState(false);
     const [showWebView, setShowWebView] = useState(false);
@@ -21,7 +32,7 @@ const VerificationPage = () => {
     };
 
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ flex: 1}}>
             {isEmailVerified ? (
             <Text>Email verified</Text>
             ) : (
