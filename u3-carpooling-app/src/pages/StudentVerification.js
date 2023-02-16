@@ -1,15 +1,8 @@
 import React from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  Pressable,
-  TouchableOpacity,
-} from "react-native";
+import { Text, View, StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Logo from "../components/Logo";
 import GridBackground from "../../assets/grid-background";
-import { Circle } from "react-native-svg";
 
 export default function StudentVerification() {
   const navigation = useNavigation();
@@ -18,64 +11,65 @@ export default function StudentVerification() {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <GridBackground
+        position="absolute"
+        zIndex={-5}
         lineColor={"black"}
         style={{ backgroundColor: "#1daf59" }}
       />
-      <Text
-        style={{
-          color: "#f7f3eb",
-          fontSize: 40,
-          lineHeight: 0,
-          fontFamily: "syne",
-          top: 100,
-          left: 0,
-          right: 50,
-          bottom: 0,
-          position: "absolute",
-          alignContent: "center",
-          justifyContent: "center",
-          textAlign: "center",
-        }}
-      >
-        U
-      </Text>
-      <Text
-        style={{
-          color: "#f7f3eb",
-          fontSize: 40,
-          lineHeight: -10,
-          fontFamily: "syne",
-          top: 100,
-          left: 50,
-          right: 0,
-          bottom: 0,
-          position: "absolute",
-          alignContent: "center",
-          justifyContent: "center",
-          textAlign: "center",
-        }}
-      >
-        3
-      </Text>
-      <Text style={styles.heading}>Student{"\n"}Verification</Text>
-      <Pressable style={styles.button} onPress={onSigninPressed}>
-        <Text style={styles.text}>UoB Sign In</Text>
-      </Pressable>
-      <View style={styles.circle1}></View>
-      <View style={styles.circle2}></View>
+
+      <View style={styles.flex1}>
+        <Logo fontSize={40} color={"#f7f3eb"} marginTop={"15%"} />
+      </View>
+
+      <View style={styles.flex2}>
+        <Text style={styles.heading}>Student{"\n"}Verification</Text>
+      </View>
+
+      <View style={styles.flex3}>
+        <Pressable style={styles.button} onPress={onSigninPressed}>
+          <Text style={styles.text}>UoB Sign In</Text>
+        </Pressable>
+      </View>
+
+      <View style={styles.flex4}>
+        <View style={styles.circle1}></View>
+        <Pressable onPress={() => navigation.navigate("DriverVerification")}>
+          <View style={styles.circle2}></View>
+        </Pressable>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  flex1: {
+    flex: 2,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  flex2: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  flex3: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  flex4: {
+    flex: 2,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "flex-end",
+    paddingBottom: "10%",
+  },
   heading: {
-    position: "absolute",
-    top: 320,
-    left: 0,
-    bottom: 0,
-    right: 0,
     fontFamily: "atkinson-italic",
     fontSize: 54,
     color: "#f7f3eb",
@@ -87,16 +81,9 @@ const styles = StyleSheet.create({
       height: 4,
       width: 4,
     },
-    justifyContent: "center",
-    alignContent: "center",
     textAlign: "center",
   },
   button: {
-    position: "absolute",
-    top: 500,
-    left: 90,
-    bottom: 0,
-    right: 0,
     width: 250,
     height: 80,
     borderRadius: 32,
@@ -111,7 +98,6 @@ const styles = StyleSheet.create({
     },
     backgroundColor: "#ffb800",
     justifyContent: "center",
-    textAlign: "center",
     alignItems: "center",
   },
   text: {
@@ -120,27 +106,19 @@ const styles = StyleSheet.create({
     color: "#1774ff",
   },
   circle1: {
-    position: "absolute",
-    bottom: 50,
-    left: 182,
     width: 30,
     height: 30,
     borderRadius: 1000,
     borderWidth: 6,
     borderColor: "#000000",
     backgroundColor: "#ffb800",
-    justifyContent: "center",
-    alignItems: "center",
+    marginRight: "1%",
   },
   circle2: {
-    position: "absolute",
-    bottom: 50,
-    left: 220,
     width: 30,
     height: 30,
     borderRadius: 1000,
     backgroundColor: "#000000",
-    justifyContent: "center",
-    alignItems: "center",
+    marginLeft: "1%",
   },
 });

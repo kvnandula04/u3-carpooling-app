@@ -16,73 +16,82 @@ export default function DriverVerification() {
   const [text, setText] = React.useState("");
 
   return (
-    <View>
+    <View style={styles.container}>
       <GridBackground
+        position="absolute"
+        zIndex={-5}
         lineColor={"black"}
         style={{ backgroundColor: "#2e73da" }}
       />
-      <Text
-        style={{
-          color: "#f7f3eb",
-          fontSize: 40,
-          lineHeight: 0,
-          fontFamily: "syne",
-          top: 100,
-          left: 0,
-          right: 50,
-          bottom: 0,
-          position: "absolute",
-          alignContent: "center",
-          justifyContent: "center",
-          textAlign: "center",
-        }}
-      >
-        U
-      </Text>
-      <Text
-        style={{
-          color: "#f7f3eb",
-          fontSize: 40,
-          lineHeight: -10,
-          fontFamily: "syne",
-          top: 100,
-          left: 50,
-          right: 0,
-          bottom: 0,
-          position: "absolute",
-          alignContent: "center",
-          justifyContent: "center",
-          textAlign: "center",
-        }}
-      >
-        3
-      </Text>
-      <Text style={styles.heading}>Be a{"\n"}Driver?</Text>
-      <Text style={styles.subheading}> Enter your car's number plate: </Text>
-      <View style={styles.textInput}>
-        <TextInput
-          style={styles.text}
-          placeholder="AB12 CDE"
-          value={text}
-          onChangeText={(text) => setText(text)}
-        ></TextInput>
+
+      <View style={styles.flex1}>
+        <Logo fontSize={40} color={"#f7f3eb"} marginTop={"15%"} />
       </View>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.text}>skip.</Text>
-      </TouchableOpacity>
-      <View style={styles.circle1}></View>
-      <View style={styles.circle2}></View>
+
+      <View style={styles.flex2}>
+        <Text style={styles.heading}>Be a{"\n"}Driver?</Text>
+      </View>
+
+      <View style={styles.flex3}>
+        <Text style={styles.subheading}> Enter your car's number plate: </Text>
+        <View style={styles.textInput}>
+          <TextInput
+            style={styles.text}
+            placeholder="AB12 CDE"
+            value={text}
+            onChangeText={(text) => setText(text)}
+          ></TextInput>
+        </View>
+      </View>
+
+      <View style={styles.flex4}>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.text}>skip.</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.flex5}>
+        <Pressable onPress={() => navigation.navigate("StudentVerification")}>
+          <View style={styles.circle1}></View>
+        </Pressable>
+        <View style={styles.circle2}></View>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  flex1: {
+    flex: 2,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  flex2: {
+    flex: 2,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  flex3: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  flex4: {
+    flex: 2,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  flex5: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "flex-end",
+    paddingBottom: "10%",
+  },
   heading: {
-    position: "absolute",
-    top: 320,
-    left: 0,
-    bottom: 0,
-    right: 0,
     fontFamily: "atkinson-italic",
     fontSize: 54,
     color: "#ffb800",
@@ -94,29 +103,16 @@ const styles = StyleSheet.create({
       height: 4,
       width: 4,
     },
-    justifyContent: "center",
-    alignItems: "center",
     textAlign: "center",
   },
   subheading: {
-    position: "absolute",
-    top: 450,
-    left: 0,
-    bottom: 0,
-    right: 0,
     fontFamily: "atkinson-italic",
     fontSize: 24,
     color: "#f7f3eb",
     lineHeight: 53,
-    justifyContent: "center",
     textAlign: "center",
   },
   textInput: {
-    position: "absolute",
-    top: 500,
-    left: 90,
-    bottom: 0,
-    right: 0,
     width: 250,
     height: 80,
     borderRadius: 32,
@@ -132,7 +128,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#f55726",
     justifyContent: "center",
     alignItems: "center",
-    textAlign: "center",
   },
   text: {
     fontSize: 24,
@@ -140,43 +135,23 @@ const styles = StyleSheet.create({
     color: "#f7f3eb",
   },
   button: {
-    position: "absolute",
-    top: 680,
-    left: 172,
-    bottom: 0,
-    right: 0,
-    width: "20%",
-    height: "5%",
     justifyContent: "center",
     alignItems: "center",
   },
-  text2: {
-    fontFamily: "atkinson",
-    fontSize: 24,
-    color: "#f7f3eb",
-  },
   circle1: {
-    position: "absolute",
-    bottom: 50,
-    left: 182,
     width: 30,
     height: 30,
     borderRadius: 1000,
     backgroundColor: "#000000",
-    justifyContent: "center",
-    alignItems: "center",
+    marginRight: "1%",
   },
   circle2: {
-    position: "absolute",
-    bottom: 50,
-    left: 220,
     width: 30,
     height: 30,
     borderRadius: 1000,
     borderWidth: 6,
     borderColor: "#000000",
     backgroundColor: "#ffb800",
-    justifyContent: "center",
-    alignItems: "center",
+    marginLeft: "1%",
   },
 });

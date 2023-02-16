@@ -3,21 +3,14 @@ import * as React from "react";
 
 const Logo = (props) => {
   return (
-    <View>
+    <View style={styles.container}>
       <Text
         style={{
           color: props.color,
           fontSize: props.fontSize,
           lineHeight: 0,
           fontFamily: "syne",
-          position: "absolute",
-          top: props.top,
-          left: props.left,
-          right: props.right,
-          bottom: props.bottom,
-          alignContent: "center",
-          justifyContent: "center",
-          textAlign: "center",
+          marginTop: props.marginTop,
         }}
       >
         U
@@ -28,14 +21,7 @@ const Logo = (props) => {
           fontSize: props.fontSize,
           lineHeight: -10,
           fontFamily: "syne",
-          top: props.top,
-          left: props.left,
-          right: props.right,
-          bottom: props.bottom,
-          position: "absolute",
-          alignContent: "center",
-          justifyContent: "center",
-          textAlign: "center",
+          marginTop: props.marginTop,
         }}
       >
         3
@@ -46,4 +32,8 @@ const Logo = (props) => {
 
 export default Logo;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+  },
+});

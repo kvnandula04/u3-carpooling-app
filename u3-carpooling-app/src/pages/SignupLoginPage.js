@@ -4,7 +4,6 @@ import {
   StyleSheet,
   Text,
   View,
-  SafeAreaView,
   TouchableOpacity,
   Pressable,
 } from "react-native";
@@ -45,65 +44,53 @@ export default function SignupLoginPage() {
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <GridBackground
+        position="absolute"
+        zIndex={-5}
         lineColor={"black"}
         style={{ backgroundColor: "#f7f3eb" }}
       />
-      <Text
-        style={{
-          color: "#000000",
-          fontSize: 86,
-          lineHeight: 0,
-          fontFamily: "syne",
-          top: 150,
-          left: 0,
-          right: 100,
-          bottom: 0,
-          position: "absolute",
-          alignContent: "center",
-          justifyContent: "center",
-          textAlign: "center",
-        }}
-      >
-        U
-      </Text>
-      <Text
-        style={{
-          color: "#000000",
-          fontSize: 86,
-          lineHeight: -10,
-          fontFamily: "syne",
-          top: 150,
-          left: 100,
-          right: 0,
-          bottom: 0,
-          position: "absolute",
-          alignContent: "center",
-          justifyContent: "center",
-          textAlign: "center",
-        }}
-      >
-        3
-      </Text>
-      <Text style={styles.heading}>Student{"\n"}Car Pooling</Text>
-      <Pressable style={styles.button} onPress={onSignupPressed}>
-        <Text style={styles.text}>Join.</Text>
-      </Pressable>
-      <TouchableOpacity style={styles.button2} onPress={onSignupPressed}>
-        <Text style={styles.text2}>sign in.</Text>
-      </TouchableOpacity>
+
+      <View style={styles.flex1}>
+        <Logo fontSize={86} marginTop={"15%"} />
+      </View>
+
+      <View style={styles.flex2}>
+        <Text style={styles.heading}>Student{"\n"}Car Pooling</Text>
+        <Pressable style={styles.button} onPress={onSignupPressed}>
+          <Text style={styles.text}>Join.</Text>
+        </Pressable>
+      </View>
+
+      <View style={styles.flex3}>
+        <TouchableOpacity onPress={onSignupPressed}>
+          <Text style={styles.text2}>sign in.</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  flex1: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  flex2: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  flex3: {
+    flex: 1,
+    alignItems: "center",
+  },
   heading: {
-    position: "absolute",
-    top: 320,
-    left: 0,
-    bottom: 0,
-    right: 0,
     fontFamily: "syne",
     fontSize: 40,
     shadowColor: "#3dd37a",
@@ -113,16 +100,10 @@ const styles = StyleSheet.create({
       height: 4,
       width: 4,
     },
-    justifyContent: "center",
-    alignItems: "center",
     textAlign: "center",
   },
   button: {
-    position: "absolute",
-    top: 500,
-    left: 90,
-    bottom: 0,
-    right: 0,
+    marginTop: "10%",
     width: 250,
     height: 80,
     borderRadius: 32,
@@ -138,27 +119,15 @@ const styles = StyleSheet.create({
     },
     justifyContent: "center",
     alignItems: "center",
-    textAlign: "center",
   },
   text: {
     fontSize: 36,
     fontFamily: "atkinson",
     color: "#ffffff",
   },
-  button2: {
-    position: "absolute",
-    top: 680,
-    left: 172,
-    bottom: 0,
-    right: 0,
-    width: "20%",
-    height: "5%",
-    justifyContent: "center",
-    alignItems: "center",
-    textAlign: "center",
-  },
   text2: {
     fontSize: 24,
     fontFamily: "atkinson",
+    marginTop: "15%",
   },
 });
