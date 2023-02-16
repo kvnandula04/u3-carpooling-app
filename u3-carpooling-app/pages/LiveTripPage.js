@@ -97,16 +97,18 @@ const LiveTripPage = () => {
                     onPress={onPressPick}
                 />
             </View>
-            <Pressable
-                id="reportButton"
-                style={styles.reportButton}
-                onPress={onPressReport}
-            >
-                <Text style={[styles.reportText, { fontWeight: "900" }]}>
-                    Report
-                </Text>
-                <Text style={styles.reportText}> Misconduct</Text>
-            </Pressable>
+            <View id="reportFrame" style={styles.reportFrame}>
+                <Pressable
+                    id="reportButton"
+                    style={styles.reportButton}
+                    onPress={onPressReport}
+                >
+                    <Text style={[styles.reportText, { fontWeight: "900" }]}>
+                        Report
+                    </Text>
+                    <Text style={styles.reportText}> Misconduct</Text>
+                </Pressable>
+            </View>
         </View>
     );
 };
@@ -133,13 +135,18 @@ const styles = StyleSheet.create({
     notSelected: {
         flex: 2,
     },
-    reportButton: {
+    reportFrame: {
         flex: 1,
         width: "100%",
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "flex-end",
-        paddingRight: 5,
+    },
+    reportButton: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-end",
+        padding: 10,
         // backgroundColor: "blue",
     },
     reportText: {
