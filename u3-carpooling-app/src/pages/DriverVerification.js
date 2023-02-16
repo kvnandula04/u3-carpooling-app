@@ -13,6 +13,9 @@ import GridBackground from "../../assets/grid-background";
 
 export default function DriverVerification() {
   const navigation = useNavigation();
+  const onSkipPressed = () => {
+    navigation.navigate("LiveTripPage");
+  };
   const [text, setText] = React.useState("");
 
   return (
@@ -51,7 +54,7 @@ export default function DriverVerification() {
       </View>
 
       <View style={styles.flex4}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={onSkipPressed}>
           <Text style={styles.text}>skip.</Text>
         </TouchableOpacity>
       </View>
