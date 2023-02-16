@@ -34,13 +34,19 @@ export default function DriverVerification() {
 
       <View style={styles.flex3}>
         <Text style={styles.subheading}> Enter your car's number plate: </Text>
-        <View style={styles.textInput}>
-          <TextInput
-            style={styles.text}
-            placeholder="AB12 CDE"
-            value={text}
-            onChangeText={(text) => setText(text)}
-          ></TextInput>
+        <View id="numberPlateFrame" style={styles.numberPlateFrame}>
+          <View id="numberPlateButton" style={styles.numberPlateButton}>
+            <TextInput
+              style={styles.text}
+              placeholder="AB12 CDE"
+              value={text}
+              onChangeText={(text) => setText(text)}
+            ></TextInput>
+          </View>
+          <View
+            id="numberPlateButtonShadow"
+            style={[styles.numberPlateButton, styles.numberPlateButtonShadow]}
+          ></View>
         </View>
       </View>
 
@@ -112,22 +118,28 @@ const styles = StyleSheet.create({
     lineHeight: 53,
     textAlign: "center",
   },
-  textInput: {
-    width: 250,
-    height: 80,
+  numberPlateFrame: {
+    width: "50%",
+    height: "80%",
+    marginTop: "5%",
+    // backgroundColor: "white",
+  },
+  numberPlateButton: {
+    width: "100%",
+    height: "100%",
     borderRadius: 32,
-    borderColor: "black",
+    borderColor: "#000",
     borderWidth: 5,
-    shadowColor: "black",
-    shadowOpacity: 1,
-    shadowRadius: 2,
-    shadowOffset: {
-      height: 5,
-      width: 5,
-    },
     backgroundColor: "#f55726",
     justifyContent: "center",
     alignItems: "center",
+  },
+  numberPlateButtonShadow: {
+    zIndex: -1,
+    position: "absolute",
+    backgroundColor: "#000",
+    top: 6,
+    left: 6,
   },
   text: {
     fontSize: 24,

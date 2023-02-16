@@ -28,9 +28,19 @@ export default function StudentVerification() {
       </View>
 
       <View style={styles.flex3}>
-        <Pressable style={styles.button} onPress={onSigninPressed}>
-          <Text style={styles.text}>UoB Sign In</Text>
-        </Pressable>
+        <View id="signinFrame" style={styles.signinFrame}>
+          <Pressable
+            id="signinButton"
+            style={styles.signinButton}
+            onPress={onSigninPressed}
+          >
+            <Text style={styles.text}>UoB Sign In</Text>
+          </Pressable>
+          <View
+            id="signinButtonShadow"
+            style={[styles.signinButton, styles.signinButtonShadow]}
+          ></View>
+        </View>
       </View>
 
       <View style={styles.flex4}>
@@ -83,22 +93,27 @@ const styles = StyleSheet.create({
     },
     textAlign: "center",
   },
-  button: {
-    width: 250,
-    height: 80,
+  signinFrame: {
+    width: "50%",
+    height: "60%",
+    marginTop: "5%",
+  },
+  signinButton: {
+    width: "100%",
+    height: "100%",
     borderRadius: 32,
-    borderColor: "#000000",
+    borderColor: "#000",
     borderWidth: 5,
-    shadowColor: "#000000",
-    shadowOpacity: 1,
-    shadowRadius: 2,
-    shadowOffset: {
-      height: 5,
-      width: 5,
-    },
     backgroundColor: "#ffb800",
     justifyContent: "center",
     alignItems: "center",
+  },
+  signinButtonShadow: {
+    zIndex: -1,
+    position: "absolute",
+    backgroundColor: "#000",
+    top: 6,
+    left: 6,
   },
   text: {
     fontSize: 24,

@@ -52,15 +52,27 @@ export default function SignupLoginPage() {
         style={{ backgroundColor: "#f7f3eb" }}
       />
 
-      <View style={styles.flex1}>
+      <View id style={styles.flex1}>
         <Logo fontSize={86} marginTop={"15%"} />
       </View>
 
-      <View style={styles.flex2}>
-        <Text style={styles.heading}>Student{"\n"}Car Pooling</Text>
-        <Pressable style={styles.button} onPress={onSignupPressed}>
-          <Text style={styles.text}>Join.</Text>
-        </Pressable>
+      <View id="headingAndJoin" style={styles.flex2}>
+        <Text id="headingText" style={styles.heading}>
+          Student{"\n"}Car Pooling
+        </Text>
+        <View id="joinFrame" style={styles.joinFrame}>
+          <Pressable
+            id="joinButton"
+            style={styles.joinButton}
+            onPress={onSignupPressed}
+          >
+            <Text style={styles.text}>Join.</Text>
+          </Pressable>
+          <View
+            id="joinButtonShadow"
+            style={[styles.joinButton, styles.joinButtonShadow]}
+          ></View>
+        </View>
       </View>
 
       <View style={styles.flex3}>
@@ -80,15 +92,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    // backgroundColor: "red",
   },
   flex2: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    // backgroundColor: "blue",
   },
   flex3: {
     flex: 1,
     alignItems: "center",
+    // backgroundColor: "green",
   },
   heading: {
     fontFamily: "syne",
@@ -102,23 +117,28 @@ const styles = StyleSheet.create({
     },
     textAlign: "center",
   },
-  button: {
-    marginTop: "10%",
-    width: 250,
-    height: 80,
+  joinFrame: {
+    width: "40%",
+    height: "30%",
+    marginTop: "5%",
+    // backgroundColor: "white",
+  },
+  joinButton: {
+    width: "100%",
+    height: "100%",
     borderRadius: 32,
-    borderColor: "#000000",
+    borderColor: "#000",
     borderWidth: 5,
     backgroundColor: "#3dd37a",
-    shadowColor: "#000000",
-    shadowOpacity: 1,
-    shadowRadius: 2,
-    shadowOffset: {
-      height: 5,
-      width: 5,
-    },
     justifyContent: "center",
     alignItems: "center",
+  },
+  joinButtonShadow: {
+    zIndex: -1,
+    position: "absolute",
+    backgroundColor: "#000",
+    top: 6,
+    left: 6,
   },
   text: {
     fontSize: 36,
