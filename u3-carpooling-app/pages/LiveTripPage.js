@@ -16,6 +16,8 @@ import LiveToPickup from "../components/LiveToPickup";
 const cream = "#F7F3EB";
 const green = "#4CD835";
 const greenShadow = "#278A17";
+const charcoal = "#3F3F3F";
+const black = "#272727";
 
 const LiveTripPage = () => {
     const onPressReport = () => {
@@ -41,35 +43,23 @@ const LiveTripPage = () => {
     };
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <View id="pageFrame" style={styles.pageFrame}>
             <GridBackground
                 lineColor={cream}
-                style={{ zIndex: -5, backgroundColor: "#272727" }}
-            />
-            <Pressable style={styles.reportButton} onPress={onPressReport}>
-                <Text style={[styles.reportText, { fontWeight: "900" }]}>
-                    Report
-                </Text>
-                <Text style={styles.reportText}> Misconduct</Text>
-            </Pressable>
-            <View
                 style={{
                     position: "absolute",
-                    alignSelf: "center",
-                    margin: "15%",
-                    width: "100%",
-                    height: "82%",
-                    // backgroundColor: "red",
+                    zIndex: -5,
+                    backgroundColor: "#272727",
                 }}
-            >
+            />
+            <View id="cardFrame" style={styles.cardFrame}>
                 <LiveMap
                     style={
                         inFocus[0] === 1 ? styles.selected : styles.notSelected
                     }
-                    onPress={onPressMap}
                     cardStyle={{
                         width: "100%",
-                        height: "110%",
+                        height: "120%",
                         marginBottom: 5,
                         borderColor: green,
                         borderWidth: 5,
@@ -80,12 +70,13 @@ const LiveTripPage = () => {
                     }}
                     shadowStyle={{
                         zIndex: -1,
+                        position: "absolute",
+                        top: 6,
+                        left: 6,
                         backgroundColor: greenShadow,
                         borderColor: greenShadow,
-                        marginTop: -314,
-                        // marginRight: 20,
-                        right: -6,
                     }}
+                    onPress={onPressMap}
                 />
                 <LiveTripDuration
                     style={
@@ -106,21 +97,49 @@ const LiveTripPage = () => {
                     onPress={onPressPick}
                 />
             </View>
-        </SafeAreaView>
+            <Pressable
+                id="reportButton"
+                style={styles.reportButton}
+                onPress={onPressReport}
+            >
+                <Text style={[styles.reportText, { fontWeight: "900" }]}>
+                    Report
+                </Text>
+                <Text style={styles.reportText}> Misconduct</Text>
+            </Pressable>
+        </View>
     );
 };
 
 export default LiveTripPage;
 
 const styles = StyleSheet.create({
+    pageFrame: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: black,
+    },
+    cardFrame: {
+        flex: 6,
+        alignSelf: "center",
+        width: "85%",
+        marginTop: 40,
+        // backgroundColor: "red",
+    },
+    selected: {
+        flex: 5,
+    },
+    notSelected: {
+        flex: 2,
+    },
     reportButton: {
-        position: "absolute",
-        bottom: 20,
-        right: 0,
+        flex: 1,
+        width: "100%",
         flexDirection: "row",
+        alignItems: "center",
         justifyContent: "flex-end",
-        paddingVertical: 20,
-        paddingHorizontal: 20,
+        paddingRight: 5,
         // backgroundColor: "blue",
     },
     reportText: {
@@ -128,11 +147,5 @@ const styles = StyleSheet.create({
         fontWeight: "300",
         fontStyle: "italic",
         color: cream,
-    },
-    selected: {
-        flex: 5,
-    },
-    notSelected: {
-        flex: 2,
     },
 });

@@ -15,8 +15,8 @@ const LiveTripDuration = (props) => {
             style={[props.style, styles.frame]}
             onPress={props.onPress}
         >
-            <View id="card" style={[styles.card, styles.shadow]}></View>
-            <View id="cardShadow" style={[styles.card]}></View>
+            <View id="cardShadow" style={[styles.card, styles.shadow]}></View>
+            <View id="card" style={[styles.card]}></View>
             <Text id="title" style={[styles.title]}>
                 trip length.
             </Text>

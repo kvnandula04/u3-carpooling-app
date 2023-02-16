@@ -25,7 +25,7 @@ const Arrived = () => {
                 style={{
                     position: "absolute",
                     zIndex: -5,
-                    backgroundColor: "#272727",
+                    backgroundColor: black,
                 }}
             />
             <View id="mapFrame" style={styles.mapFrame}>
