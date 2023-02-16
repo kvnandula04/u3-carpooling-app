@@ -16,6 +16,8 @@ db.Model.metadata.reflect(db.engine)
 
 # Default POST template for now
 @app.route('/api', methods=['POST'])
+def api():
+    return null
 
 if __name__ == '__main__':
     app.run(debug=True)
