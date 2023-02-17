@@ -1,26 +1,27 @@
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
-import React from "react";
-import GridBackground from "../assets/grid-background";
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View, Button } from 'react-native';
+import * as React from 'react';
+import { useNavigation } from '@react-navigation/native';
 
-const HomePage = () => {
-    return (
-        <SafeAreaView>
-            <Text style={styles.centre}>U3</Text>
-            <GridBackground
-                lineColor="#9A9A9A"
-                style={{
-                    position: "absolute",
-                }}
-            />
-        </SafeAreaView>
-    );
-};
-
-export default HomePage;
-
-const styles = StyleSheet.create({
-    centre: {
-        textAlign: "center",
-        textAlignVertical: "center",
-    },
-});
+export default function HomePage() {
+  const navigation = useNavigation();
+  return (
+      <View>
+         <Text></Text>
+        <Text></Text>
+        <Text></Text>
+        <Text></Text>
+        <Text></Text>
+        <Text>U3</Text>
+        <Button 
+              onPress={() => navigation.navigate('ArrivedPayment')}
+              title="Go to QRScanPage" 
+          />
+        <Button 
+            onPress={() => navigation.navigate('GenerateQRPage')}
+            title="Go to QrGenPage" 
+        />
+        <StatusBar style="auto" />
+      </View>
+  );
+}
