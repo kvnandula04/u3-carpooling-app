@@ -75,6 +75,7 @@ export default function LiveTripPage() {
             backgroundColor: greenShadow,
             borderColor: greenShadow,
           }}
+          text="U3"
           onPress={onPressMap}
         />
         <LiveTripDuration
