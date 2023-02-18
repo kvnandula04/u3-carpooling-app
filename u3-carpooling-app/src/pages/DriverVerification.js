@@ -14,7 +14,7 @@ import GridBackground from "../../assets/grid-background";
 export default function DriverVerification() {
   const navigation = useNavigation();
   const onSkipPressed = () => {
-    navigation.navigate("LiveTripPage");
+    navigation.navigate("HomePage");
   };
   const [text, setText] = React.useState("");
 
