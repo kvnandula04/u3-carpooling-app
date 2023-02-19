@@ -1,8 +1,9 @@
-from flask import Flask, jsonify
+from flask import Flask, Response, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from hashlib import sha256
 from datetime import datetime
 import json
+import argparse
 
 app = Flask(__name__)
 
@@ -82,5 +83,25 @@ class Review(db.Model):
 def api():
     return null
 
+@app.route('/api/debug', methods=['POST'])
+def debug():
+    if not debug:  
+        return Response(status=204)
+
+    data = request.get_json()
+    if not "teststring" in data:
+        return "POST a \"teststring\" field to test response"
+    return "Hello, " + data["teststring"] 
+    
+debug = False
 if __name__ == '__main__':
-    app.run(debug=True)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-d", "--debug", action='store_true')
+    parser.add_argument("-t", "--test", action='store_true')
+    args = parser.parse_args()
+    debug = args.debug
+
+    if debug:
+        print(" * Opening debug link at /api/debug")
+
+    app.run(debug=debug)
