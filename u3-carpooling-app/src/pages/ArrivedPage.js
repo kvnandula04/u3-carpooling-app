@@ -1,8 +1,9 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import { Pressable, StyleSheet, Text, View, Dimensions } from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
 import LiveMap from "../components/LiveMap";
 import Svg, { SvgProps, G, Path, Defs } from "react-native-svg";
 import GridBackground from "../../assets/grid-background";
+import { BarCodeScanner } from "expo-barcode-scanner";
 
 const cream = "#F7F3EB";
 const green = "#4CD835";
@@ -11,12 +12,89 @@ const charcoal = "#3F3F3F";
 const black = "#272727";
 
 const ArrivedPage = () => {
-  const onPressQR = () => {
-    console.log("Take to QR Scanner");
-  };
   const onPressMap = () => {
     console.log("Take to Map");
   };
+
+  const [hasPermission, setHasPermission] = useState(null);
+  const [scanned, setScanned] = useState(false);
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    const getBarCodeScannerPermissions = async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === "granted");
+    };
+
+    getBarCodeScannerPermissions();
+  }, []);
+
+  const handleBarCodeScanned = ({ type, data }) => {
+    setScanned(true);
+    setShow(false);
+    Linking.openURL(data); // opens to payment page
+    setScanned(false);
+  };
+
+  if (hasPermission === null) {
+    return <Text>Requesting for camera permission</Text>;
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
+
+  function ShowScanner() {
+    if (show) {
+      return (
+        <BarCodeScanner
+          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          style={{ height: 500, width: Dimensions.get("window").width }}
+        />
+      );
+    }
+  }
+
+  function ShowButton() {
+    if (!show) {
+      return (
+        <View id="cardFrame" style={styles.cardFrame}>
+          <Pressable id="qr" style={styles.qr} onPress={() => setShow(true)}>
+            <View id="qrTextFrame" style={styles.qrTextFrame}>
+              <Text id="qrText" style={styles.qrText}>
+                scan{"\n"}Driver's{"\n"}QR{"\n"}code.
+              </Text>
+            </View>
+            <View id="qrSymbol" style={styles.qrSymbol}>
+              <Svg
+                xmlns="http://www.w3.org/2000/svg"
+                width={88}
+                height={88}
+                fill="none"
+                // {...props}
+                style={{
+                  justifyContent: "flex-end",
+                  alignItems: "flex-end",
+                  // marginLeft: -35,
+                  // marginBottom: 4,
+                }}
+              >
+                <G filter="url(#a)">
+                  <Path
+                    stroke="#272727"
+                    strokeLinecap="square"
+                    strokeWidth={5}
+                    d="M31.17 8.5H16.06a7.56 7.56 0 0 0-7.56 7.56v15.1M31.17 76.5H16.06a7.56 7.56 0 0 1-7.56-7.56v-15.1M53.83 8.5h15.11a7.56 7.56 0 0 1 7.56 7.56v15.1m0 22.67v15.11a7.56 7.56 0 0 1-7.56 7.56h-15.1M8.5 42.5h68"
+                  />
+                </G>
+                <Defs></Defs>
+              </Svg>
+            </View>
+          </Pressable>
+          <View id="qrShadow" style={[styles.qr, styles.qrShadow]} />
+        </View>
+      );
+    }
+  }
 
   return (
     <View id="pageFrame" style={styles.pageFrame}>
@@ -51,41 +129,8 @@ const ArrivedPage = () => {
       </View>
 
       <View id="qrFrame" style={styles.qrFrame}>
-        <View id="cardFrame" style={styles.cardFrame}>
-          <Pressable id="qr" style={styles.qr} onPress={onPressQR}>
-            <View id="qrTextFrame" style={styles.qrTextFrame}>
-              <Text id="qrText" style={styles.qrText}>
-                scan{"\n"}Driver's{"\n"}QR{"\n"}code.
-              </Text>
-            </View>
-            <View id="qrSymbol" style={styles.qrSymbol}>
-              <Svg
-                xmlns="http://www.w3.org/2000/svg"
-                width={88}
-                height={88}
-                fill="none"
-                // {...props}
-                style={{
-                  justifyContent: "flex-end",
-                  alignItems: "flex-end",
-                  // marginLeft: -35,
-                  // marginBottom: 4,
-                }}
-              >
-                <G filter="url(#a)">
-                  <Path
-                    stroke="#272727"
-                    strokeLinecap="square"
-                    strokeWidth={5}
-                    d="M31.17 8.5H16.06a7.56 7.56 0 0 0-7.56 7.56v15.1M31.17 76.5H16.06a7.56 7.56 0 0 1-7.56-7.56v-15.1M53.83 8.5h15.11a7.56 7.56 0 0 1 7.56 7.56v15.1m0 22.67v15.11a7.56 7.56 0 0 1-7.56 7.56h-15.1M8.5 42.5h68"
-                  />
-                </G>
-                <Defs></Defs>
-              </Svg>
-            </View>
-          </Pressable>
-          <View id="qrShadow" style={[styles.qr, styles.qrShadow]} />
-        </View>
+        <ShowButton />
+        <ShowScanner />
       </View>
     </View>
   );
