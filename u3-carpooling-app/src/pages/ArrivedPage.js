@@ -37,6 +37,7 @@ const ArrivedPage = () => {
           shadowStyle={styles.mapShadowStyle}
         />
       </View>
+
       <View id="titleFrame" style={styles.titleFrame}>
         <Text id="title" style={styles.title}>
           You've{"\n"}Arrived!
@@ -48,34 +49,43 @@ const ArrivedPage = () => {
           Confirm your trip is complete by...
         </Text>
       </View>
+
       <View id="qrFrame" style={styles.qrFrame}>
-        <Pressable id="qr" style={styles.qr} onPress={onPressQR}>
-          <Text id="qrText" style={styles.qrText}>
-            scan{"\n"}Driver's{"\n"}QR{"\n"}code.
-          </Text>
-          <Svg
-            xmlns="http://www.w3.org/2000/svg"
-            width={88}
-            height={88}
-            fill="none"
-            // {...props}
-            style={{
-              marginLeft: -35,
-              marginBottom: 4,
-            }}
-          >
-            <G filter="url(#a)">
-              <Path
-                stroke="#272727"
-                strokeLinecap="square"
-                strokeWidth={5}
-                d="M31.17 8.5H16.06a7.56 7.56 0 0 0-7.56 7.56v15.1M31.17 76.5H16.06a7.56 7.56 0 0 1-7.56-7.56v-15.1M53.83 8.5h15.11a7.56 7.56 0 0 1 7.56 7.56v15.1m0 22.67v15.11a7.56 7.56 0 0 1-7.56 7.56h-15.1M8.5 42.5h68"
-              />
-            </G>
-            <Defs></Defs>
-          </Svg>
-        </Pressable>
-        <View id="qrShadow" style={[styles.qr, styles.qrShadow]}></View>
+        <View id="cardFrame" style={styles.cardFrame}>
+          <Pressable id="qr" style={styles.qr} onPress={onPressQR}>
+            <View id="qrTextFrame" style={styles.qrTextFrame}>
+              <Text id="qrText" style={styles.qrText}>
+                scan{"\n"}Driver's{"\n"}QR{"\n"}code.
+              </Text>
+            </View>
+            <View id="qrSymbol" style={styles.qrSymbol}>
+              <Svg
+                xmlns="http://www.w3.org/2000/svg"
+                width={88}
+                height={88}
+                fill="none"
+                // {...props}
+                style={{
+                  justifyContent: "flex-end",
+                  alignItems: "flex-end",
+                  // marginLeft: -35,
+                  // marginBottom: 4,
+                }}
+              >
+                <G filter="url(#a)">
+                  <Path
+                    stroke="#272727"
+                    strokeLinecap="square"
+                    strokeWidth={5}
+                    d="M31.17 8.5H16.06a7.56 7.56 0 0 0-7.56 7.56v15.1M31.17 76.5H16.06a7.56 7.56 0 0 1-7.56-7.56v-15.1M53.83 8.5h15.11a7.56 7.56 0 0 1 7.56 7.56v15.1m0 22.67v15.11a7.56 7.56 0 0 1-7.56 7.56h-15.1M8.5 42.5h68"
+                  />
+                </G>
+                <Defs></Defs>
+              </Svg>
+            </View>
+          </Pressable>
+          <View id="qrShadow" style={[styles.qr, styles.qrShadow]} />
+        </View>
       </View>
     </View>
   );
@@ -91,19 +101,20 @@ const styles = StyleSheet.create({
     backgroundColor: black,
   },
   mapFrame: {
-    flex: 2,
+    flex: 2.5,
     width: "100%",
+    marginTop: "10%",
     // backgroundColor: "red",
   },
   map: {
     flex: 1,
-    justifyContent: "flex-end",
+    justifyContent: "center",
     alignItems: "center",
+    margin: "5%",
   },
   mapCardStyle: {
-    width: "90%",
-    height: "80%",
-    marginBottom: 5,
+    width: "100%",
+    height: "100%",
     borderColor: green,
     borderWidth: 5,
     borderRadius: 32,
@@ -113,17 +124,19 @@ const styles = StyleSheet.create({
     zIndex: -1,
     backgroundColor: greenShadow,
     borderColor: greenShadow,
-    marginTop: -214,
-    marginRight: -12,
+    position: "absolute",
+    top: 6,
+    left: 6,
   },
   titleFrame: {
-    flex: 1,
+    flex: 1.5,
     width: "100%",
     justifyContent: "flex-end",
     alignItems: "center",
     // backgroundColor: "blue",
   },
   title: {
+    fontFamily: "syne",
     fontSize: 48,
     color: cream,
     textAlign: "center",
@@ -131,43 +144,59 @@ const styles = StyleSheet.create({
   titleShadow: {
     zIndex: -1,
     color: greenShadow,
-    marginTop: -114,
-    marginRight: -8,
+    marginTop: -105,
+    marginRight: -10,
   },
   subTitle: {
+    fontFamily: "atkinson-italic",
     fontSize: 24,
     color: cream,
     textAlign: "center",
-    marginTop: -10,
+    // marginTop: -10,
   },
   qrFrame: {
     flex: 3,
-    width: "100%",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "green",
+    // backgroundColor: "green",
   },
   qr: {
     zIndex: 0,
-    height: "60%",
-    width: "60%",
+    height: "80%",
+    width: "65%",
     backgroundColor: cream,
     borderColor: charcoal,
     borderWidth: 5,
     borderRadius: 32,
     flexDirection: "row",
-    alignItems: "flex-end",
   },
   qrShadow: {
     zIndex: -1,
     backgroundColor: "black",
     borderColor: "black",
-    marginTop: -234,
-    marginRight: -12,
+    position: "absolute",
+    top: 6,
+    left: 6,
+  },
+  qrTextFrame: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: "5%",
+  },
+  qrSymbol: {
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
+    marginRight: "5%",
+    marginBottom: "5%",
   },
   qrText: {
     color: black,
-    fontSize: 48,
-    width: "75%",
+    fontFamily: "atkinson-regular",
+    fontSize: 40,
+    letterSpacing: 3,
+    textShadowColor: "rgba(0, 0, 0, 0.5)",
+    textShadowOffset: { width: 3, height: 3 },
+    textShadowRadius: 7,
   },
 });
