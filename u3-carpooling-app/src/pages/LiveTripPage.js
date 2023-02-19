@@ -63,8 +63,6 @@ export default function LiveTripPage() {
             borderColor: green,
             borderWidth: 5,
             borderRadius: 32,
-            borderBottomRightRadius: 0,
-            borderBottomLeftRadius: 0,
             overflow: "hidden",
           }}
           shadowStyle={{
@@ -116,7 +114,7 @@ const styles = StyleSheet.create({
     flex: 6,
     alignSelf: "center",
     width: "85%",
-    marginTop: 40,
+    marginTop: "15%",
     // backgroundColor: "red",
   },
   selected: {
@@ -136,7 +134,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-end",
-    padding: 10,
+    padding: "7%",
     // backgroundColor: "blue",
   },
   reportText: {
