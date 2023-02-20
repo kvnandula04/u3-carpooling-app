@@ -15,6 +15,10 @@ db = SQLAlchemy(app)
 # DB mirrors columns in the file rather than defining in the table models
 db.Model.metadata.reflect(db.engine)
 
+# Exceptions
+class DBError(ValueError):
+    pass
+
 # Table definitions
 class User(db.Model):
     __tablename__ = 'User'
@@ -26,11 +30,6 @@ class Contact(db.Model):
     __table_args__ = {'extend_existing': True}
     userID = db.Column(db.Integer, primary_key=True)
     contactID = db.Column(db.Integer, primary_key=True)
-
-class Preferences(db.Model):
-    __tablename__ = 'Preferences'
-    __table_args__ = {'extend_existing': True}
-    preferencesID = db.Column(db.Integer, primary_key=True)
 
 class Licence(db.Model):
     __tablename__ = 'Licence'
@@ -78,18 +77,107 @@ class Review(db.Model):
     __table_args__ = {'extend_existing': True}
     reviewID = db.Column(db.Integer, primary_key=True)
 
+def tableInsert(table, data):
+    try:
+        if table == "User":
+            user = User.query.filter_by(email=data["email"]).first()
+            if user is not None:
+                return "","400 user already exists"
+            new = User(name=data["name"],email=data["email"],pwdHash=data["pwdHash"])
+        
+        elif table == "Contact":
+            user = User.query.filter_by(email=data["userID"]).first()
+            contact = User.query.filter_by(userID=data["contactID"]).first()
+            if user is None or contact is None:
+                return "","400 invalid user/contact"
+            new = Contact(userID=data["userID"],contactID=data["contactID"])
+
+        elif table == "Licence":
+            new = None
+
+        elif table == "Vehicle":
+            new = None
+
+        elif table == "Pool":
+            new = None
+
+        elif table == "PoolSubscriber":
+            new = None
+
+        elif table == "Schedule":
+            new = None
+
+        elif table == "Offer":
+            new = None
+
+        elif table == "Journey":
+            new = None
+
+        elif table == "Transaction":
+            new = None
+
+        elif table == "Review":
+            new = None
+        
+        else:
+            return "","400 invalid table"
+
+        db.session.add(new)
+        return Response(status=200)
+        
+    except KeyError:
+        return "","400 invalid column"
+
+def tableUpdate(table, data):
+    return Response(status=500)
+
+def tableSelect(table, data):
+    return Response(status=500)
+
+def tableDelete(table, data):
+    return Response(status=500)
+    
+def tableOperate(op, data):
+    if "table" in data:
+        table = data["table"]
+        del data["table"]
+        response = Response(status=400)
+        if op == "insert":
+            response = tableInsert(table, data)
+        elif op == "update":
+            response = tableUpdate(table, data)
+        elif op == "select":
+            response = tableSelect(table, data)
+        elif op == "delete":
+            response = tableDelete(table, data)
+            
+    db.session.commit()
+    return response
+
 # Default POST template for now
 @app.route('/api', methods=['POST'])
 def api():
-    return null
+    data = request.get_json()
+    if not data:
+        return Response(status=204)         # No response if no payload
 
+    response = Response(status=400)         # Bad request if operation cannot be identified
+    if "operation" in data:
+        op = data["operation"]
+        del data["operation"]
+        if op in ("insert","update","select","delete"):
+            return tableOperate(op, data)
+
+    return response
+    
+# Debug route
 @app.route('/api/debug', methods=['POST'])
 def debug():
     if not debug:  
-        return Response(status=204)
+        return Response(status=403)
 
     data = request.get_json()
-    if not "teststring" in data:
+    if not data or not "teststring" in data:
         return "POST a \"teststring\" field to test response"
     return "Hello, " + data["teststring"] 
     
@@ -102,6 +190,8 @@ if __name__ == '__main__':
     debug = args.debug
 
     if debug:
+        print(" * Changing DB to db_debug.sqlite3")
         print(" * Opening debug link at /api/debug")
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 
-    app.run(debug=debug)
+    app.run(debug=debug, host="127.0.0.1", port=3333)
