@@ -4,6 +4,7 @@ from hashlib import sha256
 from datetime import datetime
 import json
 import argparse
+import requests
 
 app = Flask(__name__)
 
@@ -154,6 +155,25 @@ def tableOperate(op, data):
     db.session.commit()
     return response
 
+def vehicleLookup(data):
+    if not "registrationNumber" in data:
+        return "","400 invalid reg. number"
+    vehicle = Vehicle.query.filter_by(registrationNumber=data["registrationNumber"]).first()
+    if vehicle:
+        return vehicle.dump_to_json()
+
+    url = "https://driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/v1/vehicles"
+    headers = {"Content-Type":"application/json", "x-api-key":"Fyp6cJA7Dq2BDeMnrgNyMaJ7rrs0C6BT7nOuQVab"}
+    data = {"registrationNumber":data["registrationNumber"]}   
+
+    ## And insert into DB
+
+    record = requests.post(url, headers=headers, json=data).json()
+
+    ## Return failure if 404
+    
+    return record
+
 # Default POST template for now
 @app.route('/api', methods=['POST'])
 def api():
@@ -167,6 +187,8 @@ def api():
         del data["operation"]
         if op in ("insert","update","select","delete"):
             return tableOperate(op, data)
+        elif op == "vehiclelookup":
+            return vehicleLookup(data)
 
     return response
     
@@ -186,12 +208,16 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--debug", action='store_true')
     parser.add_argument("-t", "--test", action='store_true')
+    parser.add_argument("-b", "--broadcast", action='store_true')
     args = parser.parse_args()
     debug = args.debug
+    broadcast = args.broadcast
+
+    host = "0.0.0.0" if broadcast else "127.0.0.1"
 
     if debug:
         print(" * Changing DB to db_debug.sqlite3")
         print(" * Opening debug link at /api/debug")
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 
-    app.run(debug=debug, host="127.0.0.1", port=3333)
+    app.run(debug=debug, host=host, port=3333)
