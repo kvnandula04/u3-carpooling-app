@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View, Dimensions } from "react-native";
+import { Pressable, StyleSheet, Text, View, Dimensions, Linking } from "react-native";
 import React, { useState, useEffect, useCallback } from "react";
 import LiveMap from "../components/LiveMap";
 import Svg, { SvgProps, G, Path, Defs } from "react-native-svg";
