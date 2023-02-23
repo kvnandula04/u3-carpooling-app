@@ -5,6 +5,7 @@ from datetime import datetime
 import json
 import argparse
 import requests
+import tests
 
 app = Flask(__name__)
 
@@ -212,6 +213,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     debug = args.debug
     broadcast = args.broadcast
+    runtests = args.test
 
     host = "0.0.0.0" if broadcast else "127.0.0.1"
 
@@ -219,5 +221,9 @@ if __name__ == '__main__':
         print(" * Changing DB to db_debug.sqlite3")
         print(" * Opening debug link at /api/debug")
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
+
+    if tests:
+        print(" * Adding test script: tests.py")
+        tests.runAll()
 
     app.run(debug=debug, host=host, port=3333)
