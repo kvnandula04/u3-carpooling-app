@@ -30,7 +30,7 @@ drivers = [
         'detour_time': 10,  # in minutes
         'rating': 4.5, # out of 5
         'luggage_space': 2,  # number of suitcases that can be accommodated
-        'seats': 5  # number of seats in the car
+        'seats': 2  # number of seats in the car
     },
     {
         'name': 'Sam',
@@ -40,7 +40,7 @@ drivers = [
         'detour_time': 10,
         'rating': 4.5,
         'luggage_space': 2,
-        'seats': 1  
+        'seats': 5
     },
     # {
     #     'name': 'Mary',
@@ -80,14 +80,14 @@ passengers = [
         'detour_time': 5,
         'rating': 4.0
     },
-    # {
-    #     'name': 'Jude',
-    #     'location': (40.7120, -73.9970),
-    #     'destination': (40.7282, -74.0776),
-    #     'departure_time': '2023-02-25T09:00:00Z',
-    #     'detour_time': 0,
-    #     'rating': 4.0
-    # },
+    {
+        'name': 'Jude',
+        'location': (40.7120, -73.9970),
+        'destination': (40.7282, -74.0776),
+        'departure_time': '2023-02-25T09:00:00Z',
+        'detour_time': 0,
+        'rating': 4.0
+    },
     # {
     #     'name': 'Bob',
     #     'location': (120.7120, -25.9970),
@@ -183,30 +183,6 @@ def check_best_match(driver, passenger):
                     best_match = False
     return best_match
 
-'''
-Problem:
-Driver 0 - Remaining Seats = 5
-Driver 1 - Remaining Seats = 1
-
-{(0, 0): 0.8505529803191663, (0, 1): 0.8528118517187816, (0, 2): 0.920823371975058, (0, 3): 0.8478118517187816, (0, 4): 0.8478118517187816, (1, 0): 0.8322588713996153, (1, 1): 0.83, (1, 2): 0.9002539919523523, (1, 3): 0.975, (1, 4): 0.975}
-
-Passenger 4 should now go with driver 0
-Since passenger 3 has taken the last place with driver 1
-
-Solution:
-Check how many driver:passenger scores are higher for driver 1 than driver 0.
-In this case, it is Driver 1 is higher with 2 passengers.
-Driver 0 has 3 passengers greater than driver 1.
-Since 2 > 1.
-Check to see if the number of passengers with a higher score is less than the number of remaining seats i.e. 5.
-Since 5 > 3. We can add the passenger 4 to driver 0.
-
-Higher score for driver 0: passenger 0, passenger 1 and passenger 2
-Higher score for driver 1: passenger 3 and passenger 4
-
-As driver 1 only has 1 seat left, we can only add passenger 3 to driver 0
-'''
-
 
 
 matched_pairs = []
@@ -215,14 +191,6 @@ matched_passengers = set()
 
 unmatched_drivers = set()
 unmatched_passengers = set()
-
-#If it meets the criteria of the score and is a match, add it to the matched pairs
-#If it meets the criteria of the score but is not a match, add it to the check_driver_passenger_pair
-#Therefore, if the driver runs out of seats, we can rematch the passengers to the driver
-
-#Once the passenger has a seat, we can remove the passenger from the check_driver_passenger_pair
-#No all we do is check that the number of elements in check_driver_passenger_pair is zero at the end
-#If not,
 
 check_driver_passenger_pair = set()
 
@@ -253,16 +221,8 @@ for i in range(max([x[0][0] for x in sorted_scores])+1):
                 else:
                     check_driver_passenger_pair.add((i,j))
 
-#Check to see if check_driver_passenger_pair is empty
-#If not, we can add the passenger to the driver
-#If it is, we can add the passenger to the unmatched passengers
 
-#Check to see if the driver has any seats left
-#If it does, we can add the passenger to the driver
-#If it doesn't, we can add the passenger to the unmatched passengers
-
-
-
+#Checks to see if the driver has any seats left and if so, adds the passenger to the matched pairs
 
 for driver_check, passenger_check in check_driver_passenger_pair.copy():
     remaining_seats = drivers[driver_check]['seats']
@@ -277,7 +237,6 @@ for driver_check, passenger_check in check_driver_passenger_pair.copy():
         check_driver_passenger_pair.discard((driver_check, passenger_check))
     else:
         unmatched_passengers.add(passenger_check)
-
 
 # Find unmatched drivers and passengers
 for i, driver in enumerate(drivers):
@@ -298,12 +257,12 @@ for i in matched_drivers:
         print(f"Driver {drivers[i]['name']} is matched with passenger {passengers[j]['name']} | Score of: {score}")
         
 # Print the unmatched drivers and passengers
-# print("\nUnmatched drivers and passengers: ")
-# for i in unmatched_drivers:
-#     print(f"Unmatched drivers: {drivers[i]['name']}")
+print("\nUnmatched drivers and passengers: ")
+for i in unmatched_drivers:
+    print(f"Unmatched drivers: {drivers[i]['name']}")
 
-# for j in unmatched_passengers:
-#     print(f"Unmatched passengers: {passengers[j]['name']}")
+for j in unmatched_passengers:
+    print(f"Unmatched passengers: {passengers[j]['name']}")
 
-#print(f"\nUnmatched drivers: {unmatched_drivers}")
-#print(f"Unmatched passengers: {unmatched_passengers}")
+# print(f"\nUnmatched drivers: {unmatched_drivers}")
+# print(f"Unmatched passengers: {unmatched_passengers}")
