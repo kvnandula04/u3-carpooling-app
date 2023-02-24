@@ -152,9 +152,9 @@ def tableUpdate(table, data):
 
 def tableSelect(table, data):
     if table == "User":
-        res = User.query.filter_by(userID=getField(data,"userID")).first()
+        res = User.query.filter_by(email=getField(data,"email")).first()
     elif table == "Licence":
-        res = Licence.query.get(getField(data, "licenceID"))
+        res = Licence.query.filter_by(licenceNumber=getField(data, "licenceNumber"))
     elif table == "Vehicle":
         res = Vehicle.query.get(getField(data, "vehicleID"))
     elif table == "Pool":
