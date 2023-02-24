@@ -1,5 +1,7 @@
 from flask import Flask, Response, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import exc
+from sqlalchemy_serializer import SerializerMixin
 from hashlib import sha256
 from datetime import datetime
 import json
@@ -22,128 +24,200 @@ class DBError(ValueError):
     pass
 
 # Table definitions
-class User(db.Model):
+class User(db.Model, SerializerMixin):
     __tablename__ = 'User'
     __table_args__ = {'extend_existing': True}
     userID = db.Column(db.Integer, primary_key=True)
 
-class Contact(db.Model):
+class Contact(db.Model, SerializerMixin):
     __tablename__ = 'Contact'
     __table_args__ = {'extend_existing': True}
     userID = db.Column(db.Integer, primary_key=True)
     contactID = db.Column(db.Integer, primary_key=True)
 
-class Licence(db.Model):
+class Licence(db.Model, SerializerMixin):
     __tablename__ = 'Licence'
     __table_args__ = {'extend_existing': True}
     licenceID = db.Column(db.Integer, primary_key=True)
 
-class Vehicle(db.Model):
+class Vehicle(db.Model, SerializerMixin):
     __tablename__ = 'Vehicle'
     __table_args__ = {'extend_existing': True}
     vehicleID = db.Column(db.Integer, primary_key=True)
 
-class Pool(db.Model):
+class Pool(db.Model, SerializerMixin):
     __tablename__ = 'Pool'
     __table_args__ = {'extend_existing': True}
     poolID = db.Column(db.Integer, primary_key=True)
 
-class PoolSubscriber(db.Model):
+class PoolSubscriber(db.Model, SerializerMixin):
     __tablename__ = 'PoolSubscriber'
     __table_args__ = {'extend_existing': True}
     userID = db.Column(db.Integer, primary_key=True)
     poolID = db.Column(db.Integer, primary_key=True)
 
-class Schedule(db.Model):
+class Schedule(db.Model, SerializerMixin):
     __tablename__ = 'Schedule'
     __table_args__ = {'extend_existing': True}
     scheduleID = db.Column(db.Integer, primary_key=True)
 
-class Offer(db.Model):
+class Offer(db.Model, SerializerMixin):
     __tablename__ = 'Offer'
     __table_args__ = {'extend_existing': True}
     offerID = db.Column(db.Integer, primary_key=True)
 
-class Journey(db.Model):
+class Journey(db.Model, SerializerMixin):
     __tablename__ = 'Journey'
     __table_args__ = {'extend_existing': True}
     journeyID = db.Column(db.Integer, primary_key=True)
 
-class Transaction(db.Model):
+class Transaction(db.Model, SerializerMixin):
     __tablename__ = 'Transaction'
     __table_args__ = {'extend_existing': True}
     transactionID = db.Column(db.Integer, primary_key=True)
     
-class Review(db.Model):
+class Review(db.Model, SerializerMixin):
     __tablename__ = 'Review'
     __table_args__ = {'extend_existing': True}
     reviewID = db.Column(db.Integer, primary_key=True)
 
+def getField(data, field):
+    if field in data:
+        ret = data[field]
+        del data[field]
+        return ret
+    return None
+
 def tableInsert(table, data):
     try:
         if table == "User":
-            user = User.query.filter_by(email=data["email"]).first()
-            if user is not None:
-                return "","400 user already exists"
-            new = User(name=data["name"],email=data["email"],pwdHash=data["pwdHash"])
-        
+            new = User(**data)
         elif table == "Contact":
-            user = User.query.filter_by(email=data["userID"]).first()
-            contact = User.query.filter_by(userID=data["contactID"]).first()
-            if user is None or contact is None:
-                return "","400 invalid user/contact"
-            new = Contact(userID=data["userID"],contactID=data["contactID"])
-
+            new = Contact(**data)
         elif table == "Licence":
-            new = None
-
+            new = Licence(**data)
         elif table == "Vehicle":
-            new = None
-
+            new = Vehicle(**data)
         elif table == "Pool":
-            new = None
-
+            new = Pool(**data)
         elif table == "PoolSubscriber":
-            new = None
-
+            new = PoolSubscriber(**data)
         elif table == "Schedule":
-            new = None
-
+            new = Schedule(**data)
         elif table == "Offer":
-            new = None
-
+            new = Offer(**data)
         elif table == "Journey":
-            new = None
-
+            new = Journey(**data)
         elif table == "Transaction":
-            new = None
-
+            new = Transaction(**data)
         elif table == "Review":
-            new = None
-        
+            new = Review(**data)
         else:
             return "","400 invalid table"
+    except TypeError:
+        return "","400 invalid column(s) present"
 
-        db.session.add(new)
-        return Response(status=200)
-        
-    except KeyError:
-        return "","400 invalid column"
+    db.session.add(new)                 # Add new record
+    return Response(status=200)         # Respond with success
 
 def tableUpdate(table, data):
-    return Response(status=500)
+    if table == "User":
+        mod = User.query.filter(User.userID==getField(data, "userID"))
+    elif table == "Licence":
+        mod = Licence.query.filter(Licence.licenceID==getField(data, "licenceID"))
+    elif table == "Vehicle":
+        mod = Vehicle.query.filter(Vehicle.vehicleID==getField(data, "vehicleID"))
+    elif table == "Pool":
+        mod = Pool.query.filter(Pool.poolID==getField(data, "poolID"))
+    elif table == "Schedule":
+        mod = Schedule.query.filter(Schedule.scheduleID==getField(data, "scheduleID"))
+    elif table == "Offer":
+        mod = Offer.query.filter(Offer.offerID==getField(data, "offerID"))
+    elif table == "Journey":
+        mod = Journey.query.filter(Journey.journeyID==getField(data, "journeyID"))
+    elif table == "Transaction":
+        mod = Transaction.query.filter(Transaction.transactionID==getField(data, "transactionID"))
+    elif table == "Review":
+        mod = Review.query.filter(Review.reviewID==getField(data, "reviewID"))
+    elif table == "Contact":
+        mod = Contact.query.filter(User.userID==getField(data,"userID") and Contact.contactID==getField(data,"contactID"))
+    elif table == "PoolSubscriber":
+        mod = PoolSubscriber.query.filter(User.userID==getField(data,"userID") and Contact.contactID==getField(data,"poolID"))
+    else:
+        return "","400 invalid table"
+
+    mod.update(data)
+
+    return Response(status=200)         # Respond with success
 
 def tableSelect(table, data):
-    return Response(status=500)
+    if table == "User":
+        res = User.query.filter_by(userID=getField(data,"userID")).first()
+    elif table == "Licence":
+        res = Licence.query.get(getField(data, "licenceID"))
+    elif table == "Vehicle":
+        res = Vehicle.query.get(getField(data, "vehicleID"))
+    elif table == "Pool":
+        res = Pool.query.get(getField(data, "poolID"))
+    elif table == "Schedule":
+        res = Schedule.query.get(getField(data, "scheduleID"))
+    elif table == "Offer":
+        res = Offer.query.get(getField(data, "offerID"))
+    elif table == "Journey":
+        res = Journey.query.get(getField(data, "journeyID"))
+    elif table == "Transaction":
+        res = Transaction.query.get(getField(data, "transactionID"))
+    elif table == "Review":
+        res = Review.query.get(getField(data, "reviewID"))
+    elif table == "Contact":
+        res = Contact.query.filter_by(userID=getField(data,"userID"),contactID=getField(data,"contactID")).first()
+    elif table == "PoolSubscriber":
+        res = PoolSubscriber.query.filter_by(userID=getField(data,"userID"),contactID=getField(data,"poolID")).first()
+    else:
+        return "","400 invalid table"
+
+    if not res:
+        return "","400 invalid id (record does not exist)"
+
+    return jsonify(res.to_dict()),"200"       # Respond with success, and deliver record JSON
 
 def tableDelete(table, data):
-    return Response(status=500)
+    if table == "User":
+        rem = User.query.get(getField(data, "userID"))
+    elif table == "Licence":
+        rem = Licence.query.get(getField(data, "licenceID"))
+    elif table == "Vehicle":
+        rem = Vehicle.query.get(getField(data, "vehicleID"))
+    elif table == "Pool":
+        rem = Pool.query.get(getField(data, "poolID"))
+    elif table == "Schedule":
+        rem = Schedule.query.get(getField(data, "scheduleID"))
+    elif table == "Offer":
+        rem = Offer.query.get(getField(data, "offerID"))
+    elif table == "Journey":
+        rem = Journey.query.get(getField(data, "journeyID"))
+    elif table == "Transaction":
+        rem = Transaction.query.get(getField(data, "transactionID"))
+    elif table == "Review":
+        rem = Review.query.get(getField(data, "reviewID"))
+    elif table == "Contact":
+        rem = Contact.query.filter_by(userID=getField(data,"userID"),contactID=getField(data,"contactID")).first()
+    elif table == "PoolSubscriber":
+        rem = PoolSubscriber.query.filter_by(userID=getField(data,"userID"),contactID=getField(data,"poolID")).first()
+    else:
+        return "","400 invalid table"
+
+    if not rem:
+        return "","400 invalid id (record does not exist)"
+
+    db.session.delete(rem)
+    return Response(status=200)
     
 def tableOperate(op, data):
+    response = "","400 invalid table"
+    
     if "table" in data:
-        table = data["table"]
-        del data["table"]
-        response = Response(status=400)
+        table = getField(data, "table")
         if op == "insert":
             response = tableInsert(table, data)
         elif op == "update":
@@ -152,8 +226,11 @@ def tableOperate(op, data):
             response = tableSelect(table, data)
         elif op == "delete":
             response = tableDelete(table, data)
-            
-    db.session.commit()
+
+    try:
+        db.session.commit()                         # Commit changes to DB
+    except exc.IntegrityError as ex:
+        return "","400 " + str(ex)
     return response
 
 def vehicleLookup(data):
@@ -175,6 +252,9 @@ def vehicleLookup(data):
     
     return record
 
+def matchmake():
+    pass
+
 # Default POST template for now
 @app.route('/api', methods=['POST'])
 def api():
@@ -182,16 +262,16 @@ def api():
     if not data:
         return Response(status=204)         # No response if no payload
 
-    response = Response(status=400)         # Bad request if operation cannot be identified
     if "operation" in data:
-        op = data["operation"]
-        del data["operation"]
+        op = getField(data, "operation")
         if op in ("insert","update","select","delete"):
             return tableOperate(op, data)
         elif op == "vehiclelookup":
             return vehicleLookup(data)
+        elif op == "matchmake":
+            return matchmake(data)
 
-    return response
+    return Response(status=400)             # Bad request if operation cannot be identified
     
 # Debug route
 @app.route('/api/debug', methods=['POST'])
