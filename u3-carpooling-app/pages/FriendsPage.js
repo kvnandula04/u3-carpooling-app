@@ -6,6 +6,10 @@ const cream = "#F7F3EB";
 const blue = "#2E73DA";
 
 const FriendsPage = () => {
+    const onPressContacts = () => {
+        console.log("Take to Contacts Page");
+    };
+
     return (
         <View id="pageFrame" style={styles.pageFrame}>
             <GridBackground
@@ -24,7 +28,17 @@ const FriendsPage = () => {
                 </Pressable>
             </View>
             <View id="friendsFrame" style={styles.friendsFrame}></View>
-            <View id="contactsFrame" style={styles.contactsFrame}></View>
+            <View id="contactsFrame" style={styles.contactsFrame}>
+                <Pressable
+                    id="contactsButton"
+                    style={styles.contactsButton}
+                    onPress={onPressContacts}
+                >
+                    <Text id="contactsText" style={styles.contactsText}>
+                        + Add Friends{"\n"}from Contacts
+                    </Text>
+                </Pressable>
+            </View>
         </View>
     );
 };
@@ -62,6 +76,16 @@ const styles = StyleSheet.create({
     contactsFrame: {
         flex: 2,
         width: "100%",
+        justifyContent: "center",
+        alignItems: "center",
         backgroundColor: "blue",
+    },
+    contactsButton: {
+        backgroundColor: "red",
+    },
+    contactsText: {
+        color: cream,
+        fontSize: 40,
+        fontStyle: "italic",
     },
 });
