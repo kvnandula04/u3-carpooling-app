@@ -17,6 +17,9 @@ const ProfilePage = () => {
     var username = "John Doe";
     var passenger_rating = 4.5;
     var driver_rating = 4.8;
+    var co2 = 0.5;
+    var travelled = 5.2;
+    var num_trips = 10;
 
     const onPressFriends = () => {
         console.log("Go to Friends Page");
@@ -56,7 +59,27 @@ const ProfilePage = () => {
                     </Text>
                 </Pressable>
             </SafeAreaView>
-            <View id="cardsFrame" style={styles.cardsFrame}></View>
+            <View id="cardsFrame" style={styles.cardsFrame}>
+                <View id="analytics" style={styles.analytics}>
+                    <Text id="analyticsTitle" style={styles.analyticsTitle}>
+                        Analytics
+                    </Text>
+                    <Text id="co2" style={styles.co2}>
+                        CO2 Saved: {co2}
+                    </Text>
+                    <Text id="travelled" style={styles.travelled}>
+                        Distance Travelled: {travelled}
+                    </Text>
+                </View>
+                <View id="history" style={styles.history}>
+                    <Text id="historyTitle" style={styles.historyTitle}>
+                        Trip History
+                    </Text>
+                    <Text id="historyText" style={styles.historyText}>
+                        {num_trips} trips
+                    </Text>
+                </View>
+            </View>
             <View id="switchFrame" style={styles.switchFrame}>
                 <Pressable
                     id="switchButton"
@@ -101,7 +124,32 @@ const styles = StyleSheet.create({
     },
     cardsFrame: {
         flex: 5,
+        alignItems: "center",
+        justifyContent: "center",
         backgroundColor: "blue",
+    },
+    analytics: {
+        margin: 10,
+        backgroundColor: "green",
+    },
+    analyticsTitle: {
+        color: cream,
+    },
+    co2: {
+        color: cream,
+    },
+    travelled: {
+        color: cream,
+    },
+    history: {
+        margin: 10,
+        backgroundColor: "black",
+    },
+    historyTitle: {
+        color: cream,
+    },
+    historyText: {
+        color: cream,
     },
     switchFrame: {
         flex: 1,
