@@ -2,6 +2,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import GridBackground from "../../assets/grid-background";
 import { SafeAreaView } from "react-native-safe-area-context";
+import ProfileCircle from "../components/ProfileCircle";
 
 const cream = "#F7F3EB";
 const blue = "#1774FF";
@@ -43,6 +44,7 @@ const ProfilePage = () => {
                     Hey,{"\n"}
                     {username}
                 </Text>
+                <ProfileCircle id="profilePic" style={styles.profilePic} />
                 <Text id="pass_rating" style={styles.pass_rating}>
                     Passenger Rating: {passenger_rating}
                 </Text>
@@ -109,6 +111,7 @@ const styles = StyleSheet.create({
     hey: {
         flex: 2,
     },
+    profilePic: {},
     pass_rating: {
         flex: 1,
     },
@@ -143,7 +146,7 @@ const styles = StyleSheet.create({
     },
     history: {
         margin: 10,
-        backgroundColor: "black",
+        backgroundColor: "green",
     },
     historyTitle: {
         color: cream,
@@ -159,7 +162,7 @@ const styles = StyleSheet.create({
     switchButton: {
         padding: 10,
         // top: -10,
-        // backgroundColor: "black",
+        backgroundColor: "black",
     },
     switchText: {
         color: cream,
