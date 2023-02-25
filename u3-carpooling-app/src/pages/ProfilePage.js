@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import GridBackground from "../../assets/grid-background";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const cream = "#F7F3EB";
 const blue = "#1774FF";
@@ -34,7 +35,7 @@ const ProfilePage = () => {
                     backgroundColor: blue,
                 }}
             />
-            <View id="topFrame" style={styles.topFrame}>
+            <SafeAreaView id="topFrame" style={styles.topFrame}>
                 <Text id="hey" style={styles.hey}>
                     Hey,{"\n"}
                     {username}
@@ -54,8 +55,8 @@ const ProfilePage = () => {
                         go to Friends
                     </Text>
                 </Pressable>
-            </View>
-            <View id="analyticsFrame" style={styles.analyticsFrame}></View>
+            </SafeAreaView>
+            <View id="cardsFrame" style={styles.cardsFrame}></View>
             <View id="switchFrame" style={styles.switchFrame}>
                 <Pressable
                     id="switchButton"
@@ -98,8 +99,8 @@ const styles = StyleSheet.create({
     friendsText: {
         color: cream,
     },
-    analyticsFrame: {
-        flex: 4,
+    cardsFrame: {
+        flex: 5,
         backgroundColor: "blue",
     },
     switchFrame: {
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
     },
     switchButton: {
         padding: 10,
-        top: -10,
+        // top: -10,
         // backgroundColor: "black",
     },
     switchText: {
