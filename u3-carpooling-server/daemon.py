@@ -113,9 +113,9 @@ def tableInsert(table, data):
         elif table == "Review":
             new = Review(**data)
         else:
-            return "","400 invalid table"
+            return "invalid table","400"
     except TypeError:
-        return "","400 invalid column(s) present"
+        return "invalid column(s) present","400"
 
     db.session.add(new)                 # Add new record
     return Response(status=200)         # Respond with success
@@ -144,7 +144,7 @@ def tableUpdate(table, data):
     elif table == "PoolSubscriber":
         mod = PoolSubscriber.query.filter(User.userID==getField(data,"userID") and Contact.contactID==getField(data,"poolID"))
     else:
-        return "","400 invalid table"
+        return "invalid table","400"
 
     mod.update(data)
 
@@ -174,10 +174,10 @@ def tableSelect(table, data):
     elif table == "PoolSubscriber":
         res = PoolSubscriber.query.filter_by(userID=getField(data,"userID"),contactID=getField(data,"poolID")).first()
     else:
-        return "","400 invalid table"
+        return "invalid table","400"
 
     if not res:
-        return "","400 invalid id (record does not exist)"
+        return "invalid id (record does not exist)","400"
 
     return jsonify(res.to_dict()),"200"       # Respond with success, and deliver record JSON
 
@@ -205,16 +205,16 @@ def tableDelete(table, data):
     elif table == "PoolSubscriber":
         rem = PoolSubscriber.query.filter_by(userID=getField(data,"userID"),contactID=getField(data,"poolID")).first()
     else:
-        return "","400 invalid table"
+        return "invalid table","400"
 
     if not rem:
-        return "","400 invalid id (record does not exist)"
+        return "invalid id (record does not exist)","400"
 
     db.session.delete(rem)
     return Response(status=200)
     
 def tableOperate(op, data):
-    response = "","400 invalid table"
+    response = "invalid table","400"
     
     if "table" in data:
         table = getField(data, "table")
@@ -233,7 +233,7 @@ def tableOperate(op, data):
         msg = str(ex).partition('\n')[0]
         msg = ''.join(c for c in msg if c.isalnum() or c == ' ')
         print(msg)
-        return "","400 " + msg
+        return msg,"400"
     return response
 
 def vehicleLookup(data):
@@ -263,7 +263,7 @@ def matchmake():
 def api():
     data = request.get_json()
     if not data:
-        return Response(status=204)         # No response if no payload
+        return Response(status=204)                           # No response if no payload
 
     if "operation" in data:
         op = getField(data, "operation")
@@ -274,7 +274,7 @@ def api():
         elif op == "matchmake":
             return matchmake(data)
 
-    return Response(status=400)             # Bad request if operation cannot be identified
+    return "operation cannot be identified","400"             # Bad request if operation cannot be identified
     
 # Debug route
 @app.route('/api/debug', methods=['POST'])
