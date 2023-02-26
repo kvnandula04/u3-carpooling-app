@@ -230,7 +230,10 @@ def tableOperate(op, data):
     try:
         db.session.commit()                         # Commit changes to DB
     except exc.IntegrityError as ex:
-        return "","400 " + str(ex)
+        msg = str(ex).partition('\n')[0]
+        msg = ''.join(c for c in msg if c.isalnum() or c == ' ')
+        print(msg)
+        return "","400 " + msg
     return response
 
 def vehicleLookup(data):
