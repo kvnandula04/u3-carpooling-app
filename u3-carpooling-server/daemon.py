@@ -4,7 +4,6 @@ from sqlalchemy import exc
 from sqlalchemy_serializer import SerializerMixin
 from hashlib import sha256
 from datetime import datetime
-from tests import runAll
 import json
 import argparse
 import requests
