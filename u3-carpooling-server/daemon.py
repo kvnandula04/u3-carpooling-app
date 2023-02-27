@@ -4,10 +4,10 @@ from sqlalchemy import exc
 from sqlalchemy_serializer import SerializerMixin
 from hashlib import sha256
 from datetime import datetime
+from tests import runAll
 import json
 import argparse
 import requests
-import tests
 
 app = Flask(__name__)
 
@@ -291,7 +291,6 @@ debug = False
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--debug", action='store_true')
-    parser.add_argument("-t", "--test", action='store_true')
     parser.add_argument("-b", "--broadcast", action='store_true')
     args = parser.parse_args()
     debug = args.debug
@@ -304,9 +303,5 @@ if __name__ == '__main__':
         print(" * Changing DB to db_debug.sqlite3")
         print(" * Opening debug link at /api/debug")
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
-
-    if tests:
-        print(" * Adding test script: tests.py")
-        tests.runAll()
 
     app.run(debug=debug, host=host, port=3333)
