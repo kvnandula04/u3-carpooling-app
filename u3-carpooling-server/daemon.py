@@ -80,6 +80,11 @@ class Review(db.Model, SerializerMixin):
     __table_args__ = {'extend_existing': True}
     reviewID = db.Column(db.Integer, primary_key=True)
 
+class LocationMap(db.Model, SerializerMixin):
+    __tablename__ = 'Location'
+    __table_args__ = {'extend_existing': True}
+    queryString = db.Column(db.String, primary_key=True)
+
 def getField(data, field):
     if field in data:
         ret = data[field]
@@ -111,6 +116,8 @@ def tableInsert(table, data):
             new = Transaction(**data)
         elif table == "Review":
             new = Review(**data)
+        elif table == "LocationMap":
+            new = LocationMap(**data)
         else:
             return "invalid table","400"
     except TypeError:
@@ -138,10 +145,6 @@ def tableUpdate(table, data):
         mod = Transaction.query.filter(Transaction.transactionID==getField(data, "transactionID"))
     elif table == "Review":
         mod = Review.query.filter(Review.reviewID==getField(data, "reviewID"))
-    elif table == "Contact":
-        mod = Contact.query.filter(User.userID==getField(data,"userID") and Contact.contactID==getField(data,"contactID"))
-    elif table == "PoolSubscriber":
-        mod = PoolSubscriber.query.filter(User.userID==getField(data,"userID") and Contact.contactID==getField(data,"poolID"))
     else:
         return "invalid table","400"
 
@@ -168,6 +171,8 @@ def tableSelect(table, data):
         res = Transaction.query.get(getField(data, "transactionID"))
     elif table == "Review":
         res = Review.query.get(getField(data, "reviewID"))
+    elif table == "LocationMap":
+        res = LocationMap.query.get(getField(data, "queryString"))
     elif table == "Contact":
         res = Contact.query.filter_by(userID=getField(data,"userID"),contactID=getField(data,"contactID")).first()
     elif table == "PoolSubscriber":
@@ -199,6 +204,8 @@ def tableDelete(table, data):
         rem = Transaction.query.get(getField(data, "transactionID"))
     elif table == "Review":
         rem = Review.query.get(getField(data, "reviewID"))
+    elif table == "LocationMap":
+        rem = LocationMap.query.get(getField(data, "queryString"))
     elif table == "Contact":
         rem = Contact.query.filter_by(userID=getField(data,"userID"),contactID=getField(data,"contactID")).first()
     elif table == "PoolSubscriber":
