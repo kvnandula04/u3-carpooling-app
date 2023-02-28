@@ -299,6 +299,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--debug", action='store_true')
     parser.add_argument("-b", "--broadcast", action='store_true')
+    parser.add_argument("-t", "--test", action='store_true')
     args = parser.parse_args()
     debug = args.debug
     broadcast = args.broadcast
