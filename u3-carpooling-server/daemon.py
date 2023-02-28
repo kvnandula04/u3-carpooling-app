@@ -308,9 +308,7 @@ if __name__ == '__main__':
     host = "0.0.0.0" if broadcast else "127.0.0.1"
 
     if debug:
-        print(" * Changing DB to db_debug.sqlite3")
         print(" * Opening debug link at /api/debug")
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db_debug.sqlite3'
 
     if runtests:
         print(" * Adding test script: tests.py")
