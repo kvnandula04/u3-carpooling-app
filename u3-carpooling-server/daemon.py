@@ -158,7 +158,7 @@ def __tableSelect(table, data):
                                         (Licence.vehicleID==__getField(data,"vehicleID")) ).all()
     elif table == "Vehicle":
         res = Vehicle.query.filter(     (Vehicle.vehicleID==__getField(data,"vehicleID")) |\
-                                        (Vehicle.registartionNumber==__getField(data,"registrationNumber")) ).all()
+                                        (Vehicle.registrationNumber==__getField(data,"registrationNumber")) ).all()
     elif table == "Pool":
         res = Pool.query.filter(        (Pool.poolID==__getField(data,"poolID")) |\
                                         (Pool.licenceID==__getField(data,"licenceID")) ).all()
