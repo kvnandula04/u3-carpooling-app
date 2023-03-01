@@ -242,7 +242,8 @@ def tableOperate(op, data):
 
     try:
         db.session.commit()                         # Commit changes to DB
-    except exc.IntegrityError as ex:
+    except (exc.IntegrityError, exc.PendingRollbackError) as ex:
+        db.session.rollback()
         msg = str(ex).partition('\n')[0]
         msg = ''.join(c for c in msg if c.isalnum() or c == ' ')
         print(msg)
