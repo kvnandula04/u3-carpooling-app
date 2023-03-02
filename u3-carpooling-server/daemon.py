@@ -7,6 +7,7 @@ from datetime import datetime
 import json
 import argparse
 import requests
+import tests
 
 app = Flask(__name__)
 
@@ -80,19 +81,14 @@ class Review(db.Model, SerializerMixin):
     __table_args__ = {'extend_existing': True}
     reviewID = db.Column(db.Integer, primary_key=True)
 
-class LocationMap(db.Model, SerializerMixin):
-    __tablename__ = 'Location'
-    __table_args__ = {'extend_existing': True}
-    queryString = db.Column(db.String, primary_key=True)
-
-def getField(data, field):
+def __getField(data, field):
     if field in data:
         ret = data[field]
         del data[field]
         return ret
     return None
 
-def tableInsert(table, data):
+def __tableInsert(table, data):
     try:
         if table == "User":
             new = User(**data)
@@ -116,8 +112,6 @@ def tableInsert(table, data):
             new = Transaction(**data)
         elif table == "Review":
             new = Review(**data)
-        elif table == "LocationMap":
-            new = LocationMap(**data)
         else:
             return "invalid table","400"
     except TypeError:
@@ -126,25 +120,25 @@ def tableInsert(table, data):
     db.session.add(new)                 # Add new record
     return Response(status=200)         # Respond with success
 
-def tableUpdate(table, data):
+def __tableUpdate(table, data):
     if table == "User":
-        mod = User.query.filter(User.userID==getField(data, "userID"))
+        mod = User.query.filter(        User.userID==__getField(data, "userID") )
     elif table == "Licence":
-        mod = Licence.query.filter(Licence.licenceID==getField(data, "licenceID"))
+        mod = Licence.query.filter(     Licence.licenceID==__getField(data, "licenceID") )
     elif table == "Vehicle":
-        mod = Vehicle.query.filter(Vehicle.vehicleID==getField(data, "vehicleID"))
+        mod = Vehicle.query.filter(     Vehicle.vehicleID==__getField(data, "vehicleID") )
     elif table == "Pool":
-        mod = Pool.query.filter(Pool.poolID==getField(data, "poolID"))
+        mod = Pool.query.filter(        Pool.poolID==__getField(data, "poolID") )
     elif table == "Schedule":
-        mod = Schedule.query.filter(Schedule.scheduleID==getField(data, "scheduleID"))
+        mod = Schedule.query.filter(    Schedule.scheduleID==__getField(data, "scheduleID") )
     elif table == "Offer":
-        mod = Offer.query.filter(Offer.offerID==getField(data, "offerID"))
+        mod = Offer.query.filter(       Offer.offerID==__getField(data, "offerID") )
     elif table == "Journey":
-        mod = Journey.query.filter(Journey.journeyID==getField(data, "journeyID"))
+        mod = Journey.query.filter(     Journey.journeyID==__getField(data, "journeyID") )
     elif table == "Transaction":
-        mod = Transaction.query.filter(Transaction.transactionID==getField(data, "transactionID"))
+        mod = Transaction.query.filter( Transaction.transactionID==__getField(data, "transactionID") )
     elif table == "Review":
-        mod = Review.query.filter(Review.reviewID==getField(data, "reviewID"))
+        mod = Review.query.filter(      Review.reviewID==__getField(data, "reviewID") )
     else:
         return "invalid table","400"
 
@@ -152,64 +146,77 @@ def tableUpdate(table, data):
 
     return Response(status=200)         # Respond with success
 
-def tableSelect(table, data):
+def __tableSelect(table, data):
     if table == "User":
-        res = User.query.filter_by(email=getField(data,"email")).first()
+        res = User.query.filter(        (User.userID==__getField(data,"userID")) |\
+                                        (User.name==__getField(data,"name")) |\
+                                        (User.email==__getField(data,"email")) ).all()
     elif table == "Licence":
-        res = Licence.query.filter_by(licenceNumber=getField(data, "licenceNumber"))
+        res = Licence.query.filter(     (Licence.licenceID==__getField(data,"licenceID")) |\
+                                        (Licence.licenceNumber==__getField(data,"licenceNumber")) |\
+                                        (Licence.userID==__getField(data,"userID")) |\
+                                        (Licence.vehicleID==__getField(data,"vehicleID")) ).all()
     elif table == "Vehicle":
-        res = Vehicle.query.get(getField(data, "vehicleID"))
+        res = Vehicle.query.filter(     (Vehicle.vehicleID==__getField(data,"vehicleID")) |\
+                                        (Vehicle.registrationNumber==__getField(data,"registrationNumber")) ).all()
     elif table == "Pool":
-        res = Pool.query.get(getField(data, "poolID"))
+        res = Pool.query.filter(        (Pool.poolID==__getField(data,"poolID")) |\
+                                        (Pool.licenceID==__getField(data,"licenceID")) ).all()
     elif table == "Schedule":
-        res = Schedule.query.get(getField(data, "scheduleID"))
+        res = Schedule.query.filter(    (Schedule.scheduleID==__getField(data,"scheduleID")) |\
+                                        (Schedule.poolID==__getField(data,"poolID")) ).all()
     elif table == "Offer":
-        res = Offer.query.get(getField(data, "offerID"))
+        res = Offer.query.filter(       (Offer.offerID==__getField(data,"offerID")) |\
+                                        (Offer.userID==__getField(data,"userID")) |\
+                                        (Offer.poolID==__getField(data,"poolID")) ).all()
     elif table == "Journey":
-        res = Journey.query.get(getField(data, "journeyID"))
+        res = Journey.query.filter(     (Journey.journeyID==__getField(data,"journeyID")) |\
+                                        (Journey.poolID==__getField(data,"poolID")) ).all()
     elif table == "Transaction":
-        res = Transaction.query.get(getField(data, "transactionID"))
+        res = Transaction.query.filter( (Transaction.transactionID==__getField(data,"transactionID")) |\
+                                        (Transaction.driverID==__getField(data,"driverID")) |\
+                                        (Transaction.passengerID==__getField(data,"passengerID")) ).all()
     elif table == "Review":
-        res = Review.query.get(getField(data, "reviewID"))
-    elif table == "LocationMap":
-        res = LocationMap.query.get(getField(data, "queryString"))
+        res = Review.query.filter(      (Review.reviewID==__getField(data, "reviewID")) |\
+                                        (Review.reviewerID==__getField(data, "reviewerID")) |\
+                                        (Review.subjectID==__getField(data, "subjectID")) ).all()
     elif table == "Contact":
-        res = Contact.query.filter_by(userID=getField(data,"userID"),contactID=getField(data,"contactID")).first()
+        res = Contact.query.filter(     (Contact.userID==__getField(data,"userID")) |\
+                                        (Contact.contactID==__getField(data,"contactID")) ).all()
     elif table == "PoolSubscriber":
-        res = PoolSubscriber.query.filter_by(userID=getField(data,"userID"),contactID=getField(data,"poolID")).first()
+        res = PoolSubscriber.query.filter((PoolSubscriber.userID==__getField(data,"userID")) |\
+                                          (PoolSubscriber.poolID==__getField(data,"poolID")) ).all()
     else:
         return "invalid table","400"
 
     if not res:
         return "invalid id (record does not exist)","400"
 
-    return jsonify(res.to_dict()),"200"       # Respond with success, and deliver record JSON
+    return jsonify([r.to_dict() for r in res]),"200"       # Respond with success, and deliver record JSON
 
-def tableDelete(table, data):
+def __tableDelete(table, data):
     if table == "User":
-        rem = User.query.get(getField(data, "userID"))
+        rem = User.query.get(       __getField(data, "userID"))
     elif table == "Licence":
-        rem = Licence.query.get(getField(data, "licenceID"))
+        rem = Licence.query.get(    __getField(data, "licenceID"))
     elif table == "Vehicle":
-        rem = Vehicle.query.get(getField(data, "vehicleID"))
+        rem = Vehicle.query.get(    __getField(data, "vehicleID"))
     elif table == "Pool":
-        rem = Pool.query.get(getField(data, "poolID"))
+        rem = Pool.query.get(       __getField(data, "poolID"))
     elif table == "Schedule":
-        rem = Schedule.query.get(getField(data, "scheduleID"))
+        rem = Schedule.query.get(   __getField(data, "scheduleID"))
     elif table == "Offer":
-        rem = Offer.query.get(getField(data, "offerID"))
+        rem = Offer.query.get(      __getField(data, "offerID"))
     elif table == "Journey":
-        rem = Journey.query.get(getField(data, "journeyID"))
+        rem = Journey.query.get(    __getField(data, "journeyID"))
     elif table == "Transaction":
-        rem = Transaction.query.get(getField(data, "transactionID"))
+        rem = Transaction.query.get(__getField(data, "transactionID"))
     elif table == "Review":
-        rem = Review.query.get(getField(data, "reviewID"))
-    elif table == "LocationMap":
-        rem = LocationMap.query.get(getField(data, "queryString"))
+        rem = Review.query.get(     __getField(data, "reviewID"))
     elif table == "Contact":
-        rem = Contact.query.filter_by(userID=getField(data,"userID"),contactID=getField(data,"contactID")).first()
+        rem = Contact.query.filter_by(userID=__getField(data,"userID"),contactID=__getField(data,"contactID")).first()
     elif table == "PoolSubscriber":
-        rem = PoolSubscriber.query.filter_by(userID=getField(data,"userID"),contactID=getField(data,"poolID")).first()
+        rem = PoolSubscriber.query.filter_by(userID=__getField(data,"userID"),poolID=__getField(data,"poolID")).first()
     else:
         return "invalid table","400"
 
@@ -223,15 +230,15 @@ def tableOperate(op, data):
     response = "invalid table","400"
     
     if "table" in data:
-        table = getField(data, "table")
+        table = __getField(data, "table")
         if op == "insert":
-            response = tableInsert(table, data)
+            response = __tableInsert(table, data)
         elif op == "update":
-            response = tableUpdate(table, data)
+            response = __tableUpdate(table, data)
         elif op == "select":
-            response = tableSelect(table, data)
+            response = __tableSelect(table, data)
         elif op == "delete":
-            response = tableDelete(table, data)
+            response = __tableDelete(table, data)
 
     try:
         db.session.commit()                         # Commit changes to DB
@@ -272,7 +279,7 @@ def api():
         return Response(status=204)                           # No response if no payload
 
     if "operation" in data:
-        op = getField(data, "operation")
+        op = __getField(data, "operation")
         if op in ("insert","update","select","delete"):
             return tableOperate(op, data)
         elif op == "vehiclelookup":
@@ -298,6 +305,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--debug", action='store_true')
     parser.add_argument("-b", "--broadcast", action='store_true')
+    parser.add_argument("-t", "--test", action='store_true')
     args = parser.parse_args()
     debug = args.debug
     broadcast = args.broadcast
@@ -306,8 +314,10 @@ if __name__ == '__main__':
     host = "0.0.0.0" if broadcast else "127.0.0.1"
 
     if debug:
-        print(" * Changing DB to db_debug.sqlite3")
         print(" * Opening debug link at /api/debug")
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
+
+    if runtests:
+        print(" * Adding test script: tests.py")
+        tests.runAll()
 
     app.run(debug=debug, host=host, port=3333)
