@@ -216,7 +216,7 @@ def __tableDelete(table, data):
     elif table == "Contact":
         rem = Contact.query.filter_by(userID=__getField(data,"userID"),contactID=__getField(data,"contactID")).first()
     elif table == "PoolSubscriber":
-        rem = PoolSubscriber.query.filter_by(userID=__getField(data,"userID"),contactID=__getField(data,"poolID")).first()
+        rem = PoolSubscriber.query.filter_by(userID=__getField(data,"userID"),poolID=__getField(data,"poolID")).first()
     else:
         return "invalid table","400"
 
