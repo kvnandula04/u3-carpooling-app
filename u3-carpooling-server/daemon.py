@@ -118,7 +118,7 @@ def __tableInsert(table, data):
         return "invalid column(s) present","400"
 
     db.session.add(new)                 # Add new record
-    return Response(status=200)         # Respond with success
+    return "success","200"         # Respond with success
 
 def __tableUpdate(table, data):
     if table == "User":
@@ -144,7 +144,7 @@ def __tableUpdate(table, data):
 
     mod.update(data)
 
-    return Response(status=200)         # Respond with success
+    return "success","200"         # Respond with success
 
 def __tableSelect(table, data):
     if table == "User":
@@ -224,7 +224,7 @@ def __tableDelete(table, data):
         return "invalid id (record does not exist)","400"
 
     db.session.delete(rem)
-    return Response(status=200)
+    return "success","200"
     
 def tableOperate(op, data):
     response = "invalid table","400"
@@ -252,7 +252,7 @@ def tableOperate(op, data):
 
 def vehicleLookup(data):
     if not "registrationNumber" in data:
-        return "","400 invalid reg. number"
+        return "400","invalid reg. number"
     vehicle = Vehicle.query.filter_by(registrationNumber=data["registrationNumber"]).first()
     if vehicle:
         return vehicle.dump_to_json()
@@ -277,7 +277,7 @@ def matchmake():
 def api():
     data = request.get_json()
     if not data:
-        return Response(status=204)                           # No response if no payload
+        return "no payload","204"                           # No response if no payload
 
     if "operation" in data:
         op = __getField(data, "operation")
@@ -294,7 +294,7 @@ def api():
 @app.route('/api/debug', methods=['POST'])
 def debug():
     if not debug:  
-        return Response(status=403)
+        return "forbidden","403"
 
     data = request.get_json()
     if not data or not "teststring" in data:
