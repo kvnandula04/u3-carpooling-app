@@ -25,11 +25,11 @@ def runDatabase():
         tableOperate("insert", {"table": "Pool", "poolID": 3, "licenceID": 2})
         tableOperate("insert", {"table": "Pool", "poolID": 4, "licenceID": 3})
 
-        tableOperate("insert", {"table": "Offer", "offerID": 1, "userID": 2, "poolID": 1, "Role": 1, "Settings": {"location": "Bath, Brew House, 14 James St W, Bath BA1 2BX, UK", "destination": "University of Bath, Bath, UK", "departure_time": "08:00:00", "detour_distance": 2, "rating": 5, "seats": 2}})
-        tableOperate("insert", {"table": "Offer", "offerID": 1, "userID": 2, "poolID": 1, "Role": 1, "Settings": {"location": "Bath, Brew House, 14 James St W, Bath BA1 2BX, UK", "destination": "University of Bath, Bath, UK", "departure_time": "08:00:00", "detour_distance": 2, "rating": 5, "seats": 2}})
-        tableOperate("insert", {"table": "Offer", "offerID": 1, "userID": 2, "poolID": 1, "Role": 1, "Settings": {"location": "Bath, Brew House, 14 James St W, Bath BA1 2BX, UK", "destination": "University of Bath, Bath, UK", "departure_time": "08:00:00", "detour_distance": 2, "rating": 5, "seats": 2}})
-        
-
+        tableOperate("insert", {"table": "Offer", "offerID": 1, "userID": 2, "poolID": 3, "Role": 1, "Settings": {"location": "Bath, Brew House, 14 James St W, Bath BA1 2BX, UK", "destination": "University of Bath, Bath, UK", "departure_time": "08:00:00", "detour_distance": 2, "rating": 5, "seats": 2}})
+        tableOperate("insert", {"table": "Offer", "offerID": 2, "userID": 3, "poolID": 4, "Role": 1, "Settings": {"location": "Roman Baths, Bath BA1 1LZ, UK", "destination": "University of Bath, Bath, UK", "departure_time": "09:00:00", "detour_distance": 5, "rating": 4.5, "seats": 5}})
+        tableOperate("insert", {"table": "Offer", "offerID": 3, "userID": 4, "poolID": None, "Role": 0, "Settings": {"location": "Bath, Brew House, 14 James St W, Bath BA1 2BX, UK", "destination": "University of Bath, Bath, UK", "departure_time": "08:00:00", "rating": 5}})
+        tableOperate("insert", {"table": "Offer", "offerID": 4, "userID": 5, "poolID": None,"Role": 0, "Settings": {"location": "Bath Spa Railway Station, Bath BA1 1QY, UK", "destination": "University of Bath, Bath, UK", "departure_time": "08:14:00", "rating": 5}})
+        tableOperate("insert", {"table": "Offer", "offerID": 5, "userID": 6, "poolID": None, "Role": 0, "Settings": {"location": "Bath Spa Railway Station, Bath BA1 1QY, UK", "destination": "University of Bath, Bath, UK", "departure_time": "08:45:00", "rating": 4}})
 
 runDatabase()
 
