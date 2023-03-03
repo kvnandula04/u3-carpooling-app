@@ -1,5 +1,6 @@
 import math
 from urllib.request import urlopen
+from base64 import b64decode
 import json
 import sqlite3
 from datetime import datetime, timedelta
@@ -19,17 +20,31 @@ def runDatabase():
         tableOperate("insert", {"table": "User", "userID": 5, "name": "Joe", "email": "jp3@bath.ac.uk", "pwdHash": "Hello4"})
         tableOperate("insert", {"table": "User", "userID": 6, "name": "Jill", "email": "jq1@bath.ac.uk", "pwdHash": "Hello5"})
 
-        tableOperate("insert",{"table": "Licence", "licenceID": 2, "licenceNumber": "JOHN92739LOA", "userID": 2, "vehicleID": 2})
-        tableOperate("insert",{"table": "Licence", "licenceID": 3, "licenceNumber": "SAM922431OSA", "userID": 3, "vehicleID": 3})
+        tableOperate("insert", {"table": "Licence", "licenceID": 2, "licenceNumber": "JOHN92739LOA", "userID": 2, "vehicleID": 2})
+        tableOperate("insert", {"table": "Licence", "licenceID": 3, "licenceNumber": "SAM922431OSA", "userID": 3, "vehicleID": 3})
 
         tableOperate("insert", {"table": "Pool", "poolID": 3, "licenceID": 2})
         tableOperate("insert", {"table": "Pool", "poolID": 4, "licenceID": 3})
 
-        tableOperate("insert", {"table": "Offer", "offerID": 1, "userID": 2, "poolID": 3, "Role": 1, "Settings": {"location": "Bath, Brew House, 14 James St W, Bath BA1 2BX, UK", "destination": "University of Bath, Bath, UK", "departure_time": "08:00:00", "detour_distance": 2, "rating": 5, "seats": 2}})
-        tableOperate("insert", {"table": "Offer", "offerID": 2, "userID": 3, "poolID": 4, "Role": 1, "Settings": {"location": "Roman Baths, Bath BA1 1LZ, UK", "destination": "University of Bath, Bath, UK", "departure_time": "09:00:00", "detour_distance": 5, "rating": 4.5, "seats": 5}})
-        tableOperate("insert", {"table": "Offer", "offerID": 3, "userID": 4, "poolID": None, "Role": 0, "Settings": {"location": "Bath, Brew House, 14 James St W, Bath BA1 2BX, UK", "destination": "University of Bath, Bath, UK", "departure_time": "08:00:00", "rating": 5}})
-        tableOperate("insert", {"table": "Offer", "offerID": 4, "userID": 5, "poolID": None,"Role": 0, "Settings": {"location": "Bath Spa Railway Station, Bath BA1 1QY, UK", "destination": "University of Bath, Bath, UK", "departure_time": "08:14:00", "rating": 5}})
-        tableOperate("insert", {"table": "Offer", "offerID": 5, "userID": 6, "poolID": None, "Role": 0, "Settings": {"location": "Bath Spa Railway Station, Bath BA1 1QY, UK", "destination": "University of Bath, Bath, UK", "departure_time": "08:45:00", "rating": 4}})
+        tableOperate("insert", {"table": "Offer", "offerID": 1, "userID": 2, "poolID": 3, "role": 1, "settings": json.dumps({"location": "Bath, Brew House, 14 James St W, Bath BA1 2BX, UK", "destination": "University of Bath, Bath, UK", "departure_time": "08:00:00", "detour_distance": 2, "rating": 5, "seats": 2})})
+        tableOperate("insert", {"table": "Offer", "offerID": 2, "userID": 3, "poolID": 4, "role": 1, "settings": json.dumps({"location": "Roman Baths, Bath BA1 1LZ, UK", "destination": "University of Bath, Bath, UK", "departure_time": "09:00:00", "detour_distance": 5, "rating": 4.5, "seats": 5})})
+        tableOperate("insert", {"table": "Offer", "offerID": 3, "userID": 4, "poolID": None, "role": 0, "settings": json.dumps({"location": "Bath, Brew House, 14 James St W, Bath BA1 2BX, UK", "destination": "University of Bath, Bath, UK", "departure_time": "08:00:00", "rating": 5})})
+        tableOperate("insert", {"table": "Offer", "offerID": 4, "userID": 5, "poolID": None,"role": 0, "settings": json.dumps({"location": "Bath Spa Railway Station, Bath BA1 1QY, UK", "destination": "University of Bath, Bath, UK", "departure_time": "08:14:00", "rating": 5})})
+        tableOperate("insert", {"table": "Offer", "offerID": 5, "userID": 6, "poolID": None, "role": 0, "settings": json.dumps({"location": "Bath Spa Railway Station, Bath BA1 1QY, UK", "destination": "University of Bath, Bath, UK", "departure_time": "08:45:00", "rating": 4})})
+
+        # Retrieve the record as a JSON string
+        offerString = tableOperate("select", {"table": "Offer", "offerID": 1})[0].get_data().decode("UTF-8")
+        # Convert it to a dictionary
+        offerDict = json.loads(offerString)[0]
+        # Extract and convert settings to a dictionary
+        offerSettings = json.loads(offerDict["settings"])
+
+        print("OFFER:")
+        print(offerDict)
+        print("SETTINGS:")
+        print(offerSettings)
+        print("LOCATION:")
+        print(offerSettings["location"])
 
 runDatabase()
 
