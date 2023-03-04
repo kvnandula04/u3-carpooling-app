@@ -96,8 +96,6 @@ def runDatabase():
             driverDictionary["seats"] = driversSeats
 
             list_of_drivers.append(driverDictionary)
-        
-        # print("List of drivers: ", list_of_drivers)
 
         #-------------------Adds passengers to list_of_passengers-------------------
         get_passengers = tableOperate("select", {"table": "Offer", "role": 0})[0].get_data().decode("UTF-8")
@@ -120,9 +118,7 @@ def runDatabase():
             passengerDictionary["rating"] = passengersRating
 
             list_of_passengers.append(passengerDictionary)
-
-        # print("List of passengers: ", list_of_passengers)
-
+            
 runDatabase()
 
 #Convert time to minutes
@@ -292,25 +288,6 @@ for i, driver in enumerate(list_of_drivers):
 for j, passenger in enumerate(list_of_passengers):
     if j not in matched_passengers:
         unmatched_passengers.add(j)
-
-# Print the matched pairs for each driver
-# print("Matched pairs: ")
-# for i in matched_drivers:
-#     driver_pairs = [(j, score) for (d, j, score) in matched_pairs if d == i]
-#     #print(f"For driver {i}: {driver_pairs}")
-#     for j, score in driver_pairs:
-#         print(f"Driver {list_of_drivers[i]['userID']} is matched with passenger {list_of_passengers[j]['userID']} | Score of: {score}")
-        
-# # Print the unmatched drivers and passengers
-# print("\nUnmatched drivers and passengers: ")
-# for i in unmatched_drivers:
-#     print(f"Unmatched drivers: {drivers[i]['name']}")
-
-# for j in unmatched_passengers:
-#     print(f"Unmatched passengers: {passengers[j]['name']}")
-
-# print(f"\nUnmatched drivers: {unmatched_drivers}")
-# print(f"Unmatched passengers: {unmatched_passengers}")
 
 #Add matched pairs to database
 with app.app_context():
