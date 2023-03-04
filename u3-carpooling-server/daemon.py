@@ -168,7 +168,8 @@ def __tableSelect(table, data):
     elif table == "Offer":
         res = Offer.query.filter(       (Offer.offerID==__getField(data,"offerID")) |\
                                         (Offer.userID==__getField(data,"userID")) |\
-                                        (Offer.poolID==__getField(data,"poolID")) ).all()
+                                        (Offer.poolID==__getField(data,"poolID")) |\
+					(Offer.role==__getField(data,"role")) ).all()
     elif table == "Journey":
         res = Journey.query.filter(     (Journey.journeyID==__getField(data,"journeyID")) |\
                                         (Journey.poolID==__getField(data,"poolID")) ).all()
