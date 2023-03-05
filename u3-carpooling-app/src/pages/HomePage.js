@@ -10,6 +10,7 @@ import { Text, View, StyleSheet, Pressable } from "react-native";
 import useFonts from "../hooks/UseFonts";
 import Logo from "../components/Logo";
 import GridBackground from "../../assets/grid-background";
+import InputAutocomplete from "../components/InputAutocomplete";
 import LiveMap from "../components/LiveMap";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
@@ -22,6 +23,25 @@ export default function HomePage() {
   const onMatchMePressed = () => {
     navigation.navigate("LiveTripPage");
   };
+
+  const [startLocation, setStartLocation] = useState();
+  const [destination, setDestination] = useState();
+
+  function onPlaceSelected(data, details = null, isDestination) {
+    const pos = {
+      latitude: details?.geometry.location.lat,
+      longitude: details?.geometry.location.lng,
+    };
+    isDestination ? setDestination(pos) : setStartLocation(pos);
+  }
+
+  // useEffect(() => {
+  //   console.log(startLocation);
+  // }, [startLocation]);
+
+  // useEffect(() => {
+  //   console.log(destination);
+  // }, [destination]);
 
   useEffect(() => {
     async function prepare() {
@@ -67,74 +87,33 @@ export default function HomePage() {
       </View>
 
       <View style={styles.flex2}>
-        <View id="rideWithDrivenBy" style={styles.flexInner21}>
-          <View
-            id="rideWith"
-            style={{ flexDirection: "row", marginLeft: "3%" }}
-          >
-            <View style={styles.circle}>
-              <Text style={styles.circleText}>3</Text>
-            </View>
-            <Text style={styles.text}>Ride with</Text>
-          </View>
-
-          <View
-            id="drivenBy"
-            style={{ flexDirection: "row", marginRight: "3%" }}
-          >
-            <Text style={styles.text}>Driven by</Text>
-            <View style={styles.circle}>
-              <Text style={styles.circleText}>1</Text>
-            </View>
-          </View>
-        </View>
-
-        <View id="map" style={styles.flexInner22}>
-          <LiveMap
-            cardStyle={styles.cardStyle}
-            shadowStyle={styles.shadowStyle}
-          />
-        </View>
-      </View>
-
-      <View style={styles.flex3}>
-        <View id="planTripFrame" style={styles.planTripFrame}>
-          <View id="planTripCard" style={styles.planTripCard}>
-            <View id="planTripTitleView" style={styles.planTripTitleView}>
-              <Text style={styles.planTripTitle}>Plan a trip</Text>
-            </View>
-            <View id="list" style={styles.planList}>
-              <View style={styles.planListRow}>
-                <Text style={styles.bodyBoldItalic}>Start location: </Text>
-                <Text style={styles.body}>53 Hungerford Rd. </Text>
-              </View>
-              <View style={styles.planListRow}>
-                <Text style={styles.bodyBoldItalic}>Destination: </Text>
-                <Text style={styles.body}>University of Bath</Text>
-              </View>
-              <View style={styles.planListRow}>
-                <Text style={styles.bodyBoldItalic}>Arrival time: </Text>
-                <Text style={styles.body}>10:05</Text>
-              </View>
-            </View>
-          </View>
-          <View
-            id="planTripShadow"
-            style={[styles.planTripCard, styles.planTripShadow]}
-          />
-          <View id="matchMeButton" style={styles.matchMeButton}>
+        <View style={styles.flexInner21}>
+          <View id="offerButton" style={styles.button}>
             <Pressable onPress={onMatchMePressed}>
-              <Text style={styles.matchMeButtonText}>Match me</Text>
+              <Text style={styles.text2}>My Offers & Requests</Text>
             </Pressable>
           </View>
-          <View
-            id="matchMeButtonShadow"
-            style={[styles.matchMeButton, styles.matchMeButtonShadow]}
-          />
+          <View style={[styles.button, styles.shadow]} />
+        </View>
+        <View style={styles.flexInner22}>
+          <View id="poolsButton" style={styles.button}>
+            <Pressable onPress={onMatchMePressed}>
+              <Text style={styles.text2}>My Pools</Text>
+            </Pressable>
+          </View>
+          <View style={[styles.button, styles.shadow]} />
+        </View>
+        <View style={styles.flexInner23}>
+          <View id="planTripButton" style={styles.button}>
+            <Pressable onPress={onMatchMePressed}>
+              <Text style={styles.text2}>Plan a Trip</Text>
+            </Pressable>
+          </View>
+          <View style={[styles.button, styles.shadow]} />
         </View>
       </View>
 
-      <View style={styles.flex4}></View>
+      <View style={styles.flex3}></View>
 
       <BottomSheet ref={bottomSheetRef} index={1} snapPoints={snapPoints}>
         <View id="tripHistoryCard" style={styles.tripHistoryCard}>
@@ -163,7 +142,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   flex1: {
-    flex: 1.25,
+    flex: 1,
     flexDirection: "row",
     // backgroundColor: "red",
   },
@@ -186,31 +165,31 @@ const styles = StyleSheet.create({
     // backgroundColor: "yellow",
   },
   flex2: {
-    flex: 2,
+    flex: 3,
     justifyContent: "center",
     alignItems: "center",
-    // backgroundColor: "purple",
+    backgroundColor: "orange",
   },
   flexInner21: {
     flex: 1,
-    flexDirection: "row",
-    width: "100%",
-    justifyContent: "space-between",
-    // backgroundColor: "blue",
-  },
-  flexInner22: {
-    flex: 6,
-    width: "90%",
-    marginTop: "-2%",
-  },
-  flex3: {
-    flex: 2,
     justifyContent: "center",
     alignItems: "center",
-    // backgroundColor: "orange",
+    backgroundColor: "purple",
   },
-  flex4: {
-    flex: 2,
+  flexInner22: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "pink",
+  },
+  flexInner23: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "brown",
+  },
+  flex3: {
+    flex: 1,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "flex-end",
@@ -226,20 +205,6 @@ const styles = StyleSheet.create({
     fontFamily: "syne-bold",
     fontSize: 18,
     color: "#000",
-  },
-  circle: {
-    width: 30,
-    height: 30,
-    borderRadius: 1000,
-    backgroundColor: "#3dd37a",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  circleText: {
-    fontFamily: "atkinson-italic",
-    fontSize: 18,
-    color: "#000",
-    textAlign: "center",
   },
   cardStyle: {
     width: "100%",
@@ -271,71 +236,26 @@ const styles = StyleSheet.create({
     },
     textAlign: "center",
   },
-  planTripFrame: {
-    width: "80%",
-    height: "80%",
-  },
-  planTripCard: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 32,
-    borderColor: "#000",
-    borderWidth: 5,
-    backgroundColor: "#fff",
-  },
-  planTripTitle: {
-    fontFamily: "syne-bold",
-    fontSize: 32,
-    color: "#ffb800",
-    textDecorationLine: "underline",
-  },
-  planTripShadow: {
-    zIndex: -1,
-    backgroundColor: "#000",
-    position: "absolute",
-    top: 6,
-    left: 6,
-  },
-  matchMeButton: {
+  button: {
     width: "45%",
     height: "30%",
-    position: "absolute",
-    bottom: -15,
-    right: -15,
     backgroundColor: "#efece8",
     borderWidth: 5,
     borderRadius: 32,
     justifyContent: "center",
     alignItems: "center",
   },
-  matchMeButtonText: {
+  text2: {
     fontFamily: "syne-bold",
     fontSize: 20,
     color: "#9747ff",
   },
-  matchMeButtonShadow: {
+  shadow: {
     zIndex: -1,
     backgroundColor: "#000",
     position: "absolute",
-    bottom: -20,
-    right: -20,
-  },
-  planTripTitleView: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    marginRight: "5%",
-  },
-  planList: {
-    flex: 2.5,
-    flexDirection: "column",
-    justifyContent: "space-evenly",
-    marginLeft: "5%",
-  },
-  planListRow: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "flex-start",
+    top: 6,
+    left: 6,
   },
   body: {
     fontFamily: "atkinson-regular",
@@ -359,7 +279,8 @@ const styles = StyleSheet.create({
   },
   tripHistoryTitle: {
     fontFamily: "syne",
-    fontSize: 24,
+    fontSize: 28,
+    textDecorationLine: "underline",
     marginTop: "5%",
     color: "#1774ff",
   },
@@ -377,5 +298,19 @@ const styles = StyleSheet.create({
     fontFamily: "atkinson-regular",
     fontSize: 20,
     color: "#000",
+  },
+  searchContainer: {
+    position: "absolute",
+    width: "90%",
+    backgroundColor: "white",
+    shadowColor: "black",
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+    elevation: 4,
+    zIndex: 4,
+    padding: 8,
+    borderRadius: 8,
+    top: 10,
   },
 });
