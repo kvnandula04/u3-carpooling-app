@@ -22,7 +22,11 @@ const LiveToPickup = (props) => {
                     // backgroundColor: "white",
                 }}
             >
-                <ProfileCircle />
+                <ProfileCircle
+                    picture={styles.picture}
+                    circle={styles.circle}
+                    circleShadow={styles.circleShadow}
+                />
             </View>
         </Pressable>
     );
@@ -53,5 +57,27 @@ const styles = StyleSheet.create({
         position: "absolute",
         bottom: 10,
         left: 20,
+    },
+    picture: {
+        position: "absolute",
+        width: 60,
+        height: 60,
+        borderRadius: 1000,
+        top: 5,
+        right: 5,
+        backgroundColor: "white",
+    },
+    circle: {
+        position: "absolute",
+        width: 70,
+        height: 70,
+        borderRadius: 1000,
+        right: 0,
+        backgroundColor: purple,
+    },
+    circleShadow: {
+        right: -4,
+        top: 4,
+        backgroundColor: purpleShadow,
     },
 });

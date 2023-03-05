@@ -4,12 +4,12 @@ import React from "react";
 const purple = "#C293FF";
 const purpleShadow = "#9747FF";
 
-const ProfileCircle = () => {
+const ProfileCircle = (props) => {
     return (
-        <View style={styles.frame}>
-            <View style={[styles.circle, styles.circleShadow]}></View>
-            <View style={styles.circle}></View>
-            <View style={styles.picture}></View>
+        <View style={props.frame}>
+            <View style={[props.circle, props.circleShadow]}></View>
+            <View style={props.circle}></View>
+            <View style={props.picture}></View>
         </View>
     );
 };
@@ -17,27 +17,7 @@ const ProfileCircle = () => {
 export default ProfileCircle;
 
 const styles = StyleSheet.create({
-    frame: {},
-    picture: {
-        position: "absolute",
-        width: 60,
-        height: 60,
-        borderRadius: 1000,
-        top: 5,
-        right: 5,
-        backgroundColor: "white",
-    },
-    circle: {
-        position: "absolute",
-        width: 70,
-        height: 70,
-        borderRadius: 1000,
-        right: 0,
-        backgroundColor: purple,
-    },
-    circleShadow: {
-        right: -4,
-        top: 4,
-        backgroundColor: purpleShadow,
+    frame: {
+        flex: 1,
     },
 });
