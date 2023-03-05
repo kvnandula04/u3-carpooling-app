@@ -6,11 +6,14 @@ import {
   View,
   TouchableOpacity,
   Pressable,
+  SafeAreaView,
+  Button,
 } from "react-native";
-import useFonts from "../hooks/UseFonts";
 import Logo from "../components/Logo";
-import { useNavigation } from "@react-navigation/native";
+import useFonts from "../hooks/UseFonts";
 import GridBackground from "../../assets/grid-background";
+import { useNavigation } from "@react-navigation/native";
+import { WebView } from "react-native-webview";
 
 export default function SignupLoginPage() {
   const [IsReady, SetIsReady] = useState(false);
@@ -19,6 +22,28 @@ export default function SignupLoginPage() {
     navigation.navigate("StudentVerification");
   };
 
+  const onLoginPressed = () => {
+    navigation.navigate("HomePage");
+  };
+
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
+  const [showWebView, setShowWebView] = useState(false);
+  const [showView, setShowView] = useState(true);
+
+  const verifyEmail = () => {
+    setShowView(false);
+    setShowWebView(true);
+  };
+
+  const onNavigationStateChange = (navState) => {
+    if (navState.url === "https://moodle.bath.ac.uk/") {
+      setIsEmailVerified(true);
+      setShowView(true);
+      setShowWebView(false);
+    }
+  };
+
+  // Loading in fonts
   useEffect(() => {
     async function prepare() {
       try {
@@ -45,41 +70,65 @@ export default function SignupLoginPage() {
 
   return (
     <View style={styles.container}>
-      <GridBackground
-        position="absolute"
-        zIndex={-5}
-        lineColor={"black"}
-        style={{ backgroundColor: "#f7f3eb" }}
-      />
-
-      <View id style={styles.flex1}>
-        <Logo fontSize={86} marginTop={"15%"} />
-      </View>
-
-      <View id="headingAndJoin" style={styles.flex2}>
-        <Text id="headingText" style={styles.heading}>
-          Student{"\n"}Car Pooling
-        </Text>
-        <View id="joinFrame" style={styles.joinFrame}>
-          <Pressable
-            id="joinButton"
-            style={styles.joinButton}
-            onPress={onSignupPressed}
-          >
-            <Text style={styles.text}>Join.</Text>
-          </Pressable>
-          <View
-            id="joinButtonShadow"
-            style={[styles.joinButton, styles.joinButtonShadow]}
-          ></View>
+      {isEmailVerified ? (
+        <View style={[styles.inner, { flexDirection: "column" }]}>
+          <Text style={{ fontSize: 30 }}>Email verified</Text>
+          <Button title="Continue" onPress={onLoginPressed} />
         </View>
-      </View>
+      ) : (
+        <View style={styles.container}>
+          {showView && (
+            <>
+              <GridBackground
+                position="absolute"
+                zIndex={-5}
+                lineColor={"black"}
+                style={{ backgroundColor: "#f7f3eb" }}
+              />
 
-      <View style={styles.flex3}>
-        <TouchableOpacity onPress={onSignupPressed}>
-          <Text style={styles.text2}>sign in.</Text>
-        </TouchableOpacity>
-      </View>
+              <View id style={styles.flex1}>
+                <Logo fontSize={86} marginTop={"15%"} />
+              </View>
+
+              <View id="headingAndJoin" style={styles.flex2}>
+                <Text id="headingText" style={styles.heading}>
+                  Student{"\n"}Car Pooling
+                </Text>
+                <View id="joinFrame" style={styles.joinFrame}>
+                  <Pressable
+                    id="joinButton"
+                    style={styles.joinButton}
+                    onPress={onSignupPressed}
+                  >
+                    <Text style={styles.text}>Join.</Text>
+                  </Pressable>
+                  <View
+                    id="joinButtonShadow"
+                    style={[styles.joinButton, styles.joinButtonShadow]}
+                  ></View>
+                </View>
+              </View>
+
+              <View style={styles.flex3}>
+                <TouchableOpacity onPress={verifyEmail}>
+                  <Text style={styles.text2}>sign in.</Text>
+                </TouchableOpacity>
+              </View>
+            </>
+          )}
+          {showWebView && (
+            <SafeAreaView style={styles.inner}>
+              <WebView
+                style={{ flex: 1 }}
+                source={{
+                  uri: "https://auth.bath.ac.uk/login?service=http%3A%2F%2Fmoodle.bath.ac.uk%2Flogin%2Findex.php%3Fauthldap_skipntlmsso%3D1",
+                }}
+                onNavigationStateChange={onNavigationStateChange}
+              />
+            </SafeAreaView>
+          )}
+        </View>
+      )}
     </View>
   );
 }
@@ -87,6 +136,12 @@ export default function SignupLoginPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  inner: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   flex1: {
     flex: 1,

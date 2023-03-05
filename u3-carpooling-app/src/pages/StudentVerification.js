@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import * as SplashScreen from "expo-splash-screen";
 import {
   Text,
   View,
@@ -7,12 +8,14 @@ import {
   Button,
   SafeAreaView,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import Logo from "../components/Logo";
+import useFonts from "../hooks/UseFonts";
 import GridBackground from "../../assets/grid-background";
+import { useNavigation } from "@react-navigation/native";
 import { WebView } from "react-native-webview";
 
 export default function StudentVerification() {
+  const [IsReady, SetIsReady] = useState(false);
   const navigation = useNavigation();
   const onSignedIn = () => {
     navigation.navigate("DriverVerification");
@@ -34,6 +37,31 @@ export default function StudentVerification() {
       setShowWebView(false);
     }
   };
+
+  // Loading in fonts
+  useEffect(() => {
+    async function prepare() {
+      try {
+        await useFonts();
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        SetIsReady(true);
+      }
+    }
+
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (IsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [IsReady]);
+
+  if (!IsReady) {
+    return null;
+  }
 
   return (
     <View style={styles.container}>
@@ -79,11 +107,7 @@ export default function StudentVerification() {
 
               <View style={styles.flex4}>
                 <View style={styles.circle1}></View>
-                <Pressable
-                  onPress={() => navigation.navigate("DriverVerification")}
-                >
-                  <View style={styles.circle2}></View>
-                </Pressable>
+                <View style={styles.circle2}></View>
               </View>
             </>
           )}

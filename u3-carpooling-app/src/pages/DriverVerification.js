@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import * as SplashScreen from "expo-splash-screen";
 import {
   Text,
   View,
@@ -7,16 +8,50 @@ import {
   TouchableOpacity,
   Pressable,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import Logo from "../components/Logo";
+import useFonts from "../hooks/UseFonts";
 import GridBackground from "../../assets/grid-background";
+import { useNavigation } from "@react-navigation/native";
 
 export default function DriverVerification() {
+  const [IsReady, SetIsReady] = useState(false);
   const navigation = useNavigation();
   const onSkipPressed = () => {
-    navigation.navigate("HomePage");
+    navigation.navigate("Onboarding");
   };
-  const [text, setText] = React.useState("");
+  const [text, setText] = React.useState(""); // Here text contains the number plate
+
+  const checkTextInput = () => {
+    if (!text.trim()) {
+      alert("Number plate empty!");
+    }
+    onSkipPressed();
+  };
+
+  // Loading in fonts
+  useEffect(() => {
+    async function prepare() {
+      try {
+        await useFonts();
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        SetIsReady(true);
+      }
+    }
+
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (IsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [IsReady]);
+
+  if (!IsReady) {
+    return null;
+  }
 
   return (
     <View style={styles.container}>
@@ -54,15 +89,13 @@ export default function DriverVerification() {
       </View>
 
       <View style={styles.flex4}>
-        <TouchableOpacity style={styles.button} onPress={onSkipPressed}>
+        <TouchableOpacity style={styles.button} onPress={checkTextInput}>
           <Text style={styles.text}>skip.</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.flex5}>
-        <Pressable onPress={() => navigation.navigate("StudentVerification")}>
-          <View style={styles.circle1}></View>
-        </Pressable>
+        <View style={styles.circle1}></View>
         <View style={styles.circle2}></View>
       </View>
     </View>
