@@ -4,20 +4,7 @@ from datetime import *
 from datetime import timedelta
 import pickle
 
-data = { 
-		"table" : "User", 
-		"email" : "js923@bath.ac.uk"}
 
-test = {
-		"table" : "User",
-		"name" : "Harry",
-		"email" : "abcde@bath.ac.uk",
-		"pwdHash" : "12435"}
-''' 
-
-questions:
-
-are all fields numbers? eg licenceID == int?'''
 
 class PseudoSettings:
 
@@ -25,28 +12,42 @@ class PseudoSettings:
 		self.pets = pets
 		self.equipment = equipment
 
+# response is a tuple containing 2 strings
+# 1. the response/error msg, 2. status code (200 == success, 400 == error)
 def convert_to_dict(response):
-
-	# print(response)
-	# print(type(response))
-
-	if response.status() == 200:
-		return True, "Updated"
 	
-	if type(response[0]) == str:
+	if response[1] == 400:
 		return False , response[0]
 	else:
-		print(response)
+		#print("convert dict res", response)
 		return True, json.loads(response.decode())
+
+#takes old testing implementation which used the methods directly i.e tableInsert etc.. and adapts it to work with tableOperate
+# which requires the table attribute as part of the dictionary 
 
 def dictionary_formatter(table_name, old_dict):
 	old_dict["table"] = table_name
 	return old_dict
 
+# selection returns a (RESPONSE + STRING) / (RESPONSE, List(STRING)) if SUCCESS
+# ELSE returns a (STRING, STRING) 
+
+def parse_into_dict(response):
+	if response[1] == "200":
+		parsed_data = (json.loads(response[0].get_data()))
+		#return the dict
+		return parsed_data
+	else:
+		#else return the error msg
+		return response[0]
+
+def testing(output, expected_output, assertion_error):
+	assert output == expected_output, assertion_error
 
 def insertion_all_tables():
 	# NOTE: vehicle table not tested since it requires the vehicle api, requires implementation post basic tests:
-	#print(guarded_selection(tableOperate("select", dictionary_formatter("User", {"email":"Harrymydude@bath.ac.uk"}))))
+	#print((tableOperate("select", dictionary_formatter("User", {"email":"Harrymydude@bath.ac.uk"}))))
+	
 	insert_user_userID()
 	insert_contact_userID_contactID()
 	insert_journey_journeyID()
@@ -62,15 +63,13 @@ def insertion_all_tables():
 
 #TO DO: APPLY ASSERTS TO INSERTIONS
 def insert_user_userID():
-	tableOperate("insert", dictionary_formatter("User", {"email":"mann@bath.ac.uk", "name": "Mann", "pwdHash":"999"}))
+	res = tableOperate("insert", dictionary_formatter("User", {"email":"mann@bath.ac.uk", "name": "Mann", "pwdHash":"999"}))
+	restwo = tableOperate("insert", dictionary_formatter("User", {"email":"bobby123@bath.ac.uk", "name": "bobby", "pwdHash":"1234334"}))
 
-	dict_form = convert_to_dict(guarded_selection(tableOperate("insert", dictionary_formatter("User", {"email":"will@bath.ac.uk", "name": "Will", "pwdHash":"1213"}))))
-
-
-	if dict_form[0] != False:
-		assert dict_form[1][0]["name"] == "James", "Updating user name, Not changed"
-	else:
-		return dict_form[1][0]
+	# if dict_form[0] != False:
+	# 	assert dict_form[1]["name"] == "James", "Updating user name, Not changed"
+	# else:
+	# 	return dict_form[1]
 
 
 def insert_licence_licenceID():
@@ -103,70 +102,52 @@ def insert_review_reviewID():
 def insert_offer_offerID():
 	tableOperate("insert", dictionary_formatter("Offer", {"subjectID": 1, "Role" : 0}))
 
-def guarded_selection(response):
-	## if invalid entry returns a str from db, with error msg
-	## elif valid, it returns the entry from db.
-
-	#NOTE: PROBLEM. so sometimes if a change goes through it returns a 200 response. however sometimes it returns a string directly as an error message hence
-	# i gotta do is instance.
-
-	# but is instance doesnt work on a response with 0 bytes it isnt happy. 
-	# so either error needs error codes or everything must return a string. 
-	if response.status() == 200:
-		return response
-	
-	if not(isinstance(response[0], str)):
-		return response[0].get_data()
-	else:
-		return response
-
-
 # def false_selection_all_tables():
-# 	print(guarded_selection(tableSelect("User", {"email":"gireg@bath.ac.uk"})[0]))
-# 	print(guarded_selection(tableSelect("User", {"email":"greger@bath.ac.uk"})[0]))
-# 	print("Journey : ", guarded_selection(tableSelect("Journey", {"journeyID" : 3435})[0]), "\n")
-# 	print("Pool : ", guarded_selection(tableSelect("Pool", {"poolID": 432423})[0]), "\n")
-# 	print("Schedule : ", guarded_selection(tableSelect("Schedule", {"scheduleID": 32423})[0]), "\n")
-# 	print("Vehicle : ", guarded_selection(tableSelect("Vehicle", {"vehicleID": 123123})[0]), "\n")
+# 	print((tableSelect("User", {"email":"gireg@bath.ac.uk"})[0]))
+# 	print((tableSelect("User", {"email":"greger@bath.ac.uk"})[0]))
+# 	print("Journey : ", (tableSelect("Journey", {"journeyID" : 3435})[0]), "\n")
+# 	print("Pool : ", (tableSelect("Pool", {"poolID": 432423})[0]), "\n")
+# 	print("Schedule : ", (tableSelect("Schedule", {"scheduleID": 32423})[0]), "\n")
+# 	print("Vehicle : ", (tableSelect("Vehicle", {"vehicleID": 123123})[0]), "\n")
 	
 def selection_user_email():
-	return guarded_selection(tableOperate("select", dictionary_formatter("User", {"email":"mann@bath.ac.uk"})))
+	return parse_into_dict(tableOperate("select", dictionary_formatter("User", {"email":"mann@bath.ac.uk"})))
 
 def selection_user_name():
-	return guarded_selection(tableOperate("select", dictionary_formatter("User", {"name":"Will"})))
+	return parse_into_dict(tableOperate("select", dictionary_formatter("User", {"name":"Will"})))
 
 def selection_user_pwdHash():
-	return guarded_selection(tableOperate("select", dictionary_formatter("User", {"pwdHash": 1000})))
+	return parse_into_dict(tableOperate("select", dictionary_formatter("User", {"pwdHash": 1000})))
 
 def selection_journey_journeyID():
-	return guarded_selection(tableOperate("select", dictionary_formatter("Journey", {"journeyID" : 1})))
+	return parse_into_dict(tableOperate("select", dictionary_formatter("Journey", {"journeyID" : 1})))
 
 def selection_pool_poolID():
-	return guarded_selection(tableOperate("select", dictionary_formatter("Pool", {"poolID": 1})))
+	return parse_into_dict(tableOperate("select", dictionary_formatter("Pool", {"poolID": 1})))
 
 def selection_schedule_scheduleID():
-	return guarded_selection(tableOperate("select", dictionary_formatter("Schedule", {"scheduleID": 1})))
+	return parse_into_dict(tableOperate("select", dictionary_formatter("Schedule", {"scheduleID": 1})))
 
 def selection_vehicle_vehicleID():
-	return guarded_selection(tableOperate("select", dictionary_formatter("Vehicle", {"vehicleID": 1})))
+	return parse_into_dict(tableOperate("select", dictionary_formatter("Vehicle", {"vehicleID": 1})))
 
 def selection_licence_licenceID():
-	return guarded_selection(tableOperate("select", dictionary_formatter("Licence", {"licenceNumber":"new-licence-number"})))
+	return parse_into_dict(tableOperate("select", dictionary_formatter("Licence", {"licenceNumber":"new-licence-number"})))
 
 def selection_offer_offerID():
-	return guarded_selection(tableOperate("select", dictionary_formatter("Offer", {"offerID" : 1})))
+	return parse_into_dict(tableOperate("select", dictionary_formatter("Offer", {"offerID" : 1})))
 
 def selection_transaction_transactionID():
-	return guarded_selection(tableOperate("select", dictionary_formatter("Transaction", {"transactionID" : 1})))
+	return parse_into_dict(tableOperate("select", dictionary_formatter("Transaction", {"transactionID" : 1})))
 
 def selection_review_reviewID():
-	return guarded_selection(tableOperate("select", dictionary_formatter("Review", {"reviewID" : 1})))
+	return parse_into_dict(tableOperate("select", dictionary_formatter("Review", {"reviewID" : 1})))
 
 def selection_contact_contact_user_ID():
-	return guarded_selection(tableOperate("select", dictionary_formatter("Contact", {"contactID" : 2, "userID" : 1})))
+	return parse_into_dict(tableOperate("select", dictionary_formatter("Contact", {"contactID" : 2, "userID" : 1})))
 
 def selection_poolSub_user_pool_ID():
-	return guarded_selection(tableOperate("select", dictionary_formatter("PoolSubscriber", {"poolID" : 1, "userID" : 1})))
+	return parse_into_dict(tableOperate("select", dictionary_formatter("PoolSubscriber", {"poolID" : 1, "userID" : 1})))
 
 def selection_all_tables():
 	#PASSED
@@ -202,29 +183,38 @@ def selection_all_tables():
 
 	#what if you want to see all the pools you are a part of?
 	# and what about the data about the pools?
-	print(guarded_selection(tableSelect("PoolSubscriber", {"poolID": 1})[0]))
+	print((tableSelect("PoolSubscriber", {"poolID": 1})[0]))
 	'''
 
 def update_user_name():
 
-	tableOperate("update", dictionary_formatter("User", {"userID" : 1, "name": "James"}))
-	dict_form = convert_to_dict(guarded_selection(tableOperate("select", dictionary_formatter("User", {"email": "will@bath.ac.uk"}))))
+	res = tableOperate("update", dictionary_formatter("User", {"userID" : 1, "name": "James"}))
+	secres = tableOperate("update", dictionary_formatter("User", {"userID" : 98754, "name": "4335432"}))
+
+	print("res: ", type(res))
+	print("sec res: ", type(secres))
+	print(res.status)
+	print(secres.status)
+
+	# dict_form = convert_to_dict((tableOperate("select", dictionary_formatter("User", {"email": "will@bath.ac.uk"}))))
 
 
-	if dict_form[0] != False:
-		assert dict_form[1][0]["name"] == "James", "Updating user name, Not changed"
-	else:
-		return dict_form[1][0]
+	# if dict_form[0] != False:
+	# 	assert dict_form[1]["name"] == "James", "Updating user name, Not changed"
+	# else:
+	# 	return dict_form[1]
 
 def update_user_email():
 
 	tableOperate("update", dictionary_formatter("User", {"userID": 1, "email": "notmann@bath.ac.uk"}))
+	# a tuple containing 1. bool, could it become a dict or not, 2. if not an error msg its dict format
+
 	dict_form = convert_to_dict(tableOperate("select", dictionary_formatter("User", {"userID": 1, "email": "notmann@bath.ac.uk"})))
 	
 	if dict_form[0] != False:
-		assert dict_form[1][0]["email"] == "notmann@bath.ac.uk", "updating email, Failed to update email"
+		assert dict_form[1]["email"] == "notmann@bath.ac.uk", "updating email, Failed to update email"
 	else:
-		return dict_form[1][0]
+		return dict_form[1]
 
 def update_user_pwdHash():
 
@@ -232,9 +222,9 @@ def update_user_pwdHash():
 	dict_form = (convert_to_dict(selection_user_pwdHash()))
 	      
 	if dict_form[0] != False:
-		assert dict_form[1][0]["pwdHash"] == "1000", "updating pwdHash, Failed to update hash"
+		assert dict_form[1]["pwdHash"] == "1000", "updating pwdHash, Failed to update hash"
 	else:
-		return dict_form[1][0]
+		return dict_form[1]
 
 def update_licence_licenceNumber():
 
@@ -243,9 +233,9 @@ def update_licence_licenceNumber():
 	dict_form = convert_to_dict(selection_licence_licenceID())
 	
 	if dict_form[0] != False:
-		assert dict_form[1][0]["licenceNumber"] == "new-licence-number", "updating licenceNumber, Failed to update licenceNumber"
+		assert dict_form[1]["licenceNumber"] == "new-licence-number", "updating licenceNumber, Failed to update licenceNumber"
 	else:
-		return dict_form[1][0]
+		return dict_form[1]
 
 def update_pool_licenceID():
 
@@ -253,9 +243,9 @@ def update_pool_licenceID():
 	dict_form = convert_to_dict(selection_pool_poolID())
 
 	if dict_form[0] != False:
-		assert dict_form[1][0]["licenceID"] == 44, "Failed to update LicenceID"
+		assert dict_form[1]["licenceID"] == 44, "Failed to update LicenceID"
 	else:
-		return dict_form[1][0]
+		return dict_form[1]
 	
 def update_schedule_dateTime():
 	newtime = (datetime.now() + timedelta(minutes=15)).strftime("%d/%m/%Y %H:%M:%S")
@@ -264,9 +254,9 @@ def update_schedule_dateTime():
 	dict_form = convert_to_dict(selection_schedule_scheduleID())
 
 	if dict_form[0] != False:
-		assert dict_form[1][0]["datetime"] == newtime, "Failed to update to a new time"
+		assert dict_form[1]["datetime"] == newtime, "Failed to update to a new time"
 	else:
-		return dict_form[1][0]
+		return dict_form[1]
 
 def update_schedule_repeatEvery():
 	tableOperate("update", dictionary_formatter("Schedule", {"sched1leID": 1, "repeatEvery": "Every Year"}))
@@ -274,9 +264,9 @@ def update_schedule_repeatEvery():
 	dict_form = convert_to_dict(selection_schedule_scheduleID())
 
 	if dict_form[0] != False:
-		assert dict_form[1][0]["repeatEvery"] == "Every Year" , "Failed to change repeat schedule"
+		assert dict_form[1]["repeatEvery"] == "Every Year" , "Failed to change repeat schedule"
 	else:
-		return dict_form[1][0]
+		return dict_form[1]
 
 #do we want them to be able to ammend their settings? is that allowed after an offer is made?
 def update_offer_settings():
@@ -367,7 +357,7 @@ def delete_review_userID(assert_bool, delete_upto):
 		tableOperate("delete", dictionary_formatter("Review", {"reviewID": i}))
 
 	if (assert_bool == True):
-		assert guarded_selection(tableOperate("select", dictionary_formatter("User", {"email":"gireg@bath.ac.uk"})[0]) == "invalid id (record does not exist)")
+		assert (tableOperate("select", dictionary_formatter("User", {"email":"gireg@bath.ac.uk"})[0]) == "invalid id (record does not exist)")
 
 def delete_contact_userID(assert_bool, delete_upto):
 	
@@ -375,7 +365,7 @@ def delete_contact_userID(assert_bool, delete_upto):
 		tableOperate("delete", dictionary_formatter("Contact", {"userID" : 1, "contactID": i}))
 
 	if (assert_bool == True):
-		assert guarded_selection(tableOperate("select", dictionary_formatter("User", {"email":"gireg@bath.ac.uk"})[0]) == "invalid id (record does not exist)")
+		assert (tableOperate("select", dictionary_formatter("User", {"email":"gireg@bath.ac.uk"})[0]) == "invalid id (record does not exist)")
 
 def delete_poolSub_userID(assert_bool, delete_upto):
 	
@@ -383,7 +373,7 @@ def delete_poolSub_userID(assert_bool, delete_upto):
 		tableOperate("delete", dictionary_formatter("PoolSubscriber", {"userID": 1, "poolID": 1}))
 
 	if (assert_bool == True):
-		assert guarded_selection(tableOperate("select", dictionary_formatter("User", {"email":"gireg@bath.ac.uk"})[0]) == "invalid id (record does not exist)")
+		assert (tableOperate("select", dictionary_formatter("User", {"email":"gireg@bath.ac.uk"})[0]) == "invalid id (record does not exist)")
 
 def deletion_all_tables(assert_bool, anum):
 	delete_user_userID(assert_bool, anum)
@@ -404,14 +394,6 @@ def runAll():
 	
 	with app.app_context():
 		
-		''' initial test stuff
-		tableInsert("User", {"email":"Harrymydude@bath.ac.uk", "name": "Harry", "pwdHash":12345})
-		
-		print("here", ((tableSelect("User", {"email":"Harrymydude@bath.ac.uk"})[0]).get_data()))
-		#print((tableSelect("User", {"email":"Harrymydude@bath.ac.uk"})[0]))
-
-		print("there", (tableSelect("User", {"email":"fewefewfwe@bath.ac.uk"})[0]))
-		'''
 		#
 		#insertion_all_tables()
 
@@ -422,22 +404,27 @@ def runAll():
 
 		deletion_all_tables(False, 30)
 		insert_user_userID()
+		res = tableOperate("insert", dictionary_formatter("User", {"email":"will2@bath.ac.uk", "name": "Will", "pwdHash":"1002"}))
 
-		# tableOperate("insert", dictionary_formatter("User", {"email":"will@bath.ac.uk", "name": "will", "pwdHash":"999"}))
-		# update_user_name()
+		# selection returns a (RESPONSE + STRING) / (RESPONSE, List(STRING)) if SUCCESS
+		# ELSE returns a (STRING, STRING) 
+		# 
+		# And insertions return a (STRING, STRING)		
+		# Update returns a (STRING, STRING) regardless (since can update records which dont exist aswell)
 
-		# update_all_tables()
-
-		#tableOperate("delete", dictionary_formatter("User", {"userID": 1}))
+		# so must check to see whether the data from select is an error code (indicated by x[1] == 200 or not)
+		# if success parse it else return it.
 		
-		#print(dictionary_formatter("User", {"email":"Harrymydude@bath.ac.uk", "name": "Harry", "pwdHash":12345}))
+		tableOperate("insert", dictionary_formatter("User", {"email":"will3@bath.ac.uk", "name": "Will", "pwdHash":"1003"}))
 
-		
-		#print(guarded_selection(tableOperate("select", dictionary_formatter("User", {"email":"Harrymydude@bath.ac.uk"}))[0]))
+		a = (tableOperate("delete", dictionary_formatter("User", {"userID": 1})))
+		print(a, type(a))
 
-		# print(tableOperate("insert", dictionary_formatter("User", {"email":"Harrymydude@bath.ac.uk", "name": "Harry", "pwdHash":12345})))
+		# updating records which dont exist returns a success msg.
+		b = (tableOperate("delete", dictionary_formatter("User", {"userID": 50})))
+		print(b, type(b[0]))
 
-		
+
 		
 
 if __name__ == '__main__':
