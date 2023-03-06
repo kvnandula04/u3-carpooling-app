@@ -14,6 +14,7 @@ import InputAutocomplete from "../components/InputAutocomplete";
 import LiveMap from "../components/LiveMap";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
+import { Icon } from "react-native-elements";
 
 export default function PlanTrip() {
   const [IsReady, SetIsReady] = useState(false);
@@ -26,6 +27,8 @@ export default function PlanTrip() {
 
   const [startLocation, setStartLocation] = useState();
   const [destination, setDestination] = useState();
+
+  var data = "hello";
 
   function onPlaceSelected(data, details = null, isDestination) {
     const pos = {
@@ -82,41 +85,65 @@ export default function PlanTrip() {
           <Logo fontSize={64} color={"#000"} marginTop={"5%"} />
         </View>
         <View id="profile" style={styles.flexInner3}>
-          <Text style={styles.profileText}>Me.</Text>
+          <Icon
+            style={styles.settingsIcon}
+            name="tune"
+            color="#000"
+            size={50}
+          />
         </View>
       </View>
 
       <View style={styles.flex2}>
-        <View id="planTripFrame" style={styles.planTripFrame}>
-          <View id="planTripCard" style={styles.planTripCard}>
-            <View id="planTripTitleView" style={styles.planTripTitleView}>
-              <Text style={styles.planTripTitle}>Plan a trip</Text>
+        <Text> {data} </Text>
+        <View id="whereFrame" style={styles.planTripFrame}>
+          <View id="whereCard" style={styles.planTripCard}>
+            <View id="whereTitleView" style={styles.planTripTitleView}>
+              <Text style={styles.planTripTitle}>Where?</Text>
             </View>
-            <View id="list" style={styles.planList}>
+            <View id="startAndDestination" style={styles.planList}>
               <View style={styles.planListColumn}>
-                <Text style={styles.bodyBoldItalic}>Start location: </Text>
-                <View
-                  id="planTripFrame"
-                  style={[styles.searchContainer, { zIndex: 5 }]}
-                >
+                {/* <Text style={styles.bodyBoldItalic}>Start location: </Text> */}
+                <View id="start" style={styles.searchContainer}>
                   <InputAutocomplete
                     id="startLocationInput"
                     onPlaceSelected={onPlaceSelected}
                     isDestination={false}
+                    text="Where from?"
                   />
                 </View>
               </View>
               <View style={styles.planListColumn}>
-                <Text style={styles.bodyBoldItalic}>Destination: </Text>
-                <View
-                  id="planTripFrame"
-                  style={[styles.searchContainer, { zIndex: 5 }]}
-                >
+                {/* <Text style={styles.bodyBoldItalic}>Destination: </Text> */}
+                <View id="destination" style={styles.searchContainer2}>
                   <InputAutocomplete
                     onPlaceSelected={onPlaceSelected}
                     isDestination={true}
+                    text="Where to?"
                   />
                 </View>
+              </View>
+            </View>
+          </View>
+          <View
+            id="planTripShadow"
+            style={[styles.planTripCard, styles.planTripShadow]}
+          />
+        </View>
+      </View>
+
+      <View style={[styles.flex2, { backgroundColor: "purple" }]}>
+        <View id="whenFrame" style={styles.planTripFrame}>
+          <View id="whenCard" style={styles.planTripCard}>
+            <View id="whenTitleView" style={styles.planTripTitleView}>
+              <Text style={styles.planTripTitle}>When?</Text>
+            </View>
+            <View id="startDestination" style={styles.planList}>
+              <View style={styles.planListColumn}>
+                <Text style={styles.bodyBoldItalic}>Leaving: </Text>
+              </View>
+              <View style={styles.planListColumn}>
+                <Text style={styles.bodyBoldItalic}>Arriving: </Text>
               </View>
             </View>
           </View>
@@ -135,27 +162,6 @@ export default function PlanTrip() {
           />
         </View>
       </View>
-
-      <View style={styles.flex3}></View>
-
-      <BottomSheet ref={bottomSheetRef} index={1} snapPoints={snapPoints}>
-        <View id="tripHistoryCard" style={styles.tripHistoryCard}>
-          <View id="tripHistoryTitleView" style={styles.tripHistoryTitleView}>
-            <Text style={styles.tripHistoryTitle}>Trip history</Text>
-          </View>
-          <View style={styles.tripHistoryTitleViewInner}>
-            <Text style={styles.tripHistoryTitleViewInnerHeading}>
-              Friday 9th December 2022
-            </Text>
-            <Text style={styles.tripHistoryTitleViewInnerBody}>
-              10:30 @ University of Bath
-            </Text>
-            <Text style={styles.tripHistoryTitleViewInnerBody}>
-              Picked up by Richard
-            </Text>
-          </View>
-        </View>
-      </BottomSheet>
     </View>
   );
 }
@@ -188,44 +194,19 @@ const styles = StyleSheet.create({
     // backgroundColor: "yellow",
   },
   flex2: {
-    flex: 3,
+    flex: 2,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "orange",
   },
-  flex3: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "flex-end",
-    // backgroundColor: "pink",
-  },
-  profileText: {
-    fontFamily: "atkinson-italic",
-    fontSize: 34,
+  settingsIcon: {
     marginTop: "15%",
-    marginRight: "15%",
+    marginRight: "20%",
   },
   text: {
     fontFamily: "syne-bold",
     fontSize: 18,
     color: "#000",
-  },
-  cardStyle: {
-    width: "100%",
-    height: "100%",
-    borderColor: "#000",
-    borderWidth: 5,
-    borderRadius: 32,
-    overflow: "hidden",
-  },
-  shadowStyle: {
-    zIndex: -1,
-    position: "absolute",
-    top: 6,
-    left: 6,
-    backgroundColor: "#000",
-    borderColor: "#000",
   },
   heading: {
     fontFamily: "atkinson-italic",
@@ -244,6 +225,7 @@ const styles = StyleSheet.create({
   planTripFrame: {
     width: "80%",
     height: "80%",
+    // backgroundColor: "#f7f3eb",
   },
   planTripCard: {
     width: "100%",
@@ -294,59 +276,20 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "flex-end",
-    marginRight: "5%",
+    marginRight: "7%",
+    marginTop: "3%",
   },
   planList: {
     flex: 2.5,
     flexDirection: "column",
-    justifyContent: "space-between",
     marginLeft: "5%",
   },
   planListColumn: {
     flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-  },
-  body: {
-    fontFamily: "atkinson-regular",
-    fontSize: 18,
   },
   bodyBoldItalic: {
     fontFamily: "atkinson-italic",
     fontSize: 18,
-  },
-  tripHistoryCard: {
-    width: "100%",
-    height: "390%",
-    borderRadius: 32,
-    borderColor: "#000",
-    borderWidth: 5,
-    backgroundColor: "#fff",
-  },
-  tripHistoryTitleView: {
-    justifyContent: "flex-start",
-    alignItems: "center",
-  },
-  tripHistoryTitle: {
-    fontFamily: "syne",
-    fontSize: 24,
-    marginTop: "5%",
-    color: "#1774ff",
-  },
-  tripHistoryTitleViewInner: {
-    justifyContent: "flex-start",
-    alignItems: "center",
-    marginTop: "5%",
-  },
-  tripHistoryTitleViewInnerHeading: {
-    fontFamily: "atkinson-italic",
-    fontSize: 22,
-    color: "#000",
-  },
-  tripHistoryTitleViewInnerBody: {
-    fontFamily: "atkinson-regular",
-    fontSize: 20,
-    color: "#000",
   },
   searchContainer: {
     position: "absolute",
@@ -357,9 +300,21 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 4,
     elevation: 4,
-    zIndex: 4,
+    zIndex: 5,
     padding: 8,
     borderRadius: 8,
-    top: 10,
+  },
+  searchContainer2: {
+    position: "absolute",
+    width: "90%",
+    backgroundColor: "white",
+    shadowColor: "black",
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+    elevation: 4,
+    zIndex: 5,
+    padding: 8,
+    borderRadius: 8,
   },
 });
