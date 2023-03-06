@@ -402,10 +402,6 @@ def runAll():
 
 		#selection_all_tables()
 
-		deletion_all_tables(False, 30)
-		insert_user_userID()
-		res = tableOperate("insert", dictionary_formatter("User", {"email":"will2@bath.ac.uk", "name": "Will", "pwdHash":"1002"}))
-
 		# selection returns a (RESPONSE + STRING) / (RESPONSE, List(STRING)) if SUCCESS
 		# ELSE returns a (STRING, STRING) 
 		# 
@@ -415,14 +411,8 @@ def runAll():
 		# so must check to see whether the data from select is an error code (indicated by x[1] == 200 or not)
 		# if success parse it else return it.
 		
-		tableOperate("insert", dictionary_formatter("User", {"email":"will3@bath.ac.uk", "name": "Will", "pwdHash":"1003"}))
-
-		a = (tableOperate("delete", dictionary_formatter("User", {"userID": 1})))
-		print(a, type(a))
-
-		# updating records which dont exist returns a success msg.
-		b = (tableOperate("delete", dictionary_formatter("User", {"userID": 50})))
-		print(b, type(b[0]))
+		print(tableOperate("select", dictionary_formatter("Pool", {"poolID": "1"})))
+		
 
 
 		
