@@ -28,9 +28,30 @@ export default function PlanTrip() {
 
   const [startLocation, setStartLocation] = useState();
   const [destination, setDestination] = useState();
+  const [result, setResult] = useState([]);
 
-  const result = RestAPI({ operation: "select", table: "Pool", poolID: "1" });
-  // console.log("RESULT: ", result);
+  let data = { sdf: "sdf" };
+  let poolID, licenceID;
+
+  RestAPI({ operation: "select", table: "Pool", poolID: "1" }).then((res) => {
+    console.log("RES: ", res);
+    poolID = parseInt(res.poolID, 10);
+    licenceID = parseInt(res.licenceID, 10);
+    // Object.assign(res, data);
+  });
+  // console.log("PLAN TRIP DATA: ", data);
+  console.log("poolID: ", poolID);
+  console.log("licenceID: ", licenceID);
+
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      operation: "select",
+      table: "Pool",
+      poolID: "1",
+    }),
+  };
 
   function onPlaceSelected(data, details = null, isDestination) {
     const pos = {
