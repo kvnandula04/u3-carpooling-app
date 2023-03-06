@@ -8,7 +8,7 @@ const InputAutocomplete = (props) => {
     <View>
       <GooglePlacesAutocomplete
         styles={{ textInput: styles.input }}
-        placeholder="Where to?"
+        placeholder={props.text}
         fetchDetails={true}
         returnKeyType={"search"}
         onPress={(data, details = null) => {
