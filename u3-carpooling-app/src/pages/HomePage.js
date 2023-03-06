@@ -18,30 +18,17 @@ import { useNavigation } from "@react-navigation/native";
 export default function HomePage() {
   const [IsReady, SetIsReady] = useState(false);
   const bottomSheetRef = useRef(BottomSheet);
-  const snapPoints = useMemo(() => ["90%", "25%"], []);
+  const snapPoints = useMemo(() => ["90%", "30%"], []);
   const navigation = useNavigation();
-  const onMatchMePressed = () => {
+  const onOffersPressed = () => {
     navigation.navigate("LiveTripPage");
   };
-
-  const [startLocation, setStartLocation] = useState();
-  const [destination, setDestination] = useState();
-
-  function onPlaceSelected(data, details = null, isDestination) {
-    const pos = {
-      latitude: details?.geometry.location.lat,
-      longitude: details?.geometry.location.lng,
-    };
-    isDestination ? setDestination(pos) : setStartLocation(pos);
-  }
-
-  // useEffect(() => {
-  //   console.log(startLocation);
-  // }, [startLocation]);
-
-  // useEffect(() => {
-  //   console.log(destination);
-  // }, [destination]);
+  const onPoolsPressed = () => {
+    navigation.navigate("LiveTripPage");
+  };
+  const onPlanTripPressed = () => {
+    navigation.navigate("PlanTrip");
+  };
 
   useEffect(() => {
     async function prepare() {
@@ -89,7 +76,7 @@ export default function HomePage() {
       <View style={styles.flex2}>
         <View style={styles.flexInner21}>
           <View id="offerButton" style={styles.button}>
-            <Pressable onPress={onMatchMePressed}>
+            <Pressable onPress={onOffersPressed}>
               <Text style={styles.text2}>My Offers & Requests</Text>
             </Pressable>
           </View>
@@ -97,7 +84,7 @@ export default function HomePage() {
         </View>
         <View style={styles.flexInner22}>
           <View id="poolsButton" style={styles.button}>
-            <Pressable onPress={onMatchMePressed}>
+            <Pressable onPress={onPoolsPressed}>
               <Text style={styles.text2}>My Pools</Text>
             </Pressable>
           </View>
@@ -105,7 +92,7 @@ export default function HomePage() {
         </View>
         <View style={styles.flexInner23}>
           <View id="planTripButton" style={styles.button}>
-            <Pressable onPress={onMatchMePressed}>
+            <Pressable onPress={onPlanTripPressed}>
               <Text style={styles.text2}>Plan a Trip</Text>
             </Pressable>
           </View>
@@ -168,32 +155,28 @@ const styles = StyleSheet.create({
     flex: 3,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "orange",
+    // backgroundColor: "orange",
   },
   flexInner21: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "purple",
+    width: "80%",
+    // backgroundColor: "purple",
   },
   flexInner22: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "pink",
+    width: "80%",
+    // backgroundColor: "pink",
   },
   flexInner23: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "brown",
+    width: "80%",
+    // backgroundColor: "brown",
   },
   flex3: {
-    flex: 1,
+    flex: 1.5,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "flex-end",
-    // backgroundColor: "pink",
   },
   profileText: {
     fontFamily: "atkinson-italic",
@@ -205,22 +188,6 @@ const styles = StyleSheet.create({
     fontFamily: "syne-bold",
     fontSize: 18,
     color: "#000",
-  },
-  cardStyle: {
-    width: "100%",
-    height: "100%",
-    borderColor: "#000",
-    borderWidth: 5,
-    borderRadius: 32,
-    overflow: "hidden",
-  },
-  shadowStyle: {
-    zIndex: -1,
-    position: "absolute",
-    top: 6,
-    left: 6,
-    backgroundColor: "#000",
-    borderColor: "#000",
   },
   heading: {
     fontFamily: "atkinson-italic",
@@ -237,8 +204,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   button: {
-    width: "45%",
-    height: "30%",
+    width: "100%",
+    height: "65%",
     backgroundColor: "#efece8",
     borderWidth: 5,
     borderRadius: 32,
@@ -247,7 +214,7 @@ const styles = StyleSheet.create({
   },
   text2: {
     fontFamily: "syne-bold",
-    fontSize: 20,
+    fontSize: 25,
     color: "#9747ff",
   },
   shadow: {
@@ -298,19 +265,5 @@ const styles = StyleSheet.create({
     fontFamily: "atkinson-regular",
     fontSize: 20,
     color: "#000",
-  },
-  searchContainer: {
-    position: "absolute",
-    width: "90%",
-    backgroundColor: "white",
-    shadowColor: "black",
-    shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
-    elevation: 4,
-    zIndex: 4,
-    padding: 8,
-    borderRadius: 8,
-    top: 10,
   },
 });
