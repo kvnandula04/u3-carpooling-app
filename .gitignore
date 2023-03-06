@@ -153,3 +153,5 @@ package-lock.json
 .metro-health-check*
 
 .env
+
+__pycache__/
