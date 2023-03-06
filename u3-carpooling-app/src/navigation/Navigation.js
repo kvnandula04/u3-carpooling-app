@@ -8,6 +8,7 @@ import LiveTripPage from "../pages/LiveTripPage";
 import ArrivedPage from "../pages/ArrivedPage";
 import HomePage from "../pages/HomePage";
 import Onboarding from "../pages/Onboarding";
+import PlanTrip from "../pages/PlanTrip";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +29,7 @@ const Navigation = () => {
         <Stack.Screen name="ArrivedPage" component={ArrivedPage} />
         <Stack.Screen name="Onboarding" component={Onboarding} />
         <Stack.Screen name="HomePage" component={HomePage} />
+        <Stack.Screen name="PlanTrip" component={PlanTrip} />
       </Stack.Navigator>
     </NavigationContainer>
   );
