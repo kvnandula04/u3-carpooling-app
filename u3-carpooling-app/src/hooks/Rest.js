@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {View, Text, Button} from "react-native";
 
-export default function RestPage () {
+export default RestAPI = async (params) =>
        
         // Simply change the body, with the appropriate key-val pairs 
         const requestOptions = {
@@ -10,8 +10,11 @@ export default function RestPage () {
             // adapt this body for purposes
 
             // body: JSON.stringify({"operation" : "select", "table" : "User", "email" : "william@bath.ac.uk"})
+            body: JSON.stringify(params.passed_dict)
             
         };
+
+        variable = <RestPage passed_dict={"userID"=1,2,3}/>
         
         fetch("http://u3pool.ddns.net:3333/api", requestOptions)
         .then((response) => {
