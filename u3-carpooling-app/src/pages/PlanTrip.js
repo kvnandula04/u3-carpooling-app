@@ -15,6 +15,7 @@ import LiveMap from "../components/LiveMap";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
 import { Icon } from "react-native-elements";
+import RestAPI from "../hooks/Rest";
 
 export default function PlanTrip() {
   const [IsReady, SetIsReady] = useState(false);
@@ -28,7 +29,8 @@ export default function PlanTrip() {
   const [startLocation, setStartLocation] = useState();
   const [destination, setDestination] = useState();
 
-  var data = "hello";
+  const result = RestAPI({ operation: "select", table: "Pool", poolID: "1" });
+  // console.log("RESULT: ", result);
 
   function onPlaceSelected(data, details = null, isDestination) {
     const pos = {
@@ -95,7 +97,7 @@ export default function PlanTrip() {
       </View>
 
       <View style={styles.flex2}>
-        <Text> {data} </Text>
+        <Text> {result} </Text>
         <View id="whereFrame" style={styles.planTripFrame}>
           <View id="whereCard" style={styles.planTripCard}>
             <View id="whereTitleView" style={styles.planTripTitleView}>
