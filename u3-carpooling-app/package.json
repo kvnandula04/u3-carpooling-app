@@ -27,6 +27,7 @@
     "react-native-actions-sheet": "^0.8.21",
     "react-native-animated-pagination-dots": "^0.1.73",
     "react-native-bottom-drawer-view": "^1.0.3",
+    "react-native-elements": "^3.4.3",
     "react-native-email": "^2.1.0",
     "react-native-gesture-handler": "~2.8.0",
     "react-native-google-places-autocomplete": "^2.5.1",
