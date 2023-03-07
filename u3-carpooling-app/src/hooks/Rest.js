@@ -1,21 +1,31 @@
-import React, { useState } from "react";
-import { View, Text, Button } from "react-native";
+import React, { useState, useEffect } from "react";
 
-export default RestAPI = async (params) => {
+export default function RestAPI(params) {
+  const [result, setResult] = useState();
+
   // simply change the body, with the appropriate key-val pairs
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-
     // adapt this body for purposes
     body: JSON.stringify(params),
   };
 
-  const response = await fetch(
-    "http://u3pool.ddns.net:3333/api",
-    requestOptions
-  );
-  const data = await response.json();
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(
+        "http://u3pool.ddns.net:3333/api",
+        requestOptions
+      );
+      const data = await response.json();
+      console.log("DATA: ", data);
+      console.log("DATA[0]: ", data[0]);
+      setResult(data[0]);
+    };
+    fetchData();
+  }, []);
 
-  return data[0].poolID;
-};
+  console.log("RESULT: ", result);
+
+  return result;
+}
