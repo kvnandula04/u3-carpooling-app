@@ -6,6 +6,7 @@ import ProfilePage from "./src/pages/ProfilePage";
 export default function App() {
     // return <Navigation />;
     return <ProfilePage />;
+
     // return <MatchPage />;
 }
 
