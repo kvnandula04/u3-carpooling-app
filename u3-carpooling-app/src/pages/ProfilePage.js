@@ -40,26 +40,38 @@ const ProfilePage = () => {
                 }}
             />
             <SafeAreaView id="topFrame" style={styles.topFrame}>
-                <Text id="hey" style={styles.hey}>
-                    Hey,{"\n"}
-                    {username}
-                </Text>
-                <ProfileCircle id="profilePic" style={styles.profilePic} />
-                <Text id="pass_rating" style={styles.pass_rating}>
-                    Passenger Rating: {passenger_rating}
-                </Text>
-                <Text id="driver_rating" style={styles.driver_rating}>
-                    Driver Rating: {driver_rating}
-                </Text>
-                <Pressable
-                    id="friendsButton"
-                    style={styles.friendsButton}
-                    onPress={onPressFriends}
-                >
-                    <Text id="friendsText" style={styles.friendsText}>
-                        go to Friends
+                <View id="shadow" style={[styles.card, styles.shadow]}></View>
+                <View id="card" style={styles.card}></View>
+                <View id="TPFrame" style={styles.TPFrame}>
+                    <Text id="hey" style={styles.hey}>
+                        Hey,{"\n"}
+                        {username}
                     </Text>
-                </Pressable>
+                    <ProfileCircle id="profilePic" style={styles.profilePic} />
+                </View>
+                <View id="ratingFrame" style={styles.ratingFrame}>
+                    <Text id="pass_rating" style={styles.pass_rating}>
+                        Passenger Rating: {passenger_rating}
+                    </Text>
+                    <Text id="driver_rating" style={styles.driver_rating}>
+                        Driver Rating: {driver_rating}
+                    </Text>
+                </View>
+                <View id="friendsFrame" style={styles.friendsFrame}>
+                    <View
+                        id="shadow2"
+                        style={[styles.friendsButton, styles.shadow2]}
+                    ></View>
+                    <Pressable
+                        id="friendsButton"
+                        style={styles.friendsButton}
+                        onPress={onPressFriends}
+                    >
+                        <Text id="friendsText" style={styles.friendsText}>
+                            go to Friends
+                        </Text>
+                    </Pressable>
+                </View>
             </SafeAreaView>
             <View id="cardsFrame" style={styles.cardsFrame}>
                 <View id="analytics" style={styles.analytics}>
@@ -103,27 +115,68 @@ const styles = StyleSheet.create({
     pageFrame: {
         flex: 1,
     },
+    card: {
+        position: "absolute",
+        width: "100%",
+        height: "100%",
+        backgroundColor: "white",
+        borderRadius: 32,
+    },
+    shadow: {
+        marginLeft: 10,
+        marginTop: 10,
+        backgroundColor: "black",
+    },
     topFrame: {
         flex: 4,
         alignItems: "center",
         backgroundColor: "red",
     },
+    TPFrame: {
+        flex: 2,
+        flexDirection: "row",
+    },
+    ratingFrame: {
+        flex: 1,
+        alignContent: "center",
+        justifyContent: "center",
+    },
     hey: {
         flex: 2,
+        fontSize: 48,
     },
     profilePic: {},
     pass_rating: {
         flex: 1,
+        fontSize: 20,
     },
     driver_rating: {
         flex: 1,
+        fontSize: 20,
+    },
+    friendsFrame: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+        backgroundColor: "yellow",
     },
     friendsButton: {
-        flex: 2,
+        flex: 1,
+        paddingHorizontal: 20,
+        justifyContent: "center",
         backgroundColor: "black",
+        borderRadius: 32,
+    },
+    shadow2: {
+        position: "absolute",
+        width: "100%",
+        height: "100%",
+        backgroundColor: "green",
     },
     friendsText: {
         color: cream,
+        fontSize: 32,
     },
     cardsFrame: {
         flex: 5,
@@ -133,26 +186,33 @@ const styles = StyleSheet.create({
     },
     analytics: {
         margin: 10,
+        marginLeft: 80,
         backgroundColor: "green",
     },
     analyticsTitle: {
         color: cream,
+        fontSize: 40,
     },
     co2: {
         color: cream,
+        fontSize: 20,
     },
     travelled: {
         color: cream,
+        fontSize: 20,
     },
     history: {
         margin: 10,
+        marginLeft: -80,
         backgroundColor: "green",
     },
     historyTitle: {
         color: cream,
+        fontSize: 40,
     },
     historyText: {
         color: cream,
+        fontSize: 20,
     },
     switchFrame: {
         flex: 1,
