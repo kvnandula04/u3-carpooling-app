@@ -29,7 +29,13 @@ export default function PlanTrip() {
   const [startLocation, setStartLocation] = useState();
   const [destination, setDestination] = useState();
 
-  const result = RestAPI({ operation: "select", table: "Pool", poolID: "1" });
+  const result = RestAPI(
+    { operation: "select", table: "Pool", poolID: "1" },
+    {
+      licenceID: "",
+      poolID: "",
+    }
+  );
   // console.log(result.poolID);
 
   function onPlaceSelected(data, details = null, isDestination) {
@@ -97,7 +103,7 @@ export default function PlanTrip() {
       </View>
 
       <View style={styles.flex2}>
-        <Text> Pool ID Number: {result.poolID} </Text>
+        <Text> Pool ID Number: {result.licenceID} </Text>
         <View id="whereFrame" style={styles.planTripFrame}>
           <View id="whereCard" style={styles.planTripCard}>
             <View id="whereTitleView" style={styles.planTripTitleView}>

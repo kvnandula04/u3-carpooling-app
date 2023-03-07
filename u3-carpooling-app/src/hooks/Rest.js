@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-export default function RestAPI(params) {
-  const [result, setResult] = useState({
-    licenceID: "",
-    poolID: "",
-  });
+export default function RestAPI(params, template) {
+  const [result, setResult] = useState(template);
 
   // simply change the body, with the appropriate key-val pairs
   const requestOptions = {
