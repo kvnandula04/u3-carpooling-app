@@ -7,7 +7,7 @@ const purpleShadow = "#9747FF";
 const ProfileCircle = (props) => {
     return (
         <View style={props.frame}>
-            <View style={[props.circle, props.circleShadow]}></View>
+            <View style={[props.shadow]}></View>
             <View style={props.circle}></View>
             <View style={props.picture}></View>
         </View>
