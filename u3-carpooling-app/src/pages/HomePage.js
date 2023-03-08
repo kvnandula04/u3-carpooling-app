@@ -102,7 +102,23 @@ export default function HomePage() {
 
       <View style={styles.flex3}></View>
 
-      <BottomSheet ref={bottomSheetRef} index={1} snapPoints={snapPoints}>
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={1}
+        snapPoints={snapPoints}
+        style={{
+          borderRadius: 32,
+          borderColor: "#000",
+          borderWidth: 5,
+          overflow: "hidden",
+        }}
+        handleIndicatorStyle={{
+          backgroundColor: "#000",
+          width: 70,
+          height: 5,
+          borderRadius: 5,
+        }}
+      >
         <View id="tripHistoryCard" style={styles.tripHistoryCard}>
           <View id="tripHistoryTitleView" style={styles.tripHistoryTitleView}>
             <Text style={styles.tripHistoryTitle}>Trip history</Text>
@@ -236,8 +252,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "390%",
     borderRadius: 32,
-    borderColor: "#000",
-    borderWidth: 5,
     backgroundColor: "#fff",
   },
   tripHistoryTitleView: {

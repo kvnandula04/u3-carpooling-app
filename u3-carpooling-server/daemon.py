@@ -114,7 +114,7 @@ def __tableInsert(table, data):
             new = Review(**data)
         else:
             return "invalid table","400"
-    except TypeError:
+    except TypeError:   
         return "invalid column(s) present","400"
 
     db.session.add(new)                 # Add new record
@@ -254,22 +254,24 @@ def tableOperate(op, data):
 def vehicleLookup(data):
     if not "registrationNumber" in data:
         return "400","invalid reg. number"
-    vehicle = Vehicle.query.filter_by(registrationNumber=data["registrationNumber"]).first()
-    if vehicle:
-        return vehicle.dump_to_json()
+    response = tableOperate("select", {"table":"Vehicle", "registrationNumber":data["registrationNumber"]})
+    if response[1] == "200":
+        return response
 
     url = "https://driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/v1/vehicles"
     headers = {"Content-Type":"application/json", "x-api-key":"Fyp6cJA7Dq2BDeMnrgNyMaJ7rrs0C6BT7nOuQVab"}
     data = {"registrationNumber":data["registrationNumber"]}   
 
-    ## And insert into DB
-
+    print("Record not present for", data["registrationNumber"], ". fetching...")
     record = requests.post(url, headers=headers, json=data).json()
+    if "errors" in record:
+        print(record["errors"])
+        return "400","failed to retrieve vehicle record"
 
-    ## Return failure if 404
+    record["table"] = "Vehicle"
+    tableOperate("insert", record)
+    return tableOperate("select", {"table":"Vehicle", "registrationNumber":data["registrationNumber"]})
     
-    return record
-
 def matchmake():
     pass
 
