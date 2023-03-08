@@ -4,6 +4,7 @@ import LiveMap from "../components/LiveMap";
 import Svg, { SvgProps, G, Path, Defs } from "react-native-svg";
 import GridBackground from "../../assets/grid-background";
 import QRCode from "react-qr-code";
+import RestAPI from "../hooks/Rest";
 
 const cream = "#F7F3EB";
 const green = "#180";
@@ -13,14 +14,39 @@ const black = "#272727";
 
 export default function ArrivedPageDriver() {
   const [IsReady, SetIsReady] = useState(false);
-  const [url, setUrl] = useState("");
+  const [user, setUser] = useState("");
+  const [code, setCode] = useState(0);
+  
+  const result = RestAPI(
+    { operation: "select", table: "User", userID: "1" }, //need to ensure that we get correct user
+    {
+      userID: "",
+      name: "",
+      email: "",
+      pwdHash: "",
+      sessionToken: "",
+    }
+  );
 
   function RenderOrNot() {
-    if (url != "") {
-      return <QRCode id={"QRCode"} value={url} level={"L"} />;
+    if (result.name !== "") {
+      if (code === 1) {
+        setUser(result.email + result.name + result.pwdHash + result.userID);
+        return <QRCode id={"QRCode"} value={user} level={"L"} />;
+      } else {
+        return <Pressable
+          id="qr"
+          style={styles.qrButton}
+          onPress={() => setCode(1)}
+        >
+          <Text id="qrButtonText" style={styles.qrButtonText}>
+            generate QR code.
+          </Text>
+        </Pressable>;
+      }
     }
   }
-
+    
   useEffect(() => {
     async function prepare() {
       try {
@@ -75,27 +101,8 @@ export default function ArrivedPageDriver() {
           Confirm your trip is complete by...
         </Text>
       </View>
-
-      <View id="qrButtonFrame" style={styles.qrButtonFrame}>
-        <View id="cardFrame" style={styles.cardFrame}>
-          <Pressable
-            id="qr"
-            style={styles.qrButton}
-            onPress={() => setUrl("https://www.google.com")}
-          >
-            <Text id="qrButtonText" style={styles.qrButtonText}>
-              generate QR code.
-            </Text>
-          </Pressable>
-          <View
-            id="qrButtonShadow"
-            style={[styles.qButton, styles.qrButtonShadow]}
-          />
-        </View>
-      </View>
-
       <View id="qrFrame" style={styles.qrFrame}>
-        <RenderOrNot />
+        <RenderOrNot/>
       </View>
     </View>
   );
