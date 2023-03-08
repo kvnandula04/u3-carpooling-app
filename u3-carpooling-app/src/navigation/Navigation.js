@@ -18,7 +18,7 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {/* <Stack.Screen name="SignupLoginPage" component={SignupLoginPage} />
+        <Stack.Screen name="SignupLoginPage" component={SignupLoginPage} />
         <Stack.Screen
           name="StudentVerification"
           component={StudentVerification}
@@ -32,7 +32,7 @@ const Navigation = () => {
         <Stack.Screen name="Onboarding" component={Onboarding} />
         <Stack.Screen name="HomePage" component={HomePage} />
         <Stack.Screen name="PlanTrip" component={PlanTrip} />
-        <Stack.Screen name="ArrivedPageDriver" component={ArrivedPageDriver} /> */}
+        <Stack.Screen name="ArrivedPageDriver" component={ArrivedPageDriver} />
         <Stack.Screen name="OldHomePage" component={OldHomePage} />
       </Stack.Navigator>
     </NavigationContainer>
