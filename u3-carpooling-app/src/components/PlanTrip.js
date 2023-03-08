@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { TextInput } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
 
 const PlanTrip = () => {
     const [startLocation, setStartLocation] = React.useState("");
@@ -8,6 +9,7 @@ const PlanTrip = () => {
     const [departTime, setDepartTime] = React.useState("");
     const [arrivalTime, setarrivalTime] = React.useState("");
 
+    const navigation = useNavigation();
     const onMatchMePressed = () => {
         // // placehoder for now
         // RestAPI({
@@ -23,7 +25,7 @@ const PlanTrip = () => {
         //         endLocation: destination,
         //     }),
         // });
-        // navigation.navigate("LiveTripPage");
+        navigation.navigate("PlanTrip");
     };
 
     return (
