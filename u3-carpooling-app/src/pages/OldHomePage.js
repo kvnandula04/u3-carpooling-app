@@ -14,9 +14,6 @@ import LiveMap from "../components/LiveMap";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
 import PlanTrip from "../components/PlanTrip";
-import { Icon } from "react-native-elements";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import LiveTripPage from "./LiveTripPage";
 
 export default function HomePage() {
   useEffect(() => {
@@ -39,14 +36,10 @@ export default function HomePage() {
   const navigation = useNavigation();
 
   const onPressProfile = () => {
-    navigation.navigate("ProfilePage");
+    console.log("Profile pressed");
   };
   const onPressPrefer = () => {
-    navigation.navigate("Preferences");
-  };
-
-  const onPressPool = () => {
-    navigation.navigate("LiveTripPage");
+    console.log("Preferences pressed");
   };
 
   const onLayoutRootView = useCallback(async () => {
@@ -69,9 +62,7 @@ export default function HomePage() {
       />
 
       <SafeAreaView style={styles.headerFrame}>
-        <View id="spacer" style={styles.profileButton}>
-          <Icon style={styles.icon} name="person" color="#000" size={50} />
-        </View>
+        <View id="spacer" style={styles.profileButton}></View>
         <View id="logo" style={{ flex: 2, alignItems: "center" }}>
           <Text
             style={{
@@ -110,7 +101,9 @@ export default function HomePage() {
             <Text id="preferText" style={styles.preferText}>
               Preferences
             </Text>
-            <Icon style={styles.icon} name="settings" color="#000" size={30} />
+            <View style={styles.preferNotif}>
+              <Text style={styles.preferNotifText}>1</Text>
+            </View>
           </Pressable>
         </View>
         <View id="planTripFrame" style={styles.planTripFrame}>
@@ -131,19 +124,17 @@ export default function HomePage() {
           <View id="tripHistoryTitleView" style={styles.tripHistoryTitleView}>
             <Text style={styles.tripHistoryTitle}>My Pools</Text>
           </View>
-          <TouchableOpacity onPress={onPressPool}>
-            <View style={styles.tripHistoryTitleViewInner}>
-              <Text style={styles.tripHistoryTitleViewInnerHeading}>
-                Friday 9th December 2022
-              </Text>
-              <Text style={styles.tripHistoryTitleViewInnerBody}>
-                10:30 @ University of Bath
-              </Text>
-              <Text style={styles.tripHistoryTitleViewInnerBody}>
-                Picked up by Richard
-              </Text>
-            </View>
-          </TouchableOpacity>
+          <View style={styles.tripHistoryTitleViewInner}>
+            <Text style={styles.tripHistoryTitleViewInnerHeading}>
+              Friday 9th December 2022
+            </Text>
+            <Text style={styles.tripHistoryTitleViewInnerBody}>
+              10:30 @ University of Bath
+            </Text>
+            <Text style={styles.tripHistoryTitleViewInnerBody}>
+              Picked up by Richard
+            </Text>
+          </View>
         </View>
       </BottomSheet>
     </View>
@@ -310,7 +301,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginTop: "5%",
     color: "#1774ff",
-    lineHeight: 30,
   },
   tripHistoryTitleViewInner: {
     justifyContent: "flex-start",
