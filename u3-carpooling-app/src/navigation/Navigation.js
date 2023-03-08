@@ -11,6 +11,7 @@ import HomePage from "../pages/HomePage";
 import Onboarding from "../pages/Onboarding";
 import PlanTrip from "../pages/PlanTrip";
 import OldHomePage from "../pages/OldHomePage";
+import PaymentPage from "../pages/PaymentPage";
 
 const Stack = createNativeStackNavigator();
 
@@ -34,6 +35,7 @@ const Navigation = () => {
         <Stack.Screen name="PlanTrip" component={PlanTrip} />
         <Stack.Screen name="ArrivedPageDriver" component={ArrivedPageDriver} />
         <Stack.Screen name="OldHomePage" component={OldHomePage} />
+        <Stack.Screen name="PaymentPage" component={PaymentPage} initialParams={{ value: "" }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
