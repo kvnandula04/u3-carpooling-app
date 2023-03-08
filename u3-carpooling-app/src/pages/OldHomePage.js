@@ -18,6 +18,9 @@ import { Icon } from "react-native-elements";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import LiveTripPage from "./LiveTripPage";
 
+const cream = "#F7F3EB";
+const charcol = "#646464";
+
 export default function HomePage() {
     useEffect(() => {
         async function prepare() {
