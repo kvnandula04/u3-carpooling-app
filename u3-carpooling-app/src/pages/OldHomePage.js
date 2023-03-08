@@ -28,12 +28,15 @@ export default function HomePage() {
   const snapPoints = useMemo(() => ["90%", "10%"], []);
   const navigation = useNavigation();
 
-  const onPressProfile = () => {
-    navigation.navigate("ProfilePage");
-  };
-  const onPressPrefer = () => {
-    navigation.navigate("Preferences");
-  };
+    const onPressSwitch = () => {
+        setRole((role + 1) % 2);
+    };
+    const onPressProfile = () => {
+        navigation.navigate("ProfilePage");
+    };
+    const onPressPrefer = () => {
+        navigation.navigate("Preferences");
+    };
 
   const onPressPool = () => {
     navigation.navigate("LiveTripPage");
@@ -73,37 +76,46 @@ export default function HomePage() {
     secondColour = charcol;
   }
 
-  return (
-    <View style={styles.container}>
-      <GridBackground
-        position="absolute"
-        zIndex={-5}
-        lineColor={"black"}
-        style={{ backgroundColor: "#f7f3eb" }}
-      />
+    return (
+        <View style={styles.container}>
+            <GridBackground
+                position="absolute"
+                zIndex={-5}
+                lineColor={mainColour}
+                style={{ backgroundColor: secondColour }}
+            />
 
-      <SafeAreaView style={styles.headerFrame}>
-        <View id="spacer" style={styles.profileButton}>
-          <Icon style={styles.icon} name="person" color="#000" size={50} />
-        </View>
-        <View id="logo" style={{ flex: 2, alignItems: "center" }}>
-          <Text
-            style={{
-              fontFamily: "syne",
-              fontSize: 64,
-            }}
-          >
-            U3
-          </Text>
-        </View>
-        <Pressable
-          id="profile"
-          style={styles.profileButton}
-          onPress={onPressProfile}
-        >
-          <Text style={styles.profileText}>Me.</Text>
-        </Pressable>
-      </SafeAreaView>
+            <SafeAreaView style={styles.headerFrame}>
+                <Pressable
+                    id="spacer"
+                    style={styles.profileButton}
+                    onPress={onPressSwitch}
+                >
+                    <Icon
+                        style={styles.icon}
+                        name="person"
+                        color="#000"
+                        size={50}
+                    />
+                </Pressable>
+                <View id="logo" style={{ flex: 2, alignItems: "center" }}>
+                    <Text
+                        style={{
+                            fontFamily: "syne",
+                            fontSize: 64,
+                        }}
+                    >
+                        U3
+                    </Text>
+                </View>
+                <Pressable
+                    id="profile"
+                    style={styles.profileButton}
+                    onPress={onPressProfile}
+                >
+                    <Text style={styles.profileText}>Me.</Text>
+                </Pressable>
+            </SafeAreaView>
 
       <View style={styles.mapFrame}>
         <View id="map" style={styles.flexInner22}>
