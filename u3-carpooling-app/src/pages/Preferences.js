@@ -6,14 +6,7 @@ export default function Preferences() {
 
     const saveToDB = () => {
         RestAPI(
-            { operation: "insert", table: "Offer", userID: "3", poolID: "3", role: "1", settings: JSON.stringify(preferences)},
-            {
-              offerID: "",
-              userID: "",
-              poolID: "",
-              role: "",
-              settings: ""
-            }
+            { operation: "insert", table: "Offer", userID: "3", poolID: "3", role: "1", settings: JSON.stringify(preferences)}
         );
     };
 
@@ -25,7 +18,6 @@ export default function Preferences() {
     rating: "",
     seats: ""
   });
-
 
   const handleSavePreferences = () => {
     console.log(preferences);
@@ -90,7 +82,7 @@ export default function Preferences() {
 
         <Button title="Save Preferences" onPress={handleSavePreferences} />
         <Button title="Save Preferences" onPress={saveToDB} />
-        
+
       </ScrollView>
     </View>
   );
