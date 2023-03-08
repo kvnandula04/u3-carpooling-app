@@ -7,7 +7,6 @@ import DriverVerification from "../pages/DriverVerification";
 import LiveTripPage from "../pages/LiveTripPage";
 import ArrivedPage from "../pages/ArrivedPage";
 import ArrivedPageDriver from "../pages/ArrivedPageDriver";
-import HomePage from "../pages/HomePage";
 import Onboarding from "../pages/Onboarding";
 import OldHomePage from "../pages/OldHomePage";
 import ProfilePage from "../pages/ProfilePage";
@@ -32,7 +31,6 @@ const Navigation = () => {
         <Stack.Screen name="LiveTripPage" component={LiveTripPage} />
         <Stack.Screen name="ArrivedPage" component={ArrivedPage} />
         <Stack.Screen name="Onboarding" component={Onboarding} />
-        <Stack.Screen name="HomePage" component={HomePage} />
         <Stack.Screen name="ArrivedPageDriver" component={ArrivedPageDriver} />
         <Stack.Screen name="OldHomePage" component={OldHomePage} />
         <Stack.Screen name="ProfilePage" component={ProfilePage} />
