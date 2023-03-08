@@ -1,11 +1,24 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 
 const cream = "#F7F3EB";
 const orange = "#FFB36D";
 const charcoal = "#3F3F3F";
 
 const LiveTripDuration = (props) => {
+    useEffect(() => {
+        async function prepare() {
+            try {
+                await useFonts();
+            } catch (e) {
+                console.warn(e);
+            } finally {
+                SetIsReady(true);
+            }
+        }
+        prepare();
+    }, []);
+
     var minutes = 12;
     var seconds = 43;
 
@@ -71,6 +84,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         bottom: 0,
         left: 20,
+        fontFamily: "atkinson-regular",
     },
     minutes: {
         color: charcoal,
@@ -78,6 +92,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 0,
         right: 20,
+        fontFamily: "syne-bold",
     },
     minutesShadow: {
         color: orange,
@@ -88,12 +103,13 @@ const styles = StyleSheet.create({
         color: charcoal,
         fontSize: 24,
         position: "absolute",
-        top: 50,
+        top: 40,
         right: 20,
+        fontFamily: "syne-bold",
     },
     secondsShadow: {
         color: orange,
-        top: 52,
+        top: 42,
         right: 20,
     },
 });

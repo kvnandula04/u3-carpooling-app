@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import ProfileCircle from "./ProfileCircle";
 
 const charcoal = "#3F3F3F";
@@ -8,6 +8,19 @@ const purple = "#C293FF";
 const purpleShadow = "#9747FF";
 
 const LiveToPickup = (props) => {
+    useEffect(() => {
+        async function prepare() {
+            try {
+                await useFonts();
+            } catch (e) {
+                console.warn(e);
+            } finally {
+                SetIsReady(true);
+            }
+        }
+        prepare();
+    }, []);
+
     return (
         <Pressable style={[props.style, styles.frame]} onPress={props.onPress}>
             <View style={[styles.card, styles.shadow]}></View>
@@ -57,6 +70,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         bottom: 10,
         left: 20,
+        fontFamily: "atkinson-regular",
     },
     picture: {
         position: "absolute",
