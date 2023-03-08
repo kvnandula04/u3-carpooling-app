@@ -7,7 +7,6 @@ import DriverVerification from "../pages/DriverVerification";
 import LiveTripPage from "../pages/LiveTripPage";
 import ArrivedPage from "../pages/ArrivedPage";
 import ArrivedPageDriver from "../pages/ArrivedPageDriver";
-import HomePage from "../pages/HomePage";
 import Onboarding from "../pages/Onboarding";
 import OldHomePage from "../pages/OldHomePage";
 import ProfilePage from "../pages/ProfilePage";

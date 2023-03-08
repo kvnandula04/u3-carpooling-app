@@ -22,13 +22,6 @@ export default function DriverVerification() {
   const [numberPlate, setNumberPlate] = useState(""); // Here text contains the number plate
   const [licence, setLicence] = useState(""); // Here text contains the number plate
 
-  const checkTextInput = () => {
-    if (!numberPlate.trim()) {
-      alert("Number plate empty!");
-    }
-    onSkipPressed();
-  };
-
   // Loading in fonts
   useEffect(() => {
     async function prepare() {
@@ -104,7 +97,7 @@ export default function DriverVerification() {
       </View>
 
       <View style={styles.flex4}>
-        <TouchableOpacity style={styles.skipButton} onPress={checkTextInput}>
+        <TouchableOpacity style={styles.skipButton} onPress={onSkipPressed}>
           <Text style={styles.text}>skip.</Text>
         </TouchableOpacity>
       </View>
