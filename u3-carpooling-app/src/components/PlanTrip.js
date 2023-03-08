@@ -9,7 +9,21 @@ const PlanTrip = () => {
     const [arrivalTime, setarrivalTime] = React.useState("");
 
     const onMatchMePressed = () => {
-        navigation.navigate("LiveTripPage");
+        // // placehoder for now
+        // RestAPI({
+        //     operation: "insert",
+        //     table: "Offer",
+        //     userID: 1,
+        //     role: 0,
+        //     poolID: null,
+        //     settings: JSON.stringify({
+        //         startTime: departTime,
+        //         endTime: arrivalTime,
+        //         startLocation: startLocation,
+        //         endLocation: destination,
+        //     }),
+        // });
+        // navigation.navigate("LiveTripPage");
     };
 
     return (
