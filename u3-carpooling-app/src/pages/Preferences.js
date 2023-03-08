@@ -1,43 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { View, Text, TextInput, Button, StyleSheet, ScrollView } from "react-native";
 import RestAPI from "../hooks/Rest";
 
-// const useFetchMyApi = (preferences) => {
-//     const [data, setData] = useState([]);
-//     useEffect(() => {
-//         const fetchData = async () => {
-//             const result = await RestAPI(
-//                 { operation: "insert", table: "Offer", userID: "3", poolID: "3", role: "1", settings: JSON.stringify(preferences)}
-//             );
-//             setData(result);
-//         };
-//         fetchData();
-//     }, [preferences]);
-//     return data;
-// };
-
-const [preferences_a, setPreferences_a] = useState(0);
-
 export default function Preferences() {
 
-    if (preferences_a !== 0){
+    const saveToDB = () => {
         RestAPI(
-            { operation: "insert", table: "Offer", userID: "3", poolID: "3", role: "1", settings: JSON.stringify(preferences_a)}
+            { operation: "insert", table: "Offer", userID: "3", poolID: "3", role: "1", settings: JSON.stringify(preferences)}
         );
-    }
+    };
 
-//   const [preferences, setPreferences] = useState({
-//     location: "",
-//     destination: "",
-//     departure_time: "",
-//     detour_distance: "",
-//     rating: "",
-//     seats: ""
-//   });
+  const [preferences, setPreferences] = useState({
+    location: "",
+    destination: "",
+    departure_time: "",
+    detour_distance: "",
+    rating: "",
+    seats: ""
+  });
 
-  const handleSavePreferences = (name) => {
+  const handleSavePreferences = () => {
     console.log(preferences);
-    setPreferences_a(name);
   };
 
   return (
@@ -97,8 +80,9 @@ export default function Preferences() {
           keyboardType="numeric"
         />
 
-        <Button title="Save Preferences" onPress={handleSavePreferences("Hello")} />
-    
+        <Button title="Save Preferences" onPress={handleSavePreferences} />
+        <Button title="Save Preferences" onPress={saveToDB} />
+
       </ScrollView>
     </View>
   );
