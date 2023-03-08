@@ -1,11 +1,24 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 
 const cream = "#F7F3EB";
 const blue = "#1774FF";
 const charcoal = "#3F3F3F";
 
 const LiveETA = (props) => {
+    useEffect(() => {
+        async function prepare() {
+            try {
+                await useFonts();
+            } catch (e) {
+                console.warn(e);
+            } finally {
+                SetIsReady(true);
+            }
+        }
+        prepare();
+    }, []);
+
     var arrivalTime = "12:43";
 
     return (
@@ -49,12 +62,14 @@ const styles = StyleSheet.create({
         position: "absolute",
         bottom: 0,
         left: 20,
+        fontFamily: "atkinson-regular",
     },
     time: {
         color: cream,
         fontSize: 64,
-        fontStyle: "italic",
+        fontFamily: "Roboto", // need roboto light italic
         fontWeight: "300",
+        fontStyle: "italic",
         position: "absolute",
         top: 0,
         right: 20,
