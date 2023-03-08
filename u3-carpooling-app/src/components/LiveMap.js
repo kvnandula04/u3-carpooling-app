@@ -1,5 +1,5 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import React, { useEffect } from "react";
+import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
 import MapView from "react-native-maps";
 
 const green = "#4CD835";
@@ -19,28 +19,47 @@ const LiveMap = (props) => {
         prepare();
     }, []);
 
+    const windowHeight = Dimensions.get("window").height;
+    const [height, setHeight] = useState(0);
+
+    const onLayout = (event) => {
+        setHeight(event.nativeEvent.layout.height);
+    };
+    const back = null;
+    const backShadow = null;
+    if (height === windowHeight) {
+        backShadow = (
+            <Text
+                style={[
+                    styles.back,
+                    styles.backShadow,
+                    {
+                        color: props.shadow,
+                        fontSize: props.fontSize,
+                    },
+                ]}
+            >
+                back.
+            </Text>
+        );
+        back = (
+            <Text style={[styles.back, { color: props.colour }]}>back.</Text>
+        );
+    }
+
     return (
         <Pressable
             id="frame"
             style={[props.style, styles.frame]}
             onPress={props.onPress}
+            onLayout={onLayout}
         >
             <View style={[props.cardStyle]}>
                 <MapView style={[styles.map]} mapType="mutedStandard" />
                 <Text style={[styles.text]}>{props.text}</Text>
                 <Pressable style={styles.backButton}>
-                    <Text style={[styles.back, { color: props.colour }]}>
-                        back.
-                    </Text>
-                    <Text
-                        style={[
-                            styles.back,
-                            styles.backShadow,
-                            { color: props.shadow, fontSize: props.fontSize },
-                        ]}
-                    >
-                        back.
-                    </Text>
+                    {back}
+                    {backShadow}
                 </Pressable>
             </View>
             <View

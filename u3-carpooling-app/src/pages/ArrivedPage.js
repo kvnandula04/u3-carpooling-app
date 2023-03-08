@@ -1,9 +1,12 @@
-import { Pressable, StyleSheet, Text, View, Dimensions, Linking } from "react-native";
+import { Pressable, StyleSheet, Text, View, Dimensions, Linking, Alert } from "react-native";
 import React, { useState, useEffect, useCallback } from "react";
 import LiveMap from "../components/LiveMap";
 import Svg, { SvgProps, G, Path, Defs } from "react-native-svg";
 import GridBackground from "../../assets/grid-background";
 import { BarCodeScanner } from "expo-barcode-scanner";
+import RestAPI from "../hooks/Rest";
+import { useNavigation } from "@react-navigation/native";
+import PaymentPage from "./PaymentPage";
 
 const cream = "#F7F3EB";
 const green = "#4CD835";
@@ -12,6 +15,7 @@ const charcoal = "#3F3F3F";
 const black = "#272727";
 
 const ArrivedPage = () => {
+  const navigation = useNavigation();
   const onPressMap = () => {
     console.log("Take to Map");
   };
@@ -29,10 +33,40 @@ const ArrivedPage = () => {
     getBarCodeScannerPermissions();
   }, []);
 
+  const result = RestAPI(
+    { operation: "select", table: "User", userID: "1" },//now need to ensure we get correct user
+    {
+      userID: "",
+      name: "",
+      email: "",
+      pwdHash: "",
+      sessionToken: "",
+    }
+  );
+
+  function showAlert() {
+    Alert.alert(
+      'Uh oh!',
+      'That\'s the wrong QR Code!',
+      [
+        {text: "My Bad", onPress: () => console.log('OK Pressed')},
+      ],
+      { cancelable: false }
+    );
+  }
+
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     setShow(false);
-    Linking.openURL(data); // opens to payment page
+    if (data === result.email + result.name + result.pwdHash + result.userID) {
+    navigation.navigate("PaymentPage", {
+      value: result.name,
+    });
+   }
+   else{
+    showAlert();
+    console.log("This isn't the right driver")
+   }
     setScanned(false);
   };
 

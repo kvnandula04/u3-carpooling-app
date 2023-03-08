@@ -7,8 +7,8 @@ import React, {
 } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import { Text, View, StyleSheet, Pressable } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import useFonts from "../hooks/UseFonts";
-import Logo from "../components/Logo";
 import GridBackground from "../../assets/grid-background";
 import LiveMap from "../components/LiveMap";
 import BottomSheet from "@gorhom/bottom-sheet";
@@ -16,11 +16,6 @@ import { useNavigation } from "@react-navigation/native";
 import PlanTrip from "../components/PlanTrip";
 
 export default function HomePage() {
-    const [IsReady, SetIsReady] = useState(false);
-    const bottomSheetRef = useRef(BottomSheet);
-    const snapPoints = useMemo(() => ["90%", "10%"], []);
-    const navigation = useNavigation();
-
     useEffect(() => {
         async function prepare() {
             try {
@@ -34,6 +29,18 @@ export default function HomePage() {
 
         prepare();
     }, []);
+
+    const [IsReady, SetIsReady] = useState(false);
+    const bottomSheetRef = useRef(BottomSheet);
+    const snapPoints = useMemo(() => ["90%", "10%"], []);
+    const navigation = useNavigation();
+
+    const onPressProfile = () => {
+        console.log("Profile pressed");
+    };
+    const onPressPrefer = () => {
+        console.log("Preferences pressed");
+    };
 
     const onLayoutRootView = useCallback(async () => {
         if (IsReady) {
@@ -54,39 +61,28 @@ export default function HomePage() {
                 style={{ backgroundColor: "#f7f3eb" }}
             />
 
-            <View style={styles.flex1}>
-                <View id="empty" style={styles.flexInner1} />
-                <View if="logo" style={styles.flexInner2}>
-                    <Logo fontSize={64} color={"#000"} marginTop={"5%"} />
+            <SafeAreaView style={styles.headerFrame}>
+                <View id="spacer" style={styles.profileButton}></View>
+                <View id="logo" style={{ flex: 2, alignItems: "center" }}>
+                    <Text
+                        style={{
+                            fontFamily: "syne",
+                            fontSize: 64,
+                        }}
+                    >
+                        U3
+                    </Text>
                 </View>
-                <View id="profile" style={styles.flexInner3}>
+                <Pressable
+                    id="profile"
+                    style={styles.profileButton}
+                    onPress={onPressProfile}
+                >
                     <Text style={styles.profileText}>Me.</Text>
-                </View>
-            </View>
+                </Pressable>
+            </SafeAreaView>
 
-            <View style={styles.flex2}>
-                <View id="rideWithDrivenBy" style={styles.flexInner21}>
-                    <View
-                        id="rideWith"
-                        style={{ flexDirection: "row", marginLeft: "3%" }}
-                    >
-                        <View style={styles.circle}>
-                            <Text style={styles.circleText}>3</Text>
-                        </View>
-                        <Text style={styles.text}>Ride with</Text>
-                    </View>
-
-                    <View
-                        id="drivenBy"
-                        style={{ flexDirection: "row", marginRight: "3%" }}
-                    >
-                        <Text style={styles.text}>Driven by</Text>
-                        <View style={styles.circle}>
-                            <Text style={styles.circleText}>1</Text>
-                        </View>
-                    </View>
-                </View>
-
+            <View style={styles.mapFrame}>
                 <View id="map" style={styles.flexInner22}>
                     <LiveMap
                         cardStyle={styles.cardStyle}
@@ -95,9 +91,27 @@ export default function HomePage() {
                 </View>
             </View>
 
-            <PlanTrip />
+            <View id="planFrame" style={styles.planFrame}>
+                <View id="preferFrame" style={styles.preferFrame}>
+                    <Pressable
+                        id="preferButton"
+                        style={styles.preferButton}
+                        onPress={onPressPrefer}
+                    >
+                        <Text id="preferText" style={styles.preferText}>
+                            Preferences
+                        </Text>
+                        <View style={styles.preferNotif}>
+                            <Text style={styles.preferNotifText}>1</Text>
+                        </View>
+                    </Pressable>
+                </View>
+                <View id="planTripFrame" style={styles.planTripFrame}>
+                    <PlanTrip />
+                </View>
+            </View>
 
-            <View style={styles.flex4}></View>
+            <View style={styles.bottomSpacer}></View>
 
             <BottomSheet
                 ref={bottomSheetRef}
@@ -134,10 +148,18 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    flex1: {
-        flex: 1.25,
+    headerFrame: {
+        flex: 0.75,
+        marginTop: "-5%",
         flexDirection: "row",
         // backgroundColor: "red",
+    },
+    profileButton: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        margin: "3%",
+        // backgroundColor: "green",
     },
     flexInner1: {
         flex: 1,
@@ -157,7 +179,7 @@ const styles = StyleSheet.create({
         alignItems: "flex-end",
         // backgroundColor: "yellow",
     },
-    flex2: {
+    mapFrame: {
         flex: 2,
         justifyContent: "center",
         alignItems: "center",
@@ -172,11 +194,58 @@ const styles = StyleSheet.create({
     },
     flexInner22: {
         flex: 6,
-        width: "90%",
+        width: "80%",
         marginTop: "-2%",
     },
-    flex4: {
+    planFrame: {
         flex: 2,
+    },
+    preferFrame: {
+        flex: 0.75,
+        alignItems: "flex-end",
+        justifyContent: "flex-end",
+        marginBottom: "-1%",
+        // backgroundColor: "pink",
+    },
+    preferButton: {
+        flex: 1,
+        paddingHorizontal: "5%",
+        marginTop: "1.5%",
+        alignItems: "flex-end",
+        justifyContent: "flex-end",
+        flexDirection: "row",
+        // backgroundColor: "red",
+    },
+    preferText: {
+        fontFamily: "syne-bold",
+        fontSize: 20,
+        // color: "#3DD37A",
+        marginRight: "1%",
+        bottom: "1%",
+    },
+    preferNotif: {
+        width: 30,
+        height: 30,
+        borderRadius: 1000,
+        backgroundColor: "#3dd37a",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    preferNotifText: {
+        fontFamily: "atkinson-italic",
+        fontSize: 18,
+        color: "#000",
+        textAlign: "center",
+    },
+    planTripFrame: {
+        flex: 5,
+        width: "90%",
+        alignSelf: "center",
+        // justifyContent: "center",
+        // alignItems: "center",
+    },
+    bottomSpacer: {
+        flex: 0.75,
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "flex-end",
@@ -185,27 +254,8 @@ const styles = StyleSheet.create({
     profileText: {
         fontFamily: "atkinson-italic",
         fontSize: 34,
-        marginTop: "15%",
-        marginRight: "15%",
-    },
-    text: {
-        fontFamily: "syne-bold",
-        fontSize: 18,
-        color: "#000",
-    },
-    circle: {
-        width: 30,
-        height: 30,
-        borderRadius: 1000,
-        backgroundColor: "#3dd37a",
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    circleText: {
-        fontFamily: "atkinson-italic",
-        fontSize: 18,
-        color: "#000",
-        textAlign: "center",
+        // marginTop: "15%",
+        // marginRight: "15%",
     },
     cardStyle: {
         width: "100%",
@@ -271,6 +321,7 @@ const styles = StyleSheet.create({
     bottomSheet: {
         borderRadius: 32,
         borderColor: "#000",
+        backgroundColor: "#fff",
         borderWidth: 5,
         overflow: "hidden",
     },
