@@ -36,7 +36,6 @@ export default function PlanTrip() {
       poolID: "",
     }
   );
-  // console.log(result.poolID);
 
   function onPlaceSelected(data, details = null, isDestination) {
     const pos = {
@@ -103,7 +102,7 @@ export default function PlanTrip() {
       </View>
 
       <View style={styles.flex2}>
-        <Text> Pool ID Number: {result.licenceID} </Text>
+        <Text> Pool ID Number: {result.poolID} </Text>
         <View id="whereFrame" style={styles.planTripFrame}>
           <View id="whereCard" style={styles.planTripCard}>
             <View id="whereTitleView" style={styles.planTripTitleView}>
