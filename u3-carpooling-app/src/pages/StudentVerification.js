@@ -7,6 +7,7 @@ import {
   Pressable,
   Button,
   SafeAreaView,
+  TouchableOpacity,
 } from "react-native";
 import Logo from "../components/Logo";
 import useFonts from "../hooks/UseFonts";
@@ -67,8 +68,34 @@ export default function StudentVerification() {
     <View style={styles.container}>
       {isEmailVerified ? (
         <View style={[styles.inner, { flexDirection: "column" }]}>
-          <Text style={{ fontSize: 30 }}>Email verified</Text>
-          <Button title="Continue" onPress={onSignedIn} />
+          <GridBackground
+            position="absolute"
+            zIndex={-5}
+            lineColor={"black"}
+            style={{ backgroundColor: "#f7f3eb" }}
+          />
+          <Text
+            style={{
+              fontFamily: "atkinson-italic",
+              color: "#000",
+              fontSize: 50,
+            }}
+          >
+            Email verified
+          </Text>
+          <TouchableOpacity onPress={onSignedIn}>
+            <Text
+              style={{
+                fontFamily: "atkinson-italic",
+                color: "#1daf59",
+                fontSize: 30,
+                marginTop: "3%",
+              }}
+            >
+              {" "}
+              Continue >{" "}
+            </Text>
+          </TouchableOpacity>
         </View>
       ) : (
         <View style={styles.container}>
