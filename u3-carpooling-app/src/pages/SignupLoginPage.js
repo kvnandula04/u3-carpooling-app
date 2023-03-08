@@ -23,7 +23,7 @@ export default function SignupLoginPage() {
   };
 
   const onLoginPressed = () => {
-    navigation.navigate("HomePage");
+    navigation.navigate("OldHomePage");
   };
 
   const [isEmailVerified, setIsEmailVerified] = useState(false);
