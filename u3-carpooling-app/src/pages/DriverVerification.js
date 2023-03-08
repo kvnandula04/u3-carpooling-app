@@ -19,10 +19,11 @@ export default function DriverVerification() {
   const onSkipPressed = () => {
     navigation.navigate("Onboarding");
   };
-  const [text, setText] = React.useState(""); // Here text contains the number plate
+  const [numberPlate, setNumberPlate] = useState(""); // Here text contains the number plate
+  const [licence, setLicence] = useState(""); // Here text contains the number plate
 
   const checkTextInput = () => {
-    if (!text.trim()) {
+    if (!numberPlate.trim()) {
       alert("Number plate empty!");
     }
     onSkipPressed();
@@ -72,24 +73,38 @@ export default function DriverVerification() {
 
       <View style={styles.flex3}>
         <Text style={styles.subheading}> Enter your car's number plate: </Text>
-        <View id="numberPlateFrame" style={styles.numberPlateFrame}>
-          <View id="numberPlateButton" style={styles.numberPlateButton}>
+        <View id="numberPlateFrame" style={styles.frame}>
+          <View id="numberPlateButton" style={styles.button}>
             <TextInput
               style={styles.text}
-              placeholder="AB12 CDE"
-              value={text}
-              onChangeText={(text) => setText(text)}
+              placeholder="Registration Number"
+              value={numberPlate}
+              onChangeText={(numberPlate) => setNumberPlate(numberPlate)}
             ></TextInput>
           </View>
           <View
             id="numberPlateButtonShadow"
-            style={[styles.numberPlateButton, styles.numberPlateButtonShadow]}
+            style={[styles.button, styles.buttonShadow]}
+          ></View>
+        </View>
+        <View id="licenceFrame" style={styles.frame}>
+          <View id="licenceButton" style={styles.button}>
+            <TextInput
+              style={styles.text}
+              placeholder="Licence Number"
+              value={licence}
+              onChangeText={(licence) => setLicence(licence)}
+            ></TextInput>
+          </View>
+          <View
+            id="licenceButtonShadow"
+            style={[styles.button, styles.buttonShadow]}
           ></View>
         </View>
       </View>
 
       <View style={styles.flex4}>
-        <TouchableOpacity style={styles.button} onPress={checkTextInput}>
+        <TouchableOpacity style={styles.skipButton} onPress={checkTextInput}>
           <Text style={styles.text}>skip.</Text>
         </TouchableOpacity>
       </View>
@@ -120,11 +135,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    marginTop: "10%",
   },
   flex4: {
     flex: 2,
     justifyContent: "center",
     alignItems: "center",
+    marginTop: "10%",
   },
   flex5: {
     flex: 1,
@@ -154,13 +171,13 @@ const styles = StyleSheet.create({
     lineHeight: 53,
     textAlign: "center",
   },
-  numberPlateFrame: {
-    width: "50%",
+  frame: {
+    width: "70%",
     height: "80%",
     marginTop: "5%",
     // backgroundColor: "white",
   },
-  numberPlateButton: {
+  button: {
     width: "100%",
     height: "100%",
     borderRadius: 32,
@@ -170,7 +187,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  numberPlateButtonShadow: {
+  buttonShadow: {
     zIndex: -1,
     position: "absolute",
     backgroundColor: "#000",
@@ -182,7 +199,7 @@ const styles = StyleSheet.create({
     fontFamily: "atkinson-italic",
     color: "#f7f3eb",
   },
-  button: {
+  skipButton: {
     justifyContent: "center",
     alignItems: "center",
   },
