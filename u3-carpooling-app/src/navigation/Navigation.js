@@ -35,7 +35,6 @@ const Navigation = () => {
                 <Stack.Screen name="LiveTripPage" component={LiveTripPage} />
                 <Stack.Screen name="ArrivedPage" component={ArrivedPage} />
                 <Stack.Screen name="Onboarding" component={Onboarding} />
-                <Stack.Screen name="HomePage" component={HomePage} />
                 <Stack.Screen
                     name="ArrivedPageDriver"
                     component={ArrivedPageDriver}
