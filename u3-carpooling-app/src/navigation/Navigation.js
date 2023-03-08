@@ -6,9 +6,11 @@ import StudentVerification from "../pages/StudentVerification";
 import DriverVerification from "../pages/DriverVerification";
 import LiveTripPage from "../pages/LiveTripPage";
 import ArrivedPage from "../pages/ArrivedPage";
+import ArrivedPageDriver from "../pages/ArrivedPageDriver";
 import HomePage from "../pages/HomePage";
 import Onboarding from "../pages/Onboarding";
 import PlanTrip from "../pages/PlanTrip";
+import OldHomePage from "../pages/OldHomePage";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,8 +30,10 @@ const Navigation = () => {
         <Stack.Screen name="LiveTripPage" component={LiveTripPage} />
         <Stack.Screen name="ArrivedPage" component={ArrivedPage} />
         <Stack.Screen name="Onboarding" component={Onboarding} />
-        <Stack.Screen name="HomePage" component={HomePage} /> */}
+        <Stack.Screen name="HomePage" component={HomePage} />
         <Stack.Screen name="PlanTrip" component={PlanTrip} />
+        <Stack.Screen name="ArrivedPageDriver" component={ArrivedPageDriver} /> */}
+        <Stack.Screen name="OldHomePage" component={OldHomePage} />
       </Stack.Navigator>
     </NavigationContainer>
   );
