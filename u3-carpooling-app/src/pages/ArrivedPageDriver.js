@@ -19,13 +19,6 @@ export default function ArrivedPageDriver() {
   
   const result = RestAPI(
     { operation: "select", table: "User", userID: "1" }, //need to ensure that we get correct user
-    {
-      userID: "",
-      name: "",
-      email: "",
-      pwdHash: "",
-      sessionToken: "",
-    }
   );
 
   function RenderOrNot() {

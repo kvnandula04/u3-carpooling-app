@@ -35,13 +35,6 @@ const ArrivedPage = () => {
 
   const result = RestAPI(
     { operation: "select", table: "User", userID: "1" },//now need to ensure we get correct user
-    {
-      userID: "",
-      name: "",
-      email: "",
-      pwdHash: "",
-      sessionToken: "",
-    }
   );
 
   function showAlert() {
