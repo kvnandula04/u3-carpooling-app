@@ -6,12 +6,14 @@ import {
   Text,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import * as SplashScreen from "expo-splash-screen";
+import React, { useEffect, useState, useCallback } from "react";
 import GridBackground from "../../assets/grid-background";
 import LiveMap from "../components/LiveMap";
 import LiveTripDuration from "../components/LiveTripDuration";
 import LiveETA from "../components/LiveETA";
 import LiveToPickup from "../components/LiveToPickup";
+import UseFonts from "../hooks/UseFonts";
 import { useNavigation } from "@react-navigation/native";
 
 const cream = "#F7F3EB";
@@ -23,10 +25,9 @@ const black = "#272727";
 export default function LiveTripPage() {
   const navigation = useNavigation();
 
-  const onPressReport = () => {
-    navigation.navigate("ArrivedPage");
-  };
   const [inFocus, setInFocus] = useState([1, 0, 0, 0]);
+  const [IsReady, SetIsReady] = useState(false);
+
   const onPressMap = () => {
     setInFocus([1, 0, 0, 0]);
     if (inFocus[0] === 1)
@@ -35,16 +36,40 @@ export default function LiveTripPage() {
   };
   const onPressDur = () => {
     setInFocus([0, 1, 0, 0]);
-    console.log("Duration Pressed");
   };
   const onPressETA = () => {
     setInFocus([0, 0, 1, 0]);
-    console.log("ETA Pressed");
   };
   const onPressPick = () => {
     setInFocus([0, 0, 0, 1]);
-    console.log("Pickup Pressed");
   };
+  const onPressReport = () => {
+    navigation.navigate("ArrivedPage");
+  };
+
+  useEffect(() => {
+    async function prepare() {
+      try {
+        await useFonts();
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        SetIsReady(true);
+      }
+    }
+
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (IsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [IsReady]);
+
+  if (!IsReady) {
+    return null;
+  }
 
   return (
     <View id="pageFrame" style={styles.pageFrame}>
@@ -79,6 +104,7 @@ export default function LiveTripPage() {
             borderColor: greenShadow,
           }}
           text="U3"
+          fontFamily="syne-bold"
           fontSize={48}
           onPress={onPressMap}
         />
@@ -101,8 +127,13 @@ export default function LiveTripPage() {
           style={styles.reportButton}
           onPress={onPressReport}
         >
-          <Text style={[styles.reportText, { fontWeight: "900" }]}>Report</Text>
-          <Text style={styles.reportText}> Misconduct</Text>
+          <Text style={[styles.reportText, { fontFamily: "atkinson" }]}>
+            Report
+          </Text>
+          <Text style={[styles.reportText, { fontFamily: "atkinson-regular" }]}>
+            {" "}
+            Misconduct
+          </Text>
         </Pressable>
       </View>
     </View>
@@ -145,7 +176,6 @@ const styles = StyleSheet.create({
   },
   reportText: {
     fontSize: 32,
-    fontFamily: "atkinson-regular",
     fontWeight: "300",
     fontStyle: "italic",
     color: cream,
