@@ -42,6 +42,9 @@ export default function HomePage() {
     const snapPoints = useMemo(() => ["90%", "10%"], []);
     const navigation = useNavigation();
 
+    const onPressSwitch = () => {
+        setRole((role + 1) % 2);
+    };
     const onPressProfile = () => {
         navigation.navigate("ProfilePage");
     };
@@ -78,19 +81,23 @@ export default function HomePage() {
             <GridBackground
                 position="absolute"
                 zIndex={-5}
-                lineColor={"black"}
-                style={{ backgroundColor: "#f7f3eb" }}
+                lineColor={mainColour}
+                style={{ backgroundColor: secondColour }}
             />
 
             <SafeAreaView style={styles.headerFrame}>
-                <View id="spacer" style={styles.profileButton}>
+                <Pressable
+                    id="spacer"
+                    style={styles.profileButton}
+                    onPress={onPressSwitch}
+                >
                     <Icon
                         style={styles.icon}
                         name="person"
                         color="#000"
                         size={50}
                     />
-                </View>
+                </Pressable>
                 <View id="logo" style={{ flex: 2, alignItems: "center" }}>
                     <Text
                         style={{
