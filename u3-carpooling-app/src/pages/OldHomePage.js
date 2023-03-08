@@ -9,7 +9,6 @@ import * as SplashScreen from "expo-splash-screen";
 import { Text, View, StyleSheet, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import useFonts from "../hooks/UseFonts";
-import Logo from "../components/Logo";
 import GridBackground from "../../assets/grid-background";
 import LiveMap from "../components/LiveMap";
 import BottomSheet from "@gorhom/bottom-sheet";
