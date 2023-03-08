@@ -23,8 +23,9 @@ import RestAPI from "../hooks/Rest";
 //     return data;
 // };
 
+// const [preferences_a, setPreferences_a] = useState(0);
+
 export default function Preferences() {
-    const [preferences_a, setPreferences_a] = useState(0);
     if (preferences_a !== 0) {
         RestAPI({
             operation: "insert",
@@ -36,14 +37,14 @@ export default function Preferences() {
         });
     }
 
-    const [preferences, setPreferences] = useState({
-        location: "",
-        destination: "",
-        departure_time: "",
-        detour_distance: "",
-        rating: "",
-        seats: "",
-    });
+    //   const [preferences, setPreferences] = useState({
+    //     location: "",
+    //     destination: "",
+    //     departure_time: "",
+    //     detour_distance: "",
+    //     rating: "",
+    //     seats: ""
+    //   });
 
     const handleSavePreferences = (name) => {
         console.log(preferences);
