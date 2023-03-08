@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-export default function RestAPI(params) {
-  const [result, setResult] = useState([]);
+export default function RestAPI(params, template=null) {
+  const [result, setResult] = useState([template]);
 
   const requestOptions = {
     method: "POST",
