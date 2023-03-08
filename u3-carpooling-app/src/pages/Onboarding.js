@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import {
   Text,
@@ -15,12 +15,21 @@ import { useNavigation } from "@react-navigation/native";
 export default function Onboarding() {
   const [IsReady, SetIsReady] = useState(false);
   const navigation = useNavigation();
+  const [userName, setUserName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+
   const onContinuePressed = () => {
-    navigation.navigate("HomePage");
+    navigation.navigate("OldHomePage");
   };
-  const [userName, setUserName] = React.useState("");
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
+
+  const checkTextInput = () => {
+    if (!userName.trim() || !firstName.trim() || !lastName.trim()) {
+      alert("Details missing!");
+    } else {
+      onContinuePressed();
+    }
+  };
 
   // Loading in fonts
   useEffect(() => {
@@ -114,7 +123,7 @@ export default function Onboarding() {
       <View style={styles.flex4}></View>
 
       <View style={styles.flex5}>
-        <TouchableOpacity style={styles.button2} onPress={onContinuePressed}>
+        <TouchableOpacity style={styles.button2} onPress={checkTextInput}>
           <Text style={styles.text}>continue.</Text>
         </TouchableOpacity>
       </View>
