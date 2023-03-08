@@ -18,6 +18,7 @@ export default function Onboarding() {
   const onContinuePressed = () => {
     navigation.navigate("HomePage");
   };
+  const [userName, setUserName] = React.useState("");
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
 
@@ -64,12 +65,26 @@ export default function Onboarding() {
       </View>
 
       <View style={styles.flex3}>
-        <Text style={styles.subheading}> Enter your first and last name: </Text>
+        <Text style={styles.subheading}> Enter your details: </Text>
+        <View id="userNameFrame" style={styles.frame}>
+          <View id="userNameButton" style={styles.button}>
+            <TextInput
+              style={styles.text}
+              placeholder="Bath Username"
+              value={userName}
+              onChangeText={(userName) => setUserName(userName)}
+            ></TextInput>
+          </View>
+          <View
+            id="userNameShadow"
+            style={[styles.button, styles.shadow]}
+          ></View>
+        </View>
         <View id="firstNameFrame" style={styles.frame}>
           <View id="firstNameButton" style={styles.button}>
             <TextInput
               style={styles.text}
-              placeholder="John"
+              placeholder="First Name"
               value={firstName}
               onChangeText={(firstName) => setFirstName(firstName)}
             ></TextInput>
@@ -83,7 +98,7 @@ export default function Onboarding() {
           <View id="lastNameButton" style={styles.button}>
             <TextInput
               style={styles.text}
-              placeholder="Smith"
+              placeholder="Last Name"
               value={lastName}
               onChangeText={(lastName) => setLastName(lastName)}
             ></TextInput>
@@ -125,6 +140,7 @@ const styles = StyleSheet.create({
     flex: 3,
     justifyContent: "center",
     alignItems: "center",
+    marginTop: "5%",
   },
   flex4: {
     flex: 2,
