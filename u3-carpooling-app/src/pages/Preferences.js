@@ -1,26 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TextInput, Button, StyleSheet, ScrollView } from "react-native";
 import RestAPI from "../hooks/Rest";
 
+// const useFetchMyApi = (preferences) => {
+//     const [data, setData] = useState([]);
+//     useEffect(() => {
+//         const fetchData = async () => {
+//             const result = await RestAPI(
+//                 { operation: "insert", table: "Offer", userID: "3", poolID: "3", role: "1", settings: JSON.stringify(preferences)}
+//             );
+//             setData(result);
+//         };
+//         fetchData();
+//     }, [preferences]);
+//     return data;
+// };
+
+const [preferences_a, setPreferences_a] = useState(0);
+
 export default function Preferences() {
 
-    const saveToDB = () => {
+    if (preferences_a !== 0){
         RestAPI(
-            { operation: "insert", table: "Offer", userID: "3", poolID: "3", role: "1", settings: JSON.stringify(preferences)}
+            { operation: "insert", table: "Offer", userID: "3", poolID: "3", role: "1", settings: JSON.stringify(preferences_a)}
         );
-    };
+    }
 
-  const [preferences, setPreferences] = useState({
-    location: "",
-    destination: "",
-    departure_time: "",
-    detour_distance: "",
-    rating: "",
-    seats: ""
-  });
+//   const [preferences, setPreferences] = useState({
+//     location: "",
+//     destination: "",
+//     departure_time: "",
+//     detour_distance: "",
+//     rating: "",
+//     seats: ""
+//   });
 
-  const handleSavePreferences = () => {
+  const handleSavePreferences = (name) => {
     console.log(preferences);
+    setPreferences_a(name);
   };
 
   return (
@@ -80,9 +97,8 @@ export default function Preferences() {
           keyboardType="numeric"
         />
 
-        <Button title="Save Preferences" onPress={handleSavePreferences} />
-        <Button title="Save Preferences" onPress={saveToDB} />
-
+        <Button title="Save Preferences" onPress={handleSavePreferences("Hello")} />
+    
       </ScrollView>
     </View>
   );
