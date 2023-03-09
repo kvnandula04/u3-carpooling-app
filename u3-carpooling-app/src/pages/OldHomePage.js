@@ -20,6 +20,12 @@ import LiveTripPage from "./LiveTripPage";
 
 const cream = "#F7F3EB";
 const charcol = "#646464";
+const green = "#4CD835";
+const greenShadow = "#278A17";
+const charcoal = "#3F3F3F";
+const black = "#272727";
+const blue = "#1774ff";
+const orange = "#F55726";
 
 export default function HomePage() {
     const [role, setRole] = useState(0);
@@ -164,6 +170,14 @@ export default function HomePage() {
                         id="tripHistoryTitleView"
                         style={styles.tripHistoryTitleView}
                     >
+                        <Text
+                            style={[
+                                styles.tripHistoryTitle,
+                                styles.tripHistoryTitleShadow,
+                            ]}
+                        >
+                            My Pools
+                        </Text>
                         <Text style={styles.tripHistoryTitle}>My Pools</Text>
                     </View>
                     <TouchableOpacity onPress={onPressPool}>
@@ -308,7 +322,7 @@ const styles = StyleSheet.create({
     cardStyle: {
         width: "100%",
         height: "100%",
-        borderColor: "#000",
+        borderColor: green,
         borderWidth: 5,
         borderRadius: 32,
         overflow: "hidden",
@@ -318,8 +332,8 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 6,
         left: 6,
-        backgroundColor: "#000",
-        borderColor: "#000",
+        backgroundColor: greenShadow,
+        borderColor: greenShadow,
     },
     heading: {
         fontFamily: "atkinson-italic",
@@ -339,18 +353,28 @@ const styles = StyleSheet.create({
         width: "100%",
         height: "390%",
         marginTop: -15,
-        backgroundColor: "#fff",
     },
     tripHistoryTitleView: {
         justifyContent: "flex-start",
         alignItems: "center",
+        alignSelf: "center",
+        width: "50%",
+        height: "20%",
+        // backgroundColor: "black",
     },
     tripHistoryTitle: {
+        position: "absolute",
         fontFamily: "syne",
         fontSize: 24,
         marginTop: "5%",
-        color: "#1774ff",
+        color: blue,
         lineHeight: 30,
+    },
+    tripHistoryTitleShadow: {
+        position: "absolute",
+        top: 4,
+        color: orange,
+        marginTop: "5%",
     },
     tripHistoryTitleViewInner: {
         justifyContent: "flex-start",
@@ -369,15 +393,17 @@ const styles = StyleSheet.create({
     },
     bottomSheet: {
         borderRadius: 32,
-        borderColor: "#000",
-        backgroundColor: "#fff",
+        borderColor: blue,
+        backgroundColor: "black",
+        color: "black",
         borderWidth: 5,
         overflow: "hidden",
     },
     bottomSheetHandle: {
-        backgroundColor: "#000",
+        backgroundColor: blue,
         width: 70,
         height: 5,
         borderRadius: 5,
+        color: "black",
     },
 });
