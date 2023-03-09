@@ -29,15 +29,15 @@ export default function HomePage() {
     const snapPoints = useMemo(() => ["85%", "10%"], []);
     const bottomSheetRef = useRef(BottomSheet);
 
-  const onPressSwitch = () => {
-    setRole((role + 1) % 2);
-  };
-  const onPressProfile = () => {
-    navigation.navigate("ProfilePage");
-  };
-  const onPressPrefer = () => {
-    navigation.navigate("Preferences");
-  };
+    const onPressSwitch = () => {
+        setRole((role + 1) % 2);
+    };
+    const onPressProfile = () => {
+        navigation.navigate("ProfilePage");
+    };
+    const onPressPrefer = () => {
+        navigation.navigate("Preferences");
+    };
 
     const onPressPool = () => {
         navigation.navigate("LiveTripPage");
@@ -77,41 +77,46 @@ export default function HomePage() {
         secondColour = charcol;
     }
 
-  return (
-    <View style={styles.container}>
-      <GridBackground
-        position="absolute"
-        zIndex={-5}
-        lineColor={mainColour}
-        style={{ backgroundColor: secondColour }}
-      />
+    return (
+        <View style={styles.container}>
+            <GridBackground
+                position="absolute"
+                zIndex={-5}
+                lineColor={mainColour}
+                style={{ backgroundColor: secondColour }}
+            />
 
-      <SafeAreaView style={styles.headerFrame}>
-        <Pressable
-          id="spacer"
-          style={styles.profileButton}
-          onPress={onPressSwitch}
-        >
-          <Icon style={styles.icon} name="person" color="#000" size={50} />
-        </Pressable>
-        <View id="logo" style={{ flex: 2, alignItems: "center" }}>
-          <Text
-            style={{
-              fontFamily: "syne",
-              fontSize: 64,
-            }}
-          >
-            U3
-          </Text>
-        </View>
-        <Pressable
-          id="profile"
-          style={styles.profileButton}
-          onPress={onPressProfile}
-        >
-          <Text style={styles.profileText}>Me.</Text>
-        </Pressable>
-      </SafeAreaView>
+            <SafeAreaView style={styles.headerFrame}>
+                <Pressable
+                    id="spacer"
+                    style={styles.profileButton}
+                    onPress={onPressSwitch}
+                >
+                    <Icon
+                        style={styles.icon}
+                        name="person"
+                        color="#000"
+                        size={50}
+                    />
+                </Pressable>
+                <View id="logo" style={{ flex: 2, alignItems: "center" }}>
+                    <Text
+                        style={{
+                            fontFamily: "syne",
+                            fontSize: 64,
+                        }}
+                    >
+                        U3
+                    </Text>
+                </View>
+                <Pressable
+                    id="profile"
+                    style={styles.profileButton}
+                    onPress={onPressProfile}
+                >
+                    <Text style={styles.profileText}>Me.</Text>
+                </Pressable>
+            </SafeAreaView>
 
             <View style={styles.mapFrame}>
                 <View id="map" style={styles.flexInner22}>
@@ -192,6 +197,7 @@ const styles = StyleSheet.create({
         height: 170,
         marginTop: "-5%",
         flexDirection: "row",
+        marginBottom: "-7%",
         // backgroundColor: "red",
     },
     profileButton: {
@@ -199,6 +205,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         margin: "3%",
+        marginBottom: "10%",
         // backgroundColor: "green",
     },
     flexInner1: {
@@ -294,6 +301,7 @@ const styles = StyleSheet.create({
     profileText: {
         fontFamily: "atkinson-italic",
         fontSize: 34,
+
         // marginTop: "15%",
         // marginRight: "15%",
     },
