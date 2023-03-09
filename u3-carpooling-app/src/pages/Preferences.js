@@ -3,13 +3,6 @@ import { View, Text, TextInput, Button, StyleSheet, ScrollView } from "react-nat
 import RestAPI from "../hooks/Rest";
 
 export default function Preferences() {
-
-    const saveToDB = () => {
-        RestAPI(
-            { operation: "insert", table: "Offer", userID: "3", poolID: "3", role: "1", settings: JSON.stringify(preferences)}
-        );
-    };
-
   const [preferences, setPreferences] = useState({
     location: "",
     destination: "",
@@ -19,8 +12,15 @@ export default function Preferences() {
     seats: ""
   });
 
+  const [apreferences, asetPreferences] = useState(null);
+
+  RestAPI(
+      // { operation: "insert", table: "Offer", userID: "3", poolID: "3", role: "1", settings: JSON.stringify(preferences)}
+      apreferences
+  );
+
   const handleSavePreferences = () => {
-    console.log(preferences);
+    asetPreferences({ operation: "insert", table: "Offer", userID: "3", poolID: "3", role: "1", settings: "hello"});
   };
 
   return (
@@ -81,7 +81,6 @@ export default function Preferences() {
         />
 
         <Button title="Save Preferences" onPress={handleSavePreferences} />
-        <Button title="Save Preferences" onPress={saveToDB} />
 
       </ScrollView>
     </View>
