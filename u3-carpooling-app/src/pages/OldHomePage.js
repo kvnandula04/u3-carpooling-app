@@ -41,6 +41,9 @@ export default function HomePage() {
     const onPressProfile = () => {
         navigation.navigate("ProfilePage");
     };
+    const onPressMap = () => {
+        navigation.navigate("LiveMap");
+    };
     const onPressPrefer = () => {
         navigation.navigate("Preferences");
     };
@@ -129,6 +132,7 @@ export default function HomePage() {
                     <LiveMap
                         cardStyle={styles.cardStyle}
                         shadowStyle={styles.shadowStyle}
+                        onPress={onPressMap}
                     />
                 </View>
             </View>

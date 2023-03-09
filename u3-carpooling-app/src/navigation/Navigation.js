@@ -12,6 +12,7 @@ import OldHomePage from "../pages/OldHomePage";
 import ProfilePage from "../pages/ProfilePage";
 import PaymentPage from "../pages/PaymentPage";
 import Preferences from "../pages/Preferences";
+import LiveMap from "../components/LiveMap";
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +21,7 @@ const Navigation = () => {
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="OldHomePage" component={OldHomePage} />
+                <Stack.Screen name="LiveMap" component={LiveMap} />
                 <Stack.Screen
                     name="SignupLoginPage"
                     component={SignupLoginPage}
