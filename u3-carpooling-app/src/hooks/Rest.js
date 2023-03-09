@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-export default function RestAPI(params, template=null, ranAlready=false) {
+export default function RestAPI(params, template=null, runFlag=true) {
   const [result, setResult] = useState([template]);
 
   const requestOptions = {
@@ -11,7 +11,7 @@ export default function RestAPI(params, template=null, ranAlready=false) {
 
   const fetchData = async () => {
     try {
-      if (ranAlready == true || params == null)
+      if (runFlag == false || params == null)
         return;
         
       console.log("REST sent: ", params);
