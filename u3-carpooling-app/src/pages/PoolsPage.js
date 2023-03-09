@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import GridBackground from "../../assets/grid-background";
 import LiveMap from "../components/LiveMap";
@@ -6,7 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import RestAPI from "../hooks/Rest";
 
 const PoolsPage = () => {
-	const [singleCall, updateSingleCall] = useState(false);
+    const [singleCall, updateSingleCall] = useState(false);
 
     const onPressCancel = () => {
         console.log("Cancel Trip Pressed");
@@ -15,40 +15,97 @@ const PoolsPage = () => {
         console.log("Shedule Another Trip Pressed");
     };
 
-    const initDB = () => {
-    	RestAPI({ operation:"insert", table:"User", name:"Will", email:"wb462@bath.ac.uk", pwdHash:"$123" });
-		RestAPI({ operation:"insert", table:"User", name:"Richard", email:"rp123@bath.ac.uk", pwdHash:"$456" });
-	  	const will = RestAPI(
-	  		{ operation:"select", table:"User", name:"Will" },
-	  		{ userID: null},
-	  		ranAlready=singleCall
-	  	)[0];
-	  	const richard = RestAPI(
-	  	    { operation:"select", table:"User", name:"Richard" },
-	  	    { userID: null},
-	  	   	ranAlready=singleCall
-		)[0];
-		const vehicle = RestAPI(
-			{ operation:"vehiclelookup", registrationNumber:"RO11RWW" },
-			{ vehicleID: null},
-			ranAlready=singleCall
-		)[0];
-	  	RestAPI({ operation:"insert", table:"Licence", licenceNumber:"WTJ011132", userID:will.userID, vehicleID:vehicle.vehicleID });
-	  	const licence = RestAPI(
-	  		{ operation:"select", table:"Licence", licenceNumber:"WTJ011132" },
-	  		{ licenceID: null},
-	  		ranAlready=singleCall
-	  	)[0];
-	  	RestAPI({ operation:"insert", table:"Pool", licenceID:licence.licenceID });
-	  	RestAPI({ operation:"insert", table:"PoolSubscriber", poolID:1, userID:will.userID });
-	  	RestAPI({ operation:"insert", table:"PoolSubscriber", poolID:1, userID:richard.userID });
-	  	if (singleCall == false)
-	  		updateSingleCall(true);
-    };
+    let test = null;
 
-	initDB();
-  	
-	return (
+    const initDB = () => {
+        // RestAPI({
+        //     operation: "insert",
+        //     table: "User",
+        //     name: "Will",
+        //     email: "wb462@bath.ac.uk",
+        //     pwdHash: "$123",
+        // });
+        // RestAPI({
+        //     operation: "insert",
+        //     table: "User",
+        //     name: "Richard",
+        //     email: "rp123@bath.ac.uk",
+        //     pwdHash: "$456",
+        // });
+        // const will = RestAPI(
+        //     { operation: "select", table: "User", name: "Will" },
+        //     { userID: null },
+        //     (ranAlready = singleCall)
+        // )[0];
+        // const richard = RestAPI(
+        //     { operation: "select", table: "User", name: "Richard" },
+        //     { userID: null },
+        //     (ranAlready = singleCall)
+        // )[0];
+        // const vehicle = RestAPI(
+        //     { operation: "vehiclelookup", registrationNumber: "RO11RWW" },
+        //     { vehicleID: null },
+        //     (ranAlready = singleCall)
+        // )[0];
+        // RestAPI({
+        //     operation: "insert",
+        //     table: "Licence",
+        //     licenceNumber: "WTJ011132",
+        //     userID: will.userID,
+        //     vehicleID: vehicle.vehicleID,
+        // });
+        // const licence = RestAPI(
+        //     {
+        //         operation: "select",
+        //         table: "Licence",
+        //         licenceNumber: "WTJ011132",
+        //     },
+        //     { licenceID: null },
+        //     (ranAlready = singleCall)
+        // )[0];
+        // RestAPI({
+        //     operation: "insert",
+        //     table: "Pool",
+        //     licenceID: licence.licenceID,
+        // });
+        // RestAPI({
+        //     operation: "insert",
+        //     table: "PoolSubscriber",
+        //     poolID: 1,
+        //     userID: will.userID,
+        // });
+        // RestAPI({
+        //     operation: "insert",
+        //     table: "PoolSubscriber",
+        //     poolID: 1,
+        //     userID: richard.userID,
+        // });
+
+        // ----------------- TESTS -----------------
+        test = RestAPI(
+            {
+                operation: "select",
+                table: "Offer",
+                userID: "3",
+            },
+            {
+                userID: null,
+            },
+            (ranAlready = singleCall)
+        );
+        if (singleCall == false) updateSingleCall(true);
+    };
+    console.log(test);
+
+    initDB();
+
+    const Item = ({ title }) => (
+        <View style={styles.item}>
+            <Text style={styles.title}>{title}</Text>
+        </View>
+    );
+
+    return (
         <View id="pageFrame" style={styles.pageFrame}>
             <GridBackground
                 position="absolute"
@@ -56,51 +113,56 @@ const PoolsPage = () => {
                 lineColor={"black"}
                 style={{ backgroundColor: "#f7f3eb" }}
             />
-            <Pressable style={{flex:1}} onPress={onPressCancel}>
-				<Text> TEST </Text>
+            <Pressable style={{ flex: 1 }} onPress={onPressCancel}>
+                <Text> TEST </Text>
             </Pressable>
+            <FlatList
+                data={test}
+                renderItem={({ item }) => <Item title={item.offerID} />}
+                keyExtractor={(item) => item.offerID}
+            />
         </View>
     );
 
     // return (
-        // <View id="pageFrame" style={styles.pageFrame}>
-            // <GridBackground
-                // position="absolute"
-                // zIndex={-5}
-                // lineColor={"black"}
-                // style={{ backgroundColor: "#f7f3eb" }}
-            // />
-            // <SafeAreaView id="poolFrame" style={styles.poolFrame}>
-                // <View id="poolCard" style={styles.poolCard}>
-                    // <LiveMap
-                        // cardStyle={styles.poolStyle}
-                        // shadowStyle={styles.shadowStyle}
-                        // text="U3"
-                    // />
-                    // <Pressable
-                        // id="cancelButton"
-                        // style={styles.cancelButton}
-                        // onPress={onPressCancel}
-                    // >
-                        // <Text id="cancelText" style={styles.cancelText}>
-                            // cancel trip
-                        // </Text>
-                    // </Pressable>
-                // </View>
-            // </SafeAreaView>
-            // <View id="matchFrame" style={styles.matchFrame}></View>
-            // <View id="sheduleFrame" style={styles.sheduleFrame}>
-                // <Pressable
-                    // id="sheduleButton"
-                    // style={styles.sheduleButton}
-                    // onPress={onPressShedule}
-                // >
-                    // <Text id="sheduleText" style={styles.sheduleText}>
-                        // shedule Another Trip
-                    // </Text>
-                // </Pressable>
-            // </View>
-        // </View>
+    // <View id="pageFrame" style={styles.pageFrame}>
+    // <GridBackground
+    // position="absolute"
+    // zIndex={-5}
+    // lineColor={"black"}
+    // style={{ backgroundColor: "#f7f3eb" }}
+    // />
+    // <SafeAreaView id="poolFrame" style={styles.poolFrame}>
+    // <View id="poolCard" style={styles.poolCard}>
+    // <LiveMap
+    // cardStyle={styles.poolStyle}
+    // shadowStyle={styles.shadowStyle}
+    // text="U3"
+    // />
+    // <Pressable
+    // id="cancelButton"
+    // style={styles.cancelButton}
+    // onPress={onPressCancel}
+    // >
+    // <Text id="cancelText" style={styles.cancelText}>
+    // cancel trip
+    // </Text>
+    // </Pressable>
+    // </View>
+    // </SafeAreaView>
+    // <View id="matchFrame" style={styles.matchFrame}></View>
+    // <View id="sheduleFrame" style={styles.sheduleFrame}>
+    // <Pressable
+    // id="sheduleButton"
+    // style={styles.sheduleButton}
+    // onPress={onPressShedule}
+    // >
+    // <Text id="sheduleText" style={styles.sheduleText}>
+    // shedule Another Trip
+    // </Text>
+    // </Pressable>
+    // </View>
+    // </View>
     // );
 };
 
@@ -162,5 +224,17 @@ const styles = StyleSheet.create({
         fontSize: 32,
         fontStyle: "italic",
         color: "black",
+    },
+    container: {
+        flex: 1,
+    },
+    item: {
+        backgroundColor: "#f9c2ff",
+        padding: 20,
+        marginVertical: 8,
+        marginHorizontal: 16,
+    },
+    title: {
+        fontSize: 32,
     },
 });
