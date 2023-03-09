@@ -16,6 +16,7 @@ const PoolsPage = () => {
     };
 
     let test = null;
+    let pool = null;
 
     const initDB = () => {
         // RestAPI({
@@ -90,12 +91,23 @@ const PoolsPage = () => {
             },
             {
                 userID: null,
+                poolID: null,
             },
             (ranAlready = singleCall)
+        )[0];
+        pool = RestAPI(
+            {
+                operation: "select",
+                table: "Pool",
+                poolID: test.poolID,
+            },
+            {
+                licenceID: null,
+            }
         );
         if (singleCall == false) updateSingleCall(true);
     };
-    console.log(test);
+    console.log(pool);
 
     initDB();
 
