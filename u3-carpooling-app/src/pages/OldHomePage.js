@@ -17,6 +17,7 @@ import PlanTrip from "../components/PlanTrip";
 import { Icon } from "react-native-elements";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import LiveTripPage from "./LiveTripPage";
+import { useRoute } from '@react-navigation/native';
 
 const cream = "#F7F3EB";
 const charcol = "#646464";
@@ -32,6 +33,49 @@ export default function HomePage() {
     const [IsReady, SetIsReady] = useState(false);
     const navigation = useNavigation();
 
+    const [alreadyRun, setAlreadyRun] = useState(false);
+
+    let messagePage = null;
+
+    const [preferences, setPreferences] = useState({
+        location: "53 Hungerford Rd",
+        destination: "University of Bath",
+        departure_time: "9:45",
+        arrival_time: "10:05",
+        detour_distance: "2",
+        rating: "5",
+        seats: "1"
+      });
+  
+    const route = useRoute();
+    if(!route.IsReady){
+        messagePage = route.params;
+        
+
+        // console.log(messagePage.messagePage)
+        // if(messagePage === undefined){
+        //     console.log("Hello");
+        // }
+        // //Update table
+        if(alreadyRun === false && messagePage !== undefined){
+            console.log("Home Page: ",messagePage.messagePage);
+            setPreferences({...preferences, location: messagePage.messagePage.location})
+            setPreferences({...preferences, destination: messagePage.messagePage.destination})
+            setPreferences({...preferences, departure_time: messagePage.messagePage.departure_time})
+            setPreferences({...preferences, arrival_time: messagePage.messagePage.arrival_time})
+            setPreferences({...preferences, detour_distance: messagePage.messagePage.detour_distance})
+            setPreferences({...preferences, rating: messagePage.messagePage.rating})
+            setPreferences({...preferences, seats: messagePage.messagePage.seats})
+            console.log("Home Page updated: ", preferences)
+            messagePage = undefined
+            setAlreadyRun(true);
+        }
+    
+    }
+
+
+    
+
     const snapPoints = useMemo(() => ["85%", "10%"], []);
     const bottomSheetRef = useRef(BottomSheet);
 
@@ -45,7 +89,17 @@ export default function HomePage() {
         navigation.navigate("LiveMap");
     };
     const onPressPrefer = () => {
-        navigation.navigate("Preferences");
+        // navigation.navigate("Preferences", {message: {location: "Manchester",
+        // destination: "Bath",
+        // departure_time: "10:05",
+        // arrival_time: "10:30",
+        // detour_distance: "2",
+        // rating: "5",
+        // seats: "1"}});
+
+        navigation.navigate("Preferences", {message: preferences});
+
+        setAlreadyRun(false);
     };
 
     const onPressPool = () => {
