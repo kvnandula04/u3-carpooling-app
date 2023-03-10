@@ -1,13 +1,24 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, {useState} from "react";
 import { TextInput } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 
 const PlanTrip = () => {
-  const [startLocation, setStartLocation] = React.useState("");
-  const [destination, setDestination] = React.useState("");
-  const [departTime, setDepartTime] = React.useState("");
-  const [arrivalTime, setarrivalTime] = React.useState("");
+  // const [startLocation, setStartLocation] = React.useState("");
+  // const [destination, setDestination] = React.useState("");
+  // const [departTime, setDepartTime] = React.useState("");
+  // const [arrivalTime, setarrivalTime] = React.useState("");
+
+  const [preferences, setPreferences] = useState({
+    location: "53 Hungerford Rd",
+    destination: "University of Bath",
+    departure_time: "9:45",
+    arrival_time: "10:05",
+    detour_distance: "2",
+    rating: "5",
+    seats: "1"
+  });
+
 
   const navigation = useNavigation();
   const onMatchMePressed = () => {
@@ -25,36 +36,41 @@ const PlanTrip = () => {
             <Text style={styles.inputTitle}>Start location: </Text>
             <TextInput
               style={styles.inputText}
-              placeholder="53 Hungerford Rd"
-              value={startLocation}
-              onChangeText={(startLocation) => setStartLocation(startLocation)}
+              //placeholder="53 Hungerford Rd"
+              value={preferences.location}
+              //onChangeText={(startLocation) => setStartLocation(startLocation)}
+              onChangeText={(text) => setPreferences({...preferences, location: text})}
             ></TextInput>
           </View>
           <View style={styles.inputFrame}>
             <Text style={styles.inputTitle}>Destination: </Text>
             <TextInput
               style={styles.inputText}
-              placeholder="University of Bath"
-              value={destination}
-              onChangeText={(destination) => setDestination(destination)}
+              //placeholder="University of Bath"
+              value={preferences.destination}
+              //onChangeText={(destination) => setDestination(destination)}
+              onChangeText={(text) => setPreferences({...preferences, destination: text})}
+
             ></TextInput>
           </View>
           <View style={styles.inputFrame}>
             <Text style={styles.inputTitle}>Departure time: </Text>
             <TextInput
               style={styles.inputText}
-              placeholder="9:45"
-              value={departTime}
-              onChangeText={(departTime) => setDepartTime(departTime)}
+              //placeholder="9:45"
+              value={preferences.departure_time}
+              //onChangeText={(departTime) => setDepartTime(departTime)}
+              onChangeText={(text) => setPreferences({...preferences, departure_time: text})}
             ></TextInput>
           </View>
           <View style={styles.inputFrame}>
             <Text style={styles.inputTitle}>Arrival time: </Text>
             <TextInput
               style={styles.inputText}
-              placeholder="10:05"
-              value={arrivalTime}
-              onChangeText={(arrivalTime) => setarrivalTime(arrivalTime)}
+              //placeholder="10:05"
+              value={preferences.arrival_time}
+              //onChangeText={(arrivalTime) => setarrivalTime(arrivalTime)}
+              onChangeText={(text) => setPreferences({...preferences, arrival_time: text})}
             ></TextInput>
           </View>
         </View>
