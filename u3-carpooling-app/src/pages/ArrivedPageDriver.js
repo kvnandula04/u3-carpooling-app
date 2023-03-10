@@ -14,18 +14,44 @@ const black = "#272727";
 
 export default function ArrivedPageDriver() {
   const [IsReady, SetIsReady] = useState(false);
-  const [user, setUser] = useState("");
+  const [driver, setDriver] = useState("");
   const [code, setCode] = useState(0);
+  const [callOne,   updateCallOne]   = useState(true);
+  const [recvOne,   updateRecvOne]   = useState(false);
+  const [returned, setReturned] = useState("");
   
-  const result = RestAPI(
-    { operation: "select", table: "User", userID: "1" }, //need to ensure that we get correct user
-  );
+  var result = "";
+  const driverNo = 3 // should be redux value
+
+  const getDriver = () => {
+    result = RestAPI(
+        {
+            operation: "select",
+            table: "User",
+            userID: driverNo.toString(),
+        },
+        {
+            userID: null,
+            poolID: null,
+        },
+        (runFlag = callOne)
+    )[0];
+
+// Only run the call once
+if (callOne == true) {
+  updateCallOne(false);
+  setReturned(result);
+    }
+
+  }
+  getDriver();
+
 
   function RenderOrNot() {
     if (result.name !== "") {
       if (code === 1) {
-        setUser(result.email + result.name + result.pwdHash + result.userID);
-        return <QRCode id={"QRCode"} value={user} level={"L"} />;
+        setDriver(result.email + result.name + result.pwdHash + result.userID);
+        return <QRCode id={"QRCode"} value={driver} level={"L"} />;
       } else {
         return <Pressable
           id="qr"
