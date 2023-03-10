@@ -1,16 +1,39 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Button, StyleSheet, ScrollView } from "react-native";
 import RestAPI from "../hooks/Rest";
+import { useNavigation } from "@react-navigation/native";
+import { useRoute } from '@react-navigation/native';
 
 export default function Preferences() {
+  const navigation = useNavigation();
+  
+  const route = useRoute();
+  const {message} = route.params;
+  console.log("Preferences page: ",message);
+
   const [preferences, setPreferences] = useState({
-    location: "",
-    destination: "",
-    departure_time: "",
-    detour_distance: "",
-    rating: "",
-    seats: ""
+    location: message.location,
+    destination: message.destination,
+    departure_time: message.departure_time,
+    arrival_time: message.arrival_time,
+    detour_distance: message.detour_distance,
+    rating: message.rating,
+    seats: message.seats
   });
+
+  const onPressBack = () => {
+    navigation.navigate("OldHomePage", {messagePage: preferences});
+
+     // navigation.navigate("OldHomePage", {messagePage: {location: "",
+    // destination: "",
+    // departure_time: "",
+    // arrival_time: "",
+    // detour_distance: "2",
+    // rating: "5",
+    // seats: "1"}});
+  };
+
+  
 
   const [apreferences, asetPreferences] = useState(null);
 
@@ -20,7 +43,7 @@ export default function Preferences() {
   );
 
   const handleSavePreferences = () => {
-    asetPreferences({ operation: "insert", table: "Offer", userID: "3", poolID: "3", role: "1", settings: "hello"});
+    asetPreferences({ operation: "insert", table: "Offer", userID: "3", poolID: "3", role: "1", settings: JSON.stringify(preferences)});
   };
 
   return (
@@ -28,31 +51,7 @@ export default function Preferences() {
       <ScrollView style={styles.scrollView}>
         <Text style={styles.title}>Preferences</Text>
         <Text style={styles.subtitle}>Enter your preferences here</Text>
-
-        <Text style={styles.label}>Start Location</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter Start Location"
-          value={preferences.location}
-          onChangeText={(text) => setPreferences({...preferences, location: text})}
-        />
-
-        <Text style={styles.label}>Destination</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter Destination"
-          value={preferences.destination}
-          onChangeText={(text) => setPreferences({...preferences, destination: text})}
-        />
-
-        <Text style={styles.label}>Start Time</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter Start Time"
-          value={preferences.departure_time}
-          onChangeText={(text) => setPreferences({...preferences, departure_time: text})}
-        />
-
+    
         <Text style={styles.label}>Maximum Detour Distance</Text>
         <TextInput
           style={styles.input}
@@ -80,6 +79,8 @@ export default function Preferences() {
           keyboardType="numeric"
         />
 
+        <Button title="Save Preferences (back to home)" onPress={onPressBack} />
+        
         <Button title="Save Preferences" onPress={handleSavePreferences} />
 
       </ScrollView>
