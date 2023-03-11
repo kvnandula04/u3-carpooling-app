@@ -17,6 +17,7 @@
     "dotenv": "^16.0.3",
     "expo": "~47.0.12",
     "expo-barcode-scanner": "~12.1.0",
+    "expo-constants": "^14.2.1",
     "expo-font": "~11.0.1",
     "expo-location": "~15.0.1",
     "expo-splash-screen": "~0.17.5",
