@@ -3,11 +3,9 @@ import React, {useState} from "react";
 import { TextInput } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 
-const PlanTrip = () => {
-  // const [startLocation, setStartLocation] = React.useState("");
-  // const [destination, setDestination] = React.useState("");
-  // const [departTime, setDepartTime] = React.useState("");
-  // const [arrivalTime, setarrivalTime] = React.useState("");
+const PlanTrip = ({preferenceData}) => {
+
+  const [alreadyRun, setAlreadyRun] = useState(false);
 
   const [preferences, setPreferences] = useState({
     location: "53 Hungerford Rd",
@@ -16,11 +14,17 @@ const PlanTrip = () => {
     arrival_time: "10:05",
     detour_distance: "2",
     rating: "5",
-    seats: "1"
+    seats: "1",
+    prePage: false
   });
 
+  if (!alreadyRun) {
+    setPreferences(preferenceData);
+    setAlreadyRun(true);
+  }
 
   const navigation = useNavigation();
+  
   const onMatchMePressed = () => {
     navigation.navigate("LiveTripPage");
   };
