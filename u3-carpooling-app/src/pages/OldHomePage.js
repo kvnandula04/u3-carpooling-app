@@ -19,7 +19,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import LiveTripPage from "./LiveTripPage";
 import { useRoute } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateUserID } from '../../globalVariables/mySlice';
+import { updateUserRole } from '../../globalVariables/mySlice';
 
 
 const cream = "#F7F3EB";
@@ -32,7 +32,7 @@ const blue = "#1774ff";
 const orange = "#F55726";
 
 export default function HomePage() {
-    const [role, setRole] = useState(myUserID);
+    const [role, setRole] = useState(myUserRole);
     const [IsReady, SetIsReady] = useState(false);
     const navigation = useNavigation();
 
@@ -63,16 +63,17 @@ export default function HomePage() {
         }
     }
 
-    const myUserID = useSelector(state => state.mySlice.myUserID);
+
+    const myUserRole = useSelector(state => state.mySlice.myUserRole);
     const dispatch = useDispatch();
 
     const snapPoints = useMemo(() => ["85%", "10%"], []);
     const bottomSheetRef = useRef(BottomSheet);
 
-    const onPressSwitch = () => {//global variable - this is the user ID, but currently is being used as if it were the "role"
-        dispatch(updateUserID((myUserID + 1)%2))
-        setRole((myUserID));
-        console.log(myUserID)
+    const onPressSwitch = () => {//global variable - stores user role
+        dispatch(updateUserRole((myUserRole + 1)%2))
+        setRole((myUserRole));
+        console.log(myUserRole)
     };
     const onPressProfile = () => {
         navigation.navigate("ProfilePage");

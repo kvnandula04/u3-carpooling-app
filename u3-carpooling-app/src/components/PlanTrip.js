@@ -9,7 +9,8 @@ import { updateUserID } from '../../globalVariables/mySlice';
 const PlanTrip = ({preferenceData}) => {
 
   const [alreadyRun, setAlreadyRun] = useState(false);
-
+  const [id, setID] = useState(useSelector(state => state.mySlice.myUserID));
+  const IdToBeChangedTo = 11623;//this is the id that will be changed to
   const [preferences, setPreferences] = useState({
     location: "53 Hungerford Rd",
     destination: "University of Bath",
@@ -25,38 +26,15 @@ const PlanTrip = ({preferenceData}) => {
     setPreferences(preferenceData);
     setAlreadyRun(true);
   }
-
-  const navigation = useNavigation();
-
-  const [apreferences, asetPreferences] = useState(null);
+  const dispatch = useDispatch();
   
-  RestAPI(
-    // { operation: "insert", table: "Offer", userID: "3", poolID: "3", role: "1", settings: JSON.stringify(preferences)}
-    apreferences
-  );
-
-  //This is what we want to send the database
-  //Need the userID, poolID, role, and settings
-  //Get the userID from the global variables
-  //PoolID = Go into Licence table, get the PoolID from the userID (Only applies to drivers) (If role = 1, then get the poolID) otherwise, poolID = null
-  //Role = ???
-  //Settings = the preferences object
-
-  //userID
-  // const myUserID = useSelector(state => state.mySlice.myUserID);
-  // const dispatch = useDispatch();
-  const myUserID = 3;
-  const role = 1;
-
-  const handleSavePreferences = () => {
-
-    //Get the poolID
-    const pool_result = asetPreferences({ operation: "select", table: "Licence", userID: myUserID});
-
-
-    asetPreferences({ operation: "insert", table: "Offer", userID: "3", poolID: "3", role: "1", settings: JSON.stringify(preferences)});
-  };
-
+  function changeIDinPageandReduxStore (val){
+    dispatch(updateUserID((val)));
+    setID((val));
+    console.log("page and store ID: " + id.toString());
+  }
+  const navigation = useNavigation();
+  
   const onMatchMePressed = () => {
     // console.log("UserID: ", myUserID);
     if(role === 1){
@@ -123,7 +101,7 @@ const PlanTrip = ({preferenceData}) => {
         style={[styles.planTripCard, styles.planTripShadow]}
       />
       <View id="matchMeButton" style={styles.matchMeButton}>
-        <Pressable onPress={onMatchMePressed}>
+        <Pressable onPress={() => {onMatchMePressed, changeIDinPageandReduxStore(IdToBeChangedTo);}}>
           <Text style={styles.matchMeButtonText}>Match me!</Text>
         </Pressable>
       </View>
