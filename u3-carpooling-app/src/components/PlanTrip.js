@@ -5,11 +5,9 @@ import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserID } from "../../globalVariables/mySlice";
 
-const PlanTrip = () => {
-  // const [startLocation, setStartLocation] = React.useState("");
-  // const [destination, setDestination] = React.useState("");
-  // const [departTime, setDepartTime] = React.useState("");
-  // const [arrivalTime, setarrivalTime] = React.useState("");
+const PlanTrip = ({preferenceData}) => {
+
+  const [alreadyRun, setAlreadyRun] = useState(false);
   const [id, setID] = useState(useSelector(state => state.mySlice.myUserID));
   const IdToBeChangedTo = 11623;//this is the id that will be changed to
   const [preferences, setPreferences] = useState({
@@ -19,18 +17,23 @@ const PlanTrip = () => {
     arrival_time: "10:05",
     detour_distance: "2",
     rating: "5",
-    seats: "1"
+    seats: "1",
+    prePage: false
   });
 
+  if (!alreadyRun) {
+    setPreferences(preferenceData);
+    setAlreadyRun(true);
+  }
   const dispatch = useDispatch();
-
+  
   function changeIDinPageandReduxStore (val){
     dispatch(updateUserID((val)));
     setID((val));
     console.log("page and store ID: " + id.toString());
   }
   const navigation = useNavigation();
-  function onMatchMePressed(){
+  const onMatchMePressed = () => {
     navigation.navigate("LiveTripPage");
   };
 

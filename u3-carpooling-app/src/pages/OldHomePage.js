@@ -47,33 +47,20 @@ export default function HomePage() {
         arrival_time: "10:05",
         detour_distance: "2",
         rating: "5",
-        seats: "1"
+        seats: "1",
+        prePage: false
       });
-  
+
     const route = useRoute();
     if(!route.IsReady){
         messagePage = route.params;
-        
-
-        // console.log(messagePage.messagePage)
-        // if(messagePage === undefined){
-        //     console.log("Hello");
-        // }
-        // //Update table
-        if(alreadyRun === false && messagePage !== undefined){
-            console.log("Home Page: ",messagePage.messagePage);
-            setPreferences({...preferences, location: messagePage.messagePage.location})
-            setPreferences({...preferences, destination: messagePage.messagePage.destination})
-            setPreferences({...preferences, departure_time: messagePage.messagePage.departure_time})
-            setPreferences({...preferences, arrival_time: messagePage.messagePage.arrival_time})
-            setPreferences({...preferences, detour_distance: messagePage.messagePage.detour_distance})
-            setPreferences({...preferences, rating: messagePage.messagePage.rating})
-            setPreferences({...preferences, seats: messagePage.messagePage.seats})
-            console.log("Home Page updated: ", preferences)
-            messagePage = undefined
-            setAlreadyRun(true);
+        if(messagePage !== undefined){
+            if(alreadyRun === false && messagePage.messagePage.prePage === false){
+                setPreferences(messagePage.messagePage);
+                messagePage = undefined
+                setAlreadyRun(true);
+            }
         }
-    
     }
 
 
@@ -95,16 +82,8 @@ export default function HomePage() {
         navigation.navigate("LiveMap");
     };
     const onPressPrefer = () => {
-        // navigation.navigate("Preferences", {message: {location: "Manchester",
-        // destination: "Bath",
-        // departure_time: "10:05",
-        // arrival_time: "10:30",
-        // detour_distance: "2",
-        // rating: "5",
-        // seats: "1"}});
-
+        preferences.prePage = true;
         navigation.navigate("Preferences", {message: preferences});
-
         setAlreadyRun(false);
     };
 
@@ -216,7 +195,7 @@ export default function HomePage() {
                     </Pressable>
                 </View>
                 <View id="planTripFrame" style={styles.planTripFrame}>
-                    <PlanTrip />
+                    <PlanTrip preferenceData={preferences}/>
                 </View>
             </View>
 
