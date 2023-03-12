@@ -47,27 +47,21 @@ export default function HomePage() {
         arrival_time: "10:05",
         detour_distance: "2",
         rating: "5",
-        seats: "1"
+        seats: "1",
+        prePage: false
       });
-  
+
     const route = useRoute();
     if(!route.IsReady){
         messagePage = route.params;
-
-        // console.log(messagePage.messagePage)
         if(messagePage !== undefined){
-            //console.log("Run: ",messagePage)
-            //console.log("Value at route: ",alreadyRun);
-            if(alreadyRun === false){
-                //console.log("It ran!")
+            if(alreadyRun === false && messagePage.messagePage.prePage === false){
                 setPreferences(messagePage.messagePage);
                 messagePage = undefined
                 setAlreadyRun(true);
             }
         }
-    
     }
-
 
     const myUserID = useSelector(state => state.mySlice.myUserID);
     const dispatch = useDispatch();
@@ -87,8 +81,7 @@ export default function HomePage() {
         navigation.navigate("LiveMap");
     };
     const onPressPrefer = () => {
-        //console.log("Value at on Press: ",alreadyRun);
-        
+        preferences.prePage = true;
         navigation.navigate("Preferences", {message: preferences});
         setAlreadyRun(false);
     };
@@ -201,7 +194,7 @@ export default function HomePage() {
                     </Pressable>
                 </View>
                 <View id="planTripFrame" style={styles.planTripFrame}>
-                    <PlanTrip />
+                    <PlanTrip preferenceData={preferences}/>
                 </View>
             </View>
 
