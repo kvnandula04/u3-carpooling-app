@@ -9,7 +9,6 @@ export default function Preferences() {
   
   const route = useRoute();
   const {message} = route.params;
-  console.log("Preferences page: ",message);
 
   const [preferences, setPreferences] = useState({
     location: message.location,
@@ -18,22 +17,14 @@ export default function Preferences() {
     arrival_time: message.arrival_time,
     detour_distance: message.detour_distance,
     rating: message.rating,
-    seats: message.seats
+    seats: message.seats,
+    prePage: false
   });
 
   const onPressBack = () => {
     navigation.navigate("OldHomePage", {messagePage: preferences});
-
-     // navigation.navigate("OldHomePage", {messagePage: {location: "",
-    // destination: "",
-    // departure_time: "",
-    // arrival_time: "",
-    // detour_distance: "2",
-    // rating: "5",
-    // seats: "1"}});
   };
 
-  
 
   const [apreferences, asetPreferences] = useState(null);
 

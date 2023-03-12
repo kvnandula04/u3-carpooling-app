@@ -53,25 +53,17 @@ export default function HomePage() {
     const route = useRoute();
     if(!route.IsReady){
         messagePage = route.params;
-        
 
         // console.log(messagePage.messagePage)
-        // if(messagePage === undefined){
-        //     console.log("Hello");
-        // }
-        // //Update table
-        if(alreadyRun === false && messagePage !== undefined){
-            console.log("Home Page: ",messagePage.messagePage);
-            setPreferences({...preferences, location: messagePage.messagePage.location})
-            setPreferences({...preferences, destination: messagePage.messagePage.destination})
-            setPreferences({...preferences, departure_time: messagePage.messagePage.departure_time})
-            setPreferences({...preferences, arrival_time: messagePage.messagePage.arrival_time})
-            setPreferences({...preferences, detour_distance: messagePage.messagePage.detour_distance})
-            setPreferences({...preferences, rating: messagePage.messagePage.rating})
-            setPreferences({...preferences, seats: messagePage.messagePage.seats})
-            console.log("Home Page updated: ", preferences)
-            messagePage = undefined
-            setAlreadyRun(true);
+        if(messagePage !== undefined){
+            //console.log("Run: ",messagePage)
+            //console.log("Value at route: ",alreadyRun);
+            if(alreadyRun === false){
+                //console.log("It ran!")
+                setPreferences(messagePage.messagePage);
+                messagePage = undefined
+                setAlreadyRun(true);
+            }
         }
     
     }
@@ -95,16 +87,9 @@ export default function HomePage() {
         navigation.navigate("LiveMap");
     };
     const onPressPrefer = () => {
-        // navigation.navigate("Preferences", {message: {location: "Manchester",
-        // destination: "Bath",
-        // departure_time: "10:05",
-        // arrival_time: "10:30",
-        // detour_distance: "2",
-        // rating: "5",
-        // seats: "1"}});
-
+        //console.log("Value at on Press: ",alreadyRun);
+        
         navigation.navigate("Preferences", {message: preferences});
-
         setAlreadyRun(false);
     };
 
