@@ -2,6 +2,9 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import React, {useState} from "react";
 import { TextInput } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
+import RestAPI from "../hooks/Rest";
+import { useSelector, useDispatch } from 'react-redux';
+import { updateUserID } from '../../globalVariables/mySlice';
 
 const PlanTrip = ({preferenceData}) => {
 
@@ -24,8 +27,44 @@ const PlanTrip = ({preferenceData}) => {
   }
 
   const navigation = useNavigation();
+
+  const [apreferences, asetPreferences] = useState(null);
   
+  RestAPI(
+    // { operation: "insert", table: "Offer", userID: "3", poolID: "3", role: "1", settings: JSON.stringify(preferences)}
+    apreferences
+  );
+
+  //This is what we want to send the database
+  //Need the userID, poolID, role, and settings
+  //Get the userID from the global variables
+  //PoolID = Go into Licence table, get the PoolID from the userID (Only applies to drivers) (If role = 1, then get the poolID) otherwise, poolID = null
+  //Role = ???
+  //Settings = the preferences object
+
+  //userID
+  // const myUserID = useSelector(state => state.mySlice.myUserID);
+  // const dispatch = useDispatch();
+  const myUserID = 3;
+  const role = 1;
+
+  const handleSavePreferences = () => {
+
+    //Get the poolID
+    const pool_result = asetPreferences({ operation: "select", table: "Licence", userID: myUserID});
+
+
+    asetPreferences({ operation: "insert", table: "Offer", userID: "3", poolID: "3", role: "1", settings: JSON.stringify(preferences)});
+  };
+
   const onMatchMePressed = () => {
+    // console.log("UserID: ", myUserID);
+    if(role === 1){
+      const pool_result = asetPreferences({ operation: "select", table: "Licence", userID: myUserID});
+      console.log(pool_result.vehicleID);
+    }
+
+    console.log(preferences)
     navigation.navigate("LiveTripPage");
   };
 
