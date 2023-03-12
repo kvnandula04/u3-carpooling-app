@@ -2,13 +2,16 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import React, {useState} from "react";
 import { TextInput } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUserID } from "../../globalVariables/mySlice";
 
 const PlanTrip = () => {
   // const [startLocation, setStartLocation] = React.useState("");
   // const [destination, setDestination] = React.useState("");
   // const [departTime, setDepartTime] = React.useState("");
   // const [arrivalTime, setarrivalTime] = React.useState("");
-
+  const [id, setID] = useState(useSelector(state => state.mySlice.myUserID));
+  const IdToBeChangedTo = 11623;//this is the id that will be changed to
   const [preferences, setPreferences] = useState({
     location: "53 Hungerford Rd",
     destination: "University of Bath",
@@ -19,9 +22,15 @@ const PlanTrip = () => {
     seats: "1"
   });
 
+  const dispatch = useDispatch();
 
+  function changeIDinPageandReduxStore (val){
+    dispatch(updateUserID((val)));
+    setID((val));
+    console.log("page and store ID: " + id.toString());
+  }
   const navigation = useNavigation();
-  const onMatchMePressed = () => {
+  function onMatchMePressed(){
     navigation.navigate("LiveTripPage");
   };
 
@@ -80,7 +89,7 @@ const PlanTrip = () => {
         style={[styles.planTripCard, styles.planTripShadow]}
       />
       <View id="matchMeButton" style={styles.matchMeButton}>
-        <Pressable onPress={onMatchMePressed}>
+        <Pressable onPress={() => {onMatchMePressed, changeIDinPageandReduxStore(IdToBeChangedTo);}}>
           <Text style={styles.matchMeButtonText}>Match me!</Text>
         </Pressable>
       </View>
