@@ -30,7 +30,9 @@ export default function Preferences() {
   }
 
   const [callOne,   updateCallOne]   = useState(true);
-  const [callTwo,   updateCallTwo]   = useState(true);
+  const [recvOne,   updateRecvOne]   = useState(false);
+  const [callTwo,   updateCallTwo]   = useState(false);
+  const [recvTwo,   updateRecvTwo]   = useState(false);
 
   const myUserID = 3;
   var licence_table = null;
@@ -39,43 +41,59 @@ export default function Preferences() {
   var users_pool_id = null;
 
   licence_table = RestAPI(
-      {
-          operation: "select",
-          table: "Licence",
-          userID: myUserID.toString(),
-      },
-      {
-          userID: null,
-      },
-      (runFlag = callOne)
+    {
+      operation: "select",
+      table: "Licence",
+      userID: myUserID.toString(),
+    },
+    {
+      licenceID: null,
+    },
+    (runFlag = callOne)
   )[0];
 
   // Only run the call once
   if (callOne == true) {
     updateCallOne(false);
   }
-  
-  users_licence_id = licence_table.licenceID;
 
-  console.log("licence ID: ",users_licence_id);
+  // If we received valid data, move onto the next call
+  if (recvOne == false && licence_table.licenceID != null) {
+  	console.log("licence ID: ", licence_table.licenceID);
+
+  	updateRecvOne(true);
+  	updateCallTwo(true);
+  }
+
   
   pool_table = RestAPI(
     {
       operation: "select",
       table: "Pool",
-      licenceID: users_licence_id,
+      licenceID: licence_table.licenceID,
+    },
+    {
+      poolID: null
     },
     (runFlag = callTwo)
   )[0];
 
   // Only run the call once
   if (callTwo == true) {
-  updateCallTwo(false);
+    updateCallTwo(false);
   }
 
-  users_pool_id = pool_table.poolID;
+  if (recvTwo == false && pool_table.poolID != null) {
+    console.log("Pool ID: ", pool_table.poolID);
 
-  console.log("Pool ID: ",users_pool_id);
+    // Do whatever you want with the poolID in here
+    // if you want to use it somewhere else, wrap it in an "if (pool_table.poolID != null)" clause    
+
+
+    updateRecvTwo(true);
+  }
+
+
   
 
   // const [buttonCall, updateCall] = useState(false);
