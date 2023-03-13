@@ -50,23 +50,30 @@ export default function HomePage() {
         seats: "1",
         prePage: false
       });
+    
 
     const route = useRoute();
     if(!route.IsReady){
         messagePage = route.params;
         if(messagePage !== undefined){
             if(alreadyRun === false && messagePage.messagePage.prePage === false){
-                console.log("messagePage: ", messagePage.messagePage)
+                console.log("Returned Values: ", messagePage.messagePage)
+                
+                setPreferences({
+                    ...preferences,
+                    detour_distance: messagePage.messagePage.detour_distance,
+                    rating: messagePage.messagePage.rating,
+                    seats: messagePage.messagePage.seats,
+                })
 
-                //Doesn't update them???
-                setPreferences({...preferences, detour_distance: messagePage.messagePage.detour_distance})
-                setPreferences({...preferences, rating: messagePage.messagePage.rating})
-                setPreferences({...preferences, seats: messagePage.messagePage.seats})
+                // setPreferences({...preferences, detour_distance: messagePage.messagePage.detour_distance})
+                // setPreferences({...preferences, rating: messagePage.messagePage.rating})
+                // setPreferences({...preferences, seats: messagePage.messagePage.seats})
 
-                //setPreferences(messagePage.messagePage);
-
+                // setPreferences(messagePage.messagePage);
+               
                 //Shows the correct preferences here
-                console.log(preferences);
+                //console.log("Current Preferences: ",preferences);
                 
                 messagePage = undefined
                 setAlreadyRun(true);
@@ -74,6 +81,14 @@ export default function HomePage() {
         }
     }
 
+    var new_preferences = preferences;
+
+    useEffect(() => {
+        //console.log("Current Preferences: ",preferences);
+        new_preferences = preferences;
+    }, [preferences])
+
+    //console.log("New Preferences: ",new_preferences);
 
     const myUserRole = useSelector(state => state.mySlice.myUserRole);
     const dispatch = useDispatch();
@@ -206,7 +221,7 @@ export default function HomePage() {
                     </Pressable>
                 </View>
                 <View id="planTripFrame" style={styles.planTripFrame}>
-                    <PlanTrip preferenceData={preferences}/>
+                    <PlanTrip preferenceData={new_preferences}/>
                 </View>
             </View>
 
