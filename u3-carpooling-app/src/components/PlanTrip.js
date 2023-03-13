@@ -24,9 +24,24 @@ const PlanTrip = ({preferenceData}) => {
     prePage: false
   });
 
-  if (!alreadyRun) {
-    setPreferences(preferenceData);
-    setAlreadyRun(true);
+
+  //preferences data, make sre to check if the 
+  if (!alreadyRun){
+     if(preferenceData.detour_distance != "2" || preferenceData.rating != "5" || preferenceData.seats != "1") {
+
+        setPreferences({
+          ...preferences,
+          detour_distance: preferenceData.detour_distance,
+          rating: preferenceData.rating,
+          seats: preferenceData.seats,
+        })
+
+        setAlreadyRun(true);
+    }
+  }
+
+  if(preferences.detour_distance != preferenceData.detour_distance || preferences.rating != preferenceData.rating || preferences.seats != preferenceData.seats) {
+    setAlreadyRun(false);
   }
 
   const dispatch = useDispatch();
@@ -46,7 +61,7 @@ const PlanTrip = ({preferenceData}) => {
   const [recvTwo,   updateRecvTwo]   = useState(false);
 
   const myUserID = 6;
-  const myRole = 1;
+  const myRole = 0;
   //const poolID = null;
   //const settings = preferences;
 
@@ -113,28 +128,32 @@ const PlanTrip = ({preferenceData}) => {
   );
 
   function onMatchMePressed() {
+    //console.log("Preferences: ",preferences);
+    //asetPreferences({operation: "insert", table: "Offer", userID: myUserID.toString(), role: myRole.toString(), settings: JSON.stringify(preferences)});
 
-    //Driver
-    if(myRole === 1){
-      if(pool_table.poolID != null){
-        //Insert into Offer table the drivers preferences
-        asetPreferences({ operation: "insert", table: "Offer", userID: myUserID.toString(), poolID: pool_table.poolID.toString(), role: myRole.toString(), settings: JSON.stringify(preferences)});
+    asetPreferences({operation: "matchmake"})
 
-        console.log("Working")
+    // //Driver
+    // if(myRole === 1){
+    //   if(pool_table.poolID != null){
+    //     //Insert into Offer table the drivers preferences
+    //     asetPreferences({ operation: "insert", table: "Offer", userID: myUserID.toString(), poolID: pool_table.poolID.toString(), role: myRole.toString(), settings: JSON.stringify(preferences)});
+
+    //     console.log("Working")
         
-        //Now run the matchmaking algorithm
-        asetPreferences({operation: "matchmake"})
+    //     //Now run the matchmaking algorithm
+    //     asetPreferences({operation: "matchmake"})
 
-        console.log("Completed");
-      }
-    }
-    //Passenger
-    else{
-      asetPreferences({ operation: "insert", table: "Offer", userID: myUserID.toString(), role: myRole.toString(), settings: JSON.stringify(preferences)});
-    }
+    //     console.log("Completed");
+    //   }
+    // }
+    // //Passenger
+    // else{
+    //   asetPreferences({ operation: "insert", table: "Offer", userID: myUserID.toString(), role: myRole.toString(), settings: JSON.stringify(preferences)});
+    // }
 
     //console.log(preferences)
-    navigation.navigate("LiveTripPage");
+    //navigation.navigate("LiveTripPage");
   };
 
   return (
