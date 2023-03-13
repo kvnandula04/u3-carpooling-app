@@ -8,6 +8,7 @@ import json
 import argparse
 import requests
 import tests
+from matchmaking import matchmaking_algorithm
 
 app = Flask(__name__)
 
@@ -273,7 +274,7 @@ def vehicleLookup(data):
     return tableOperate("select", {"table":"Vehicle", "registrationNumber":data["registrationNumber"]})
     
 def matchmake():
-    pass
+    matchmaking_algorithm()
 
 # Default POST template for now
 @app.route('/api', methods=['POST'])
@@ -289,7 +290,7 @@ def api():
         elif op == "vehiclelookup":
             return vehicleLookup(data)
         elif op == "matchmake":
-            return matchmake(data)
+            return matchmake()
 
     return "operation cannot be identified","400"             # Bad request if operation cannot be identified
     
