@@ -1,17 +1,20 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import { TextInput } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import RestAPI from "../hooks/Rest";
-import { useSelector, useDispatch } from 'react-redux';
-import { updateUserID } from '../../globalVariables/mySlice';
+import { useSelector, useDispatch } from "react-redux";
+import { updateUserID } from "../../globalVariables/mySlice";
+import { GOOGLE_MAPS_APIKEY } from "@env";
 
-const PlanTrip = ({preferenceData}) => {
-
+const PlanTrip = ({ preferenceData }) => {
   const [alreadyRun, setAlreadyRun] = useState(false);
 
-  const [id, setID] = useState(useSelector(state => state.mySlice.myUserID));
-  const IdToBeChangedTo = 11623;//this is the id that will be changed to, dumb value for now
+  const [startLocation, setStartLocation] = useState();
+  const [destination, setDestination] = useState();
+
+  const [id, setID] = useState(useSelector((state) => state.mySlice.myUserID));
+  const IdToBeChangedTo = 11623; //this is the id that will be changed to, dumb value for now
   const [preferences, setPreferences] = useState({
     location: "53 Hungerford Rd",
     destination: "University of Bath",
@@ -20,31 +23,37 @@ const PlanTrip = ({preferenceData}) => {
     detour_distance: "2",
     rating: "5",
     seats: "1",
-    prePage: false
+    prePage: false,
   });
 
+  //preferences data, make sre to check if the
+  if (!alreadyRun) {
+    if (
+      preferenceData.detour_distance != "2" ||
+      preferenceData.rating != "5" ||
+      preferenceData.seats != "1"
+    ) {
+      setPreferences({
+        ...preferences,
+        detour_distance: preferenceData.detour_distance,
+        rating: preferenceData.rating,
+        seats: preferenceData.seats,
+      });
 
-  //preferences data, make sre to check if the 
-  if (!alreadyRun){
-     if(preferenceData.detour_distance != "2" || preferenceData.rating != "5" || preferenceData.seats != "1") {
-
-        setPreferences({
-          ...preferences,
-          detour_distance: preferenceData.detour_distance,
-          rating: preferenceData.rating,
-          seats: preferenceData.seats,
-        })
-
-        setAlreadyRun(true);
+      setAlreadyRun(true);
     }
   }
 
-  if(preferences.detour_distance != preferenceData.detour_distance || preferences.rating != preferenceData.rating || preferences.seats != preferenceData.seats) {
+  if (
+    preferences.detour_distance != preferenceData.detour_distance ||
+    preferences.rating != preferenceData.rating ||
+    preferences.seats != preferenceData.seats
+  ) {
     setAlreadyRun(false);
   }
 
   const dispatch = useDispatch();
-  
+
   // function changeIDinPageandReduxStore (val){
   //   dispatch(updateUserID((val)));
   //   setID((val));
@@ -54,10 +63,10 @@ const PlanTrip = ({preferenceData}) => {
 
   const navigation = useNavigation();
 
-  const [callOne,   updateCallOne]   = useState(true);
-  const [recvOne,   updateRecvOne]   = useState(false);
-  const [callTwo,   updateCallTwo]   = useState(false);
-  const [recvTwo,   updateRecvTwo]   = useState(false);
+  const [callOne, updateCallOne] = useState(true);
+  const [recvOne, updateRecvOne] = useState(false);
+  const [callTwo, updateCallTwo] = useState(false);
+  const [recvTwo, updateRecvTwo] = useState(false);
 
   const myUserID = 6;
   const myRole = 0;
@@ -86,13 +95,12 @@ const PlanTrip = ({preferenceData}) => {
 
   // If we received valid data, move onto the next call
   if (recvOne == false && licence_table.licenceID != null) {
-  	console.log("licence ID: ", licence_table.licenceID);
+    console.log("licence ID: ", licence_table.licenceID);
 
-  	updateRecvOne(true);
-  	updateCallTwo(true);
+    updateRecvOne(true);
+    updateCallTwo(true);
   }
 
-  
   pool_table = RestAPI(
     {
       operation: "select",
@@ -100,7 +108,7 @@ const PlanTrip = ({preferenceData}) => {
       licenceID: licence_table.licenceID,
     },
     {
-      poolID: null
+      poolID: null,
     },
     (runFlag = callTwo)
   )[0];
@@ -114,23 +122,20 @@ const PlanTrip = ({preferenceData}) => {
     console.log("Pool ID: ", pool_table.poolID);
 
     // Do whatever you want with the poolID in here
-    // if you want to use it somewhere else, wrap it in an "if (pool_table.poolID != null)" clause    
-
+    // if you want to use it somewhere else, wrap it in an "if (pool_table.poolID != null)" clause
 
     updateRecvTwo(true);
   }
 
   const [apreferences, asetPreferences] = useState(null);
 
-  RestAPI(
-    apreferences
-  );
+  RestAPI(apreferences);
 
   function onMatchMePressed() {
     //console.log("Preferences: ",preferences);
     //asetPreferences({operation: "insert", table: "Offer", userID: myUserID.toString(), role: myRole.toString(), settings: JSON.stringify(preferences)});
 
-    asetPreferences({operation: "matchmake"})
+    asetPreferences({ operation: "matchmake" });
 
     // //Driver
     // if(myRole === 1){
@@ -139,7 +144,7 @@ const PlanTrip = ({preferenceData}) => {
     //     asetPreferences({ operation: "insert", table: "Offer", userID: myUserID.toString(), poolID: pool_table.poolID.toString(), role: myRole.toString(), settings: JSON.stringify(preferences)});
 
     //     console.log("Working")
-        
+
     //     //Now run the matchmaking algorithm
     //     asetPreferences({operation: "matchmake"})
 
@@ -153,7 +158,39 @@ const PlanTrip = ({preferenceData}) => {
 
     //console.log(preferences)
     //navigation.navigate("LiveTripPage");
-  };
+  }
+
+  useEffect(() => {
+    if (!startLocation) {
+      return;
+    }
+
+    fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${startLocation}&key=${GOOGLE_MAPS_APIKEY}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        let res = data.results[0];
+        let latlng = res.geometry.location;
+        // make global variable for start location
+      });
+  }, [startLocation]);
+
+  useEffect(() => {
+    if (!destination) {
+      return;
+    }
+
+    fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${destination}&key=${GOOGLE_MAPS_APIKEY}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        let res = data.results[0];
+        let latlng = res.geometry.location;
+        // make global variable for destination
+      });
+  }, [destination]);
 
   return (
     <View id="planTripFrame" style={styles.planTripFrame}>
@@ -169,7 +206,10 @@ const PlanTrip = ({preferenceData}) => {
               //placeholder="53 Hungerford Rd"
               value={preferences.location}
               //onChangeText={(startLocation) => setStartLocation(startLocation)}
-              onChangeText={(text) => setPreferences({...preferences, location: text})}
+              onChangeText={(text) => {
+                setPreferences({ ...preferences, location: text });
+                setStartLocation(text);
+              }}
             ></TextInput>
           </View>
           <View style={styles.inputFrame}>
@@ -179,8 +219,10 @@ const PlanTrip = ({preferenceData}) => {
               //placeholder="University of Bath"
               value={preferences.destination}
               //onChangeText={(destination) => setDestination(destination)}
-              onChangeText={(text) => setPreferences({...preferences, destination: text})}
-
+              onChangeText={(text) => {
+                setPreferences({ ...preferences, destination: text });
+                setDestination(text);
+              }}
             ></TextInput>
           </View>
           <View style={styles.inputFrame}>
@@ -190,7 +232,9 @@ const PlanTrip = ({preferenceData}) => {
               //placeholder="9:45"
               value={preferences.departure_time}
               //onChangeText={(departTime) => setDepartTime(departTime)}
-              onChangeText={(text) => setPreferences({...preferences, departure_time: text})}
+              onChangeText={(text) =>
+                setPreferences({ ...preferences, departure_time: text })
+              }
             ></TextInput>
           </View>
           <View style={styles.inputFrame}>
@@ -200,7 +244,9 @@ const PlanTrip = ({preferenceData}) => {
               //placeholder="10:05"
               value={preferences.arrival_time}
               //onChangeText={(arrivalTime) => setarrivalTime(arrivalTime)}
-              onChangeText={(text) => setPreferences({...preferences, arrival_time: text})}
+              onChangeText={(text) =>
+                setPreferences({ ...preferences, arrival_time: text })
+              }
             ></TextInput>
           </View>
         </View>
@@ -210,7 +256,11 @@ const PlanTrip = ({preferenceData}) => {
         style={[styles.planTripCard, styles.planTripShadow]}
       />
       <View id="matchMeButton" style={styles.matchMeButton}>
-        <Pressable onPress={() => {onMatchMePressed()}}>
+        <Pressable
+          onPress={() => {
+            onMatchMePressed();
+          }}
+        >
           <Text style={styles.matchMeButtonText}>Match me!</Text>
         </Pressable>
       </View>
