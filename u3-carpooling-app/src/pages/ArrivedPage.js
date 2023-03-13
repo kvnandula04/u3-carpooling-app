@@ -8,6 +8,7 @@ import RestAPI from "../hooks/Rest";
 import { useNavigation } from "@react-navigation/native";
 import PaymentPage from "./PaymentPage";
 import ReturnSpecDriver from "../hooks/ReturnSpecDriver";
+import { useSelector } from 'react-redux';
 
 const cream = "#F7F3EB";
 const green = "#4CD835";
@@ -33,7 +34,7 @@ const ArrivedPage = () => {
 
     getBarCodeScannerPermissions();
   }, []);
-  const userNo = 1; // should also be redux value
+  const userNo = useSelector(state => state.mySlice.myUserID);
   const result = ReturnSpecDriver(userNo)
 
   function showAlert() {

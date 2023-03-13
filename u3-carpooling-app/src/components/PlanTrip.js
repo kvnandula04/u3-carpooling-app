@@ -9,7 +9,7 @@ const PlanTrip = ({preferenceData}) => {
 
   const [alreadyRun, setAlreadyRun] = useState(false);
   const [id, setID] = useState(useSelector(state => state.mySlice.myUserID));
-  const IdToBeChangedTo = 11623;//this is the id that will be changed to
+  const IdToBeChangedTo = 11623;//this is the id that will be changed to, dumb value for now
   const [preferences, setPreferences] = useState({
     location: "53 Hungerford Rd",
     destination: "University of Bath",

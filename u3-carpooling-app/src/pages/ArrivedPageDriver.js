@@ -21,7 +21,7 @@ export default function ArrivedPageDriver() {
   const [returned, setReturned] = useState("");
   
   var result = "";
-  const driverNo = 3 // should be redux value
+  const driverNo = useSelector(state => state.mySlice.myUserID);
 
   const getDriver = () => {
     result = RestAPI(
