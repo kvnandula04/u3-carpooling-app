@@ -17,40 +17,34 @@ import LiveMap from "../components/LiveMap";
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
-    return (
-        <NavigationContainer>
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="OldHomePage" component={OldHomePage} />
-                <Stack.Screen name="LiveMap" component={LiveMap} />
-                <Stack.Screen
-                    name="SignupLoginPage"
-                    component={SignupLoginPage}
-                />
-                <Stack.Screen
-                    name="StudentVerification"
-                    component={StudentVerification}
-                />
-                <Stack.Screen
-                    name="DriverVerification"
-                    component={DriverVerification}
-                />
-                <Stack.Screen name="LiveTripPage" component={LiveTripPage} />
-                <Stack.Screen name="ArrivedPage" component={ArrivedPage} />
-                <Stack.Screen name="Onboarding" component={Onboarding} />
-                <Stack.Screen
-                    name="ArrivedPageDriver"
-                    component={ArrivedPageDriver}
-                />
-                <Stack.Screen name="ProfilePage" component={ProfilePage} />
-                <Stack.Screen name="Preferences" component={Preferences} />
-                <Stack.Screen
-                    name="PaymentPage"
-                    component={PaymentPage}
-                    initialParams={{ value: "" }}
-                />
-            </Stack.Navigator>
-        </NavigationContainer>
-    );
+  return (
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="SignupLoginPage" component={SignupLoginPage} />
+        <Stack.Screen
+          name="StudentVerification"
+          component={StudentVerification}
+        />
+        <Stack.Screen
+          name="DriverVerification"
+          component={DriverVerification}
+        />
+        <Stack.Screen name="Onboarding" component={Onboarding} />
+        <Stack.Screen name="OldHomePage" component={OldHomePage} />
+        <Stack.Screen name="LiveMap" component={LiveMap} />
+        <Stack.Screen name="LiveTripPage" component={LiveTripPage} />
+        <Stack.Screen name="ProfilePage" component={ProfilePage} />
+        <Stack.Screen name="Preferences" component={Preferences} />
+        <Stack.Screen name="ArrivedPage" component={ArrivedPage} />
+        <Stack.Screen name="ArrivedPageDriver" component={ArrivedPageDriver} />
+        <Stack.Screen
+          name="PaymentPage"
+          component={PaymentPage}
+          initialParams={{ value: "" }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 };
 
 export default Navigation;
