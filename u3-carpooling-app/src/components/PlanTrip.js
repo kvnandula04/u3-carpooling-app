@@ -9,8 +9,10 @@ import { updateUserID } from '../../globalVariables/mySlice';
 const PlanTrip = ({preferenceData}) => {
 
   const [alreadyRun, setAlreadyRun] = useState(false);
+
   const [id, setID] = useState(useSelector(state => state.mySlice.myUserID));
   const IdToBeChangedTo = 11623;//this is the id that will be changed to
+
   const [preferences, setPreferences] = useState({
     location: "53 Hungerford Rd",
     destination: "University of Bath",
@@ -26,23 +28,112 @@ const PlanTrip = ({preferenceData}) => {
     setPreferences(preferenceData);
     setAlreadyRun(true);
   }
+
   const dispatch = useDispatch();
   
-  function changeIDinPageandReduxStore (val){
-    dispatch(updateUserID((val)));
-    setID((val));
-    console.log("page and store ID: " + id.toString());
-  }
+  // function changeIDinPageandReduxStore (val){
+  //   dispatch(updateUserID((val)));
+  //   setID((val));
+  //   console.log("page and store ID: " + id.toString());
+  // }
+  //changeIDinPageandReduxStore(IdToBeChangedTo),
+
   const navigation = useNavigation();
+
+  const [callOne,   updateCallOne]   = useState(true);
+  const [recvOne,   updateRecvOne]   = useState(false);
+  const [callTwo,   updateCallTwo]   = useState(false);
+  const [recvTwo,   updateRecvTwo]   = useState(false);
+
+  const myUserID = 6;
+  const myRole = 1;
+  //const poolID = null;
+  //const settings = preferences;
+
+  var licence_table = null;
+  var pool_table = null;
+
+  licence_table = RestAPI(
+    {
+      operation: "select",
+      table: "Licence",
+      userID: myUserID.toString(),
+    },
+    {
+      licenceID: null,
+    },
+    (runFlag = callOne)
+  )[0];
+
+  // Only run the call once
+  if (callOne == true) {
+    updateCallOne(false);
+  }
+
+  // If we received valid data, move onto the next call
+  if (recvOne == false && licence_table.licenceID != null) {
+  	console.log("licence ID: ", licence_table.licenceID);
+
+  	updateRecvOne(true);
+  	updateCallTwo(true);
+  }
+
   
-  const onMatchMePressed = () => {
-    // console.log("UserID: ", myUserID);
-    if(role === 1){
-      const pool_result = asetPreferences({ operation: "select", table: "Licence", userID: myUserID});
-      console.log(pool_result.vehicleID);
+  pool_table = RestAPI(
+    {
+      operation: "select",
+      table: "Pool",
+      licenceID: licence_table.licenceID,
+    },
+    {
+      poolID: null
+    },
+    (runFlag = callTwo)
+  )[0];
+
+  // Only run the call once
+  if (callTwo == true) {
+    updateCallTwo(false);
+  }
+
+  if (recvTwo == false && pool_table.poolID != null) {
+    console.log("Pool ID: ", pool_table.poolID);
+
+    // Do whatever you want with the poolID in here
+    // if you want to use it somewhere else, wrap it in an "if (pool_table.poolID != null)" clause    
+
+
+    updateRecvTwo(true);
+  }
+
+  const [apreferences, asetPreferences] = useState(null);
+
+  RestAPI(
+    apreferences
+  );
+
+  function onMatchMePressed() {
+
+    //Driver
+    if(myRole === 1){
+      if(pool_table.poolID != null){
+        //Insert into Offer table the drivers preferences
+        asetPreferences({ operation: "insert", table: "Offer", userID: myUserID.toString(), poolID: pool_table.poolID.toString(), role: myRole.toString(), settings: JSON.stringify(preferences)});
+
+        console.log("Working")
+        
+        //Now run the matchmaking algorithm
+        asetPreferences({operation: "matchmake"})
+
+        console.log("Completed");
+      }
+    }
+    //Passenger
+    else{
+      asetPreferences({ operation: "insert", table: "Offer", userID: myUserID.toString(), role: myRole.toString(), settings: JSON.stringify(preferences)});
     }
 
-    console.log(preferences)
+    //console.log(preferences)
     navigation.navigate("LiveTripPage");
   };
 
@@ -101,7 +192,7 @@ const PlanTrip = ({preferenceData}) => {
         style={[styles.planTripCard, styles.planTripShadow]}
       />
       <View id="matchMeButton" style={styles.matchMeButton}>
-        <Pressable onPress={() => {onMatchMePressed, changeIDinPageandReduxStore(IdToBeChangedTo);}}>
+        <Pressable onPress={() => {onMatchMePressed()}}>
           <Text style={styles.matchMeButtonText}>Match me!</Text>
         </Pressable>
       </View>
