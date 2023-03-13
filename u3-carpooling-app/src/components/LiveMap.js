@@ -16,7 +16,9 @@ import MapViewDirections from "react-native-maps-directions";
 import { black } from "color-name";
 import Navigation from "../navigation/Navigation";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
 
+// const thingySamWants = useSelector((state) => state.mySlice.whatevertheywerecalled);
 const green = "#4CD835";
 const greenShadow = "#278A17";
 const edgePaddingValue = 70;

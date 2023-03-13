@@ -4,7 +4,7 @@ import { TextInput } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import RestAPI from "../hooks/Rest";
 import { useSelector, useDispatch } from "react-redux";
-import { updateUserID } from "../../globalVariables/mySlice";
+import { updateStartLocation, updateUserID} from "../../globalVariables/mySlice";
 import { GOOGLE_MAPS_APIKEY } from "@env";
 
 const PlanTrip = ({ preferenceData }) => {
@@ -172,6 +172,8 @@ const PlanTrip = ({ preferenceData }) => {
       .then((data) => {
         let res = data.results[0];
         let latlng = res.geometry.location;
+        dispatch(updateStartLocation((latlng)));
+        
         // make global variable for start location
       });
   }, [startLocation]);
@@ -188,6 +190,7 @@ const PlanTrip = ({ preferenceData }) => {
       .then((data) => {
         let res = data.results[0];
         let latlng = res.geometry.location;
+        dispatch(updateDestination((latlng)));
         // make global variable for destination
       });
   }, [destination]);

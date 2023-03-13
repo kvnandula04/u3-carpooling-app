@@ -5,6 +5,8 @@ export const mySlice = createSlice({
   initialState: {
     myUserID: 0,
     myUserRole: 0,
+    startLocation: "",
+    gDestination: "",
   },
   reducers: {
     updateUserID: (state, action) => {
@@ -13,9 +15,15 @@ export const mySlice = createSlice({
     updateUserRole: (state, action) => {
       state.myUserRole = action.payload;
     },
+    updateStartLocation: (state, action) => {
+      state.startLocation = action.payload;
+    },
+    updateDestination: (state, action) => {
+      state.gDestination = action.payload;
+    },
   },
 });
 
-export const { updateUserID, updateUserRole } = mySlice.actions;
+export const { updateUserID, updateUserRole, updateStartLocation, updateDestination} = mySlice.actions;
 
 export default mySlice.reducer;
