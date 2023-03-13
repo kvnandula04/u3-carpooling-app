@@ -4,6 +4,7 @@ import * as SplashScreen from "expo-splash-screen";
 import GridBackground from "../../assets/grid-background";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ProfileCircle from "../components/ProfileCircle";
+import { Icon } from "react-native-elements/dist/icons/Icon";
 
 const cream = "#F7F3EB";
 const blue = "#1774FF";
@@ -104,6 +105,21 @@ const ProfilePage2 = () => {
             <Text id="driver_rating" style={styles.driver_rating}>
               Driver Rating: {driver_rating}
             </Text>
+            <Text id="driver_rating" style={styles.dangerous}>
+              Sign out.
+            </Text>
+            <View
+              style={{
+                flex: 1,
+                width: "60%",
+                flexDirection: "row",
+              }}
+            >
+              <Text id="driver_rating" style={styles.dangerous}>
+                Delete account.
+              </Text>
+              <Icon name="delete" type="delete" color="red" size={"40%"} />
+            </View>
           </View>
         </View>
       </View>
@@ -178,7 +194,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   ratingFrame: {
-    flex: 3,
+    flex: 6,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -191,6 +207,12 @@ const styles = StyleSheet.create({
     flex: 1,
     fontFamily: "atkinson",
     fontSize: 30,
+  },
+  dangerous: {
+    flex: 1,
+    fontFamily: "atkinson",
+    fontSize: 30,
+    color: "red",
   },
   hey: {
     flex: 2,
