@@ -56,7 +56,18 @@ export default function HomePage() {
         messagePage = route.params;
         if(messagePage !== undefined){
             if(alreadyRun === false && messagePage.messagePage.prePage === false){
-                setPreferences(messagePage.messagePage);
+                console.log("messagePage: ", messagePage.messagePage)
+
+                //Doesn't update them???
+                setPreferences({...preferences, detour_distance: messagePage.messagePage.detour_distance})
+                setPreferences({...preferences, rating: messagePage.messagePage.rating})
+                setPreferences({...preferences, seats: messagePage.messagePage.seats})
+
+                //setPreferences(messagePage.messagePage);
+
+                //Shows the correct preferences here
+                console.log(preferences);
+                
                 messagePage = undefined
                 setAlreadyRun(true);
             }
