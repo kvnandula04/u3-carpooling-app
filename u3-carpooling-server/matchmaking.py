@@ -126,8 +126,6 @@ def runDatabase():
             passengerDictionary["rating"] = passengersRating
 
             list_of_passengers.append(passengerDictionary)
-            
-runDatabase()
 
 #Convert time to minutes
 def time_to_minutes(h):
@@ -224,109 +222,113 @@ def score_driver_passenger_pair(driver, passenger):
 
     return score
 
-#Calculate a score for each driver-passenger pair
-scores = {}
+def matchmaking_algorithm():
 
-for i, driver in enumerate(list_of_drivers):
-    for j, passenger in enumerate(list_of_passengers):
-        pair_score = score_driver_passenger_pair(driver, passenger)
-        scores[(i, j)] = pair_score
+    runDatabase()
 
-#Match drivers and passengers section
+    #Calculate a score for each driver-passenger pair
+    scores = {}
 
-#Checks to see if the current driver is the best match for the passenger
-#It does this by checking if the same passenger has a higher score in the range of 0.8 to 1.0 with another driver
-def check_best_match(driver, passenger):
-    best_match = True
-    driver_passenger_score = scores[(driver, passenger)]
     for i, driver in enumerate(list_of_drivers):
-        if i != driver:
-            if scores[(i, passenger)] > lower_bound_score and scores[(i, passenger)] <= upper_bound_score:
-                if scores[(i, passenger)] > driver_passenger_score:
-                    best_match = False
-    return best_match
+        for j, passenger in enumerate(list_of_passengers):
+            pair_score = score_driver_passenger_pair(driver, passenger)
+            scores[(i, j)] = pair_score
 
-# Sort the scores by descending order
-sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
-if len(sorted_scores) == 0:
-    exit()
+    #Match drivers and passengers section
 
-# Loop through each driver in ascending order
-for i in range(max([x[0][0] for x in sorted_scores])+1):
-    driver_scores = [(j, score) for (d, j), score in sorted_scores if d == i]
+    #Checks to see if the current driver is the best match for the passenger
+    #It does this by checking if the same passenger has a higher score in the range of 0.8 to 1.0 with another driver
+    def check_best_match(driver, passenger):
+        best_match = True
+        driver_passenger_score = scores[(driver, passenger)]
+        for i, driver in enumerate(list_of_drivers):
+            if i != driver:
+                if scores[(i, passenger)] > lower_bound_score and scores[(i, passenger)] <= upper_bound_score:
+                    if scores[(i, passenger)] > driver_passenger_score:
+                        best_match = False
+        return best_match
 
-    remaining_seats = list_of_drivers[i]['seats']
+    # Sort the scores by descending order
+    sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+    if len(sorted_scores) == 0:
+        exit()
 
-    if remaining_seats > 0:
-        # Sort the driver's scores by descending order
-        driver_scores.sort(key=lambda x: x[1], reverse=True)
-        for j, score in driver_scores:
-            if score <= upper_bound_score and score >= lower_bound_score and j not in matched_passengers:
-                if check_best_match(i, j):
-                    matched_pairs.append((i, j, score))
-                    matched_drivers.add(i)
-                    matched_passengers.add(j)
-                    remaining_seats -= 1
-                    for driver, passenger in check_driver_passenger_pair.copy():
-                        if passenger == j:
-                            check_driver_passenger_pair.discard((driver, j))
-                    if remaining_seats == 0:
-                        break
-                else:
-                    check_driver_passenger_pair.add((i,j))
+    # Loop through each driver in ascending order
+    for i in range(max([x[0][0] for x in sorted_scores])+1):
+        driver_scores = [(j, score) for (d, j), score in sorted_scores if d == i]
 
-#Checks to see if the driver has any seats left and if so, adds the passenger to the matched pairs
-for driver_check, passenger_check in check_driver_passenger_pair.copy():
-    remaining_seats = list_of_drivers[driver_check]['seats']
+        remaining_seats = list_of_drivers[i]['seats']
 
-    for (driver, passenger, score) in matched_pairs:
-        if driver == driver_check:
-            remaining_seats -= 1
+        if remaining_seats > 0:
+            # Sort the driver's scores by descending order
+            driver_scores.sort(key=lambda x: x[1], reverse=True)
+            for j, score in driver_scores:
+                if score <= upper_bound_score and score >= lower_bound_score and j not in matched_passengers:
+                    if check_best_match(i, j):
+                        matched_pairs.append((i, j, score))
+                        matched_drivers.add(i)
+                        matched_passengers.add(j)
+                        remaining_seats -= 1
+                        for driver, passenger in check_driver_passenger_pair.copy():
+                            if passenger == j:
+                                check_driver_passenger_pair.discard((driver, j))
+                        if remaining_seats == 0:
+                            break
+                    else:
+                        check_driver_passenger_pair.add((i,j))
 
-    if remaining_seats != 0:
-        matched_pairs.append((driver_check, passenger_check, score))
-        matched_passengers.add(passenger_check)
-        check_driver_passenger_pair.discard((driver_check, passenger_check))
-    else:
-        unmatched_passengers.add(passenger_check)
+    #Checks to see if the driver has any seats left and if so, adds the passenger to the matched pairs
+    for driver_check, passenger_check in check_driver_passenger_pair.copy():
+        remaining_seats = list_of_drivers[driver_check]['seats']
 
-# Find unmatched drivers and passengers
-for i, driver in enumerate(list_of_drivers):
-    if i not in matched_drivers:
-        unmatched_drivers.add(i)
+        for (driver, passenger, score) in matched_pairs:
+            if driver == driver_check:
+                remaining_seats -= 1
 
-for j, passenger in enumerate(list_of_passengers):
-    if j not in matched_passengers:
-        unmatched_passengers.add(j)
+        if remaining_seats != 0:
+            matched_pairs.append((driver_check, passenger_check, score))
+            matched_passengers.add(passenger_check)
+            check_driver_passenger_pair.discard((driver_check, passenger_check))
+        else:
+            unmatched_passengers.add(passenger_check)
 
-#Add matched pairs to database
-with app.app_context():
+    # Find unmatched drivers and passengers
+    for i, driver in enumerate(list_of_drivers):
+        if i not in matched_drivers:
+            unmatched_drivers.add(i)
 
-    for i in matched_drivers:
+    for j, passenger in enumerate(list_of_passengers):
+        if j not in matched_passengers:
+            unmatched_passengers.add(j)
 
-        driver_pairs = [(j, score) for (d, j, score) in matched_pairs if d == i]
-        already_inputted_driver = False
+    #Add matched pairs to database
+    with app.app_context():
 
-        driver_user_id = list_of_drivers[i]['userID']
-        driver_offer_id = list_of_drivers[i]['offerID']
+        for i in matched_drivers:
 
-        driver_pool_id = None
+            driver_pairs = [(j, score) for (d, j, score) in matched_pairs if d == i]
+            already_inputted_driver = False
 
-        for driver_from_list in list_of_drivers:
-            if driver_from_list['userID'] == driver_user_id:
-                driver_pool_id = driver_from_list['poolID']
-                break        
+            driver_user_id = list_of_drivers[i]['userID']
+            driver_offer_id = list_of_drivers[i]['offerID']
 
-        for j, score in driver_pairs:
+            driver_pool_id = None
 
-            passenger_user_id = list_of_passengers[j]['userID']
-            passenger_offer_id = list_of_passengers[j]['offerID']
-            
-            if already_inputted_driver == False:
-                already_inputted_driver = True
-                tableOperate("insert", {"table": "PoolSubscriber",  "poolID": driver_pool_id, "userID": driver_user_id})
+            for driver_from_list in list_of_drivers:
+                if driver_from_list['userID'] == driver_user_id:
+                    driver_pool_id = driver_from_list['poolID']
+                    break        
 
-            tableOperate("insert", {"table": "PoolSubscriber",  "poolID": driver_pool_id, "userID": passenger_user_id})
+            for j, score in driver_pairs:
 
-            tableOperate("delete", {"table": "Offer", "offerID": passenger_offer_id})
-        tableOperate("delete", {"table": "Offer", "offerID": driver_offer_id})
+                passenger_user_id = list_of_passengers[j]['userID']
+                passenger_offer_id = list_of_passengers[j]['offerID']
+                
+                if already_inputted_driver == False:
+                    already_inputted_driver = True
+                    tableOperate("insert", {"table": "PoolSubscriber",  "poolID": driver_pool_id, "userID": driver_user_id})
+
+                tableOperate("insert", {"table": "PoolSubscriber",  "poolID": driver_pool_id, "userID": passenger_user_id})
+
+                tableOperate("delete", {"table": "Offer", "offerID": passenger_offer_id})
+            tableOperate("delete", {"table": "Offer", "offerID": driver_offer_id})

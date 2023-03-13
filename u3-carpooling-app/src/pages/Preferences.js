@@ -9,6 +9,7 @@ export default function Preferences() {
   
   const route = useRoute();
   const {message} = route.params;
+  console.log("Preferences page: ",message);
 
   const [preferences, setPreferences] = useState({
     location: message.location,
@@ -25,7 +26,7 @@ export default function Preferences() {
     navigation.navigate("OldHomePage", {messagePage: preferences});
   };
 
-
+  
   const [apreferences, asetPreferences] = useState(null);
 
   RestAPI(
