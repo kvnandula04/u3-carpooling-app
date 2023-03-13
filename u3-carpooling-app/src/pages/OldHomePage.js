@@ -17,6 +17,10 @@ import PlanTrip from "../components/PlanTrip";
 import { Icon } from "react-native-elements";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import LiveTripPage from "./LiveTripPage";
+import { useRoute } from '@react-navigation/native';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateUserRole } from '../../globalVariables/mySlice';
+
 
 const cream = "#F7F3EB";
 const charcol = "#646464";
@@ -28,15 +32,74 @@ const blue = "#1774ff";
 const orange = "#F55726";
 
 export default function HomePage() {
-    const [role, setRole] = useState(0);
+    const [role, setRole] = useState(myUserRole);
     const [IsReady, SetIsReady] = useState(false);
     const navigation = useNavigation();
+
+    const [alreadyRun, setAlreadyRun] = useState(false);
+
+    let messagePage = null;
+
+    const [preferences, setPreferences] = useState({
+        location: "53 Hungerford Rd",
+        destination: "University of Bath",
+        departure_time: "9:45",
+        arrival_time: "10:05",
+        detour_distance: "2",
+        rating: "5",
+        seats: "1",
+        prePage: false
+      });
+    
+
+    const route = useRoute();
+    if(!route.IsReady){
+        messagePage = route.params;
+        if(messagePage !== undefined){
+            if(alreadyRun === false && messagePage.messagePage.prePage === false){
+                console.log("Returned Values: ", messagePage.messagePage)
+                
+                setPreferences({
+                    ...preferences,
+                    detour_distance: messagePage.messagePage.detour_distance,
+                    rating: messagePage.messagePage.rating,
+                    seats: messagePage.messagePage.seats,
+                })
+
+                // setPreferences({...preferences, detour_distance: messagePage.messagePage.detour_distance})
+                // setPreferences({...preferences, rating: messagePage.messagePage.rating})
+                // setPreferences({...preferences, seats: messagePage.messagePage.seats})
+
+                // setPreferences(messagePage.messagePage);
+               
+                //Shows the correct preferences here
+                //console.log("Current Preferences: ",preferences);
+                
+                messagePage = undefined
+                setAlreadyRun(true);
+            }
+        }
+    }
+
+    var new_preferences = preferences;
+
+    useEffect(() => {
+        //console.log("Current Preferences: ",preferences);
+        new_preferences = preferences;
+    }, [preferences])
+
+    //console.log("New Preferences: ",new_preferences);
+
+    const myUserRole = useSelector(state => state.mySlice.myUserRole);
+    const dispatch = useDispatch();
 
     const snapPoints = useMemo(() => ["85%", "10%"], []);
     const bottomSheetRef = useRef(BottomSheet);
 
-    const onPressSwitch = () => {
-        setRole((role + 1) % 2);
+    const onPressSwitch = () => {//global variable - stores user role
+        dispatch(updateUserRole((myUserRole + 1)%2))
+        setRole((myUserRole));
+        console.log(myUserRole)
     };
     const onPressProfile = () => {
         navigation.navigate("ProfilePage");
@@ -45,7 +108,9 @@ export default function HomePage() {
         navigation.navigate("LiveMap");
     };
     const onPressPrefer = () => {
-        navigation.navigate("Preferences");
+        preferences.prePage = true;
+        navigation.navigate("Preferences", {message: preferences});
+        setAlreadyRun(false);
     };
 
     const onPressPool = () => {
@@ -156,7 +221,7 @@ export default function HomePage() {
                     </Pressable>
                 </View>
                 <View id="planTripFrame" style={styles.planTripFrame}>
-                    <PlanTrip />
+                    <PlanTrip preferenceData={new_preferences}/>
                 </View>
             </View>
 
@@ -201,6 +266,7 @@ export default function HomePage() {
                     </TouchableOpacity>
                 </View>
             </BottomSheet>
+            
         </View>
     );
 }
