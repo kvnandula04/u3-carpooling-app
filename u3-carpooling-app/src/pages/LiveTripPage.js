@@ -107,6 +107,7 @@ export default function LiveTripPage() {
           fontFamily="syne-bold"
           fontSize={48}
           onPress={onPressMap}
+          showRoute={true}
         />
         <LiveTripDuration
           style={inFocus[1] === 1 ? styles.selected : styles.notSelected}

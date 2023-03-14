@@ -198,6 +198,7 @@ export default function HomePage() {
                         cardStyle={styles.cardStyle}
                         shadowStyle={styles.shadowStyle}
                         onPress={onPressMap}
+                        showRoute={false}
                     />
                 </View>
             </View>

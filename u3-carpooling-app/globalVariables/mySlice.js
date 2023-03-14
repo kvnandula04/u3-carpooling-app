@@ -5,8 +5,8 @@ export const mySlice = createSlice({
   initialState: {
     myUserID: 0,
     myUserRole: 0,
-    startLocation: "",
-    gDestination: "",
+    startLocation: {latitude: 0, longitude: 0},
+    gDestination: {latitude: 0, longitude: 0},
   },
   reducers: {
     updateUserID: (state, action) => {
