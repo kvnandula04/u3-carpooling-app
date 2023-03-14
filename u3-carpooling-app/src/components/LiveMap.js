@@ -14,7 +14,6 @@ import * as Location from "expo-location";
 import RestAPI from "../hooks/Rest";
 import MapViewDirections from "react-native-maps-directions";
 import { black } from "color-name";
-import Navigation from "../navigation/Navigation";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 
