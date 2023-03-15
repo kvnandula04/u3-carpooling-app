@@ -17,10 +17,10 @@ import PlanTrip from "../components/PlanTrip";
 import { Icon } from "react-native-elements";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import LiveTripPage from "./LiveTripPage";
-import { useRoute } from '@react-navigation/native';
-import { useSelector, useDispatch } from 'react-redux';
-import { updateUserRole } from '../../globalVariables/mySlice';
-
+import { useRoute } from "@react-navigation/native";
+import { useSelector, useDispatch } from "react-redux";
+import { updateUserRole } from "../../globalVariables/mySlice";
+import PoolsPage from "./PoolsPage";
 
 const cream = "#F7F3EB";
 const charcol = "#646464";
@@ -48,34 +48,36 @@ export default function HomePage() {
         detour_distance: "2",
         rating: "5",
         seats: "1",
-        prePage: false
-      });
-    
+        prePage: false,
+    });
 
     const route = useRoute();
-    if(!route.IsReady){
+    if (!route.IsReady) {
         messagePage = route.params;
-        if(messagePage !== undefined){
-            if(alreadyRun === false && messagePage.messagePage.prePage === false){
-                console.log("Returned Values: ", messagePage.messagePage)
-                
+        if (messagePage !== undefined) {
+            if (
+                alreadyRun === false &&
+                messagePage.messagePage.prePage === false
+            ) {
+                console.log("Returned Values: ", messagePage.messagePage);
+
                 setPreferences({
                     ...preferences,
                     detour_distance: messagePage.messagePage.detour_distance,
                     rating: messagePage.messagePage.rating,
                     seats: messagePage.messagePage.seats,
-                })
+                });
 
                 // setPreferences({...preferences, detour_distance: messagePage.messagePage.detour_distance})
                 // setPreferences({...preferences, rating: messagePage.messagePage.rating})
                 // setPreferences({...preferences, seats: messagePage.messagePage.seats})
 
                 // setPreferences(messagePage.messagePage);
-               
+
                 //Shows the correct preferences here
                 //console.log("Current Preferences: ",preferences);
-                
-                messagePage = undefined
+
+                messagePage = undefined;
                 setAlreadyRun(true);
             }
         }
@@ -86,20 +88,21 @@ export default function HomePage() {
     useEffect(() => {
         //console.log("Current Preferences: ",preferences);
         new_preferences = preferences;
-    }, [preferences])
+    }, [preferences]);
 
     //console.log("New Preferences: ",new_preferences);
 
-    const myUserRole = useSelector(state => state.mySlice.myUserRole);
+    const myUserRole = useSelector((state) => state.mySlice.myUserRole);
     const dispatch = useDispatch();
 
     const snapPoints = useMemo(() => ["85%", "10%"], []);
     const bottomSheetRef = useRef(BottomSheet);
 
-    const onPressSwitch = () => {//global variable - stores user role
-        dispatch(updateUserRole((myUserRole + 1)%2))
-        setRole((myUserRole));
-        console.log(myUserRole)
+    const onPressSwitch = () => {
+        //global variable - stores user role
+        dispatch(updateUserRole((myUserRole + 1) % 2));
+        setRole(myUserRole);
+        console.log(myUserRole);
     };
     const onPressProfile = () => {
         navigation.navigate("ProfilePage");
@@ -109,7 +112,7 @@ export default function HomePage() {
     };
     const onPressPrefer = () => {
         preferences.prePage = true;
-        navigation.navigate("Preferences", {message: preferences});
+        navigation.navigate("Preferences", { message: preferences });
         setAlreadyRun(false);
     };
 
@@ -221,7 +224,7 @@ export default function HomePage() {
                     </Pressable>
                 </View>
                 <View id="planTripFrame" style={styles.planTripFrame}>
-                    <PlanTrip preferenceData={new_preferences}/>
+                    <PlanTrip preferenceData={new_preferences} />
                 </View>
             </View>
 
@@ -249,6 +252,7 @@ export default function HomePage() {
                         </Text>
                         <Text style={styles.tripHistoryTitle}>My Pools</Text>
                     </View>
+                    {/* <PoolsPage /> */}
                     <TouchableOpacity onPress={onPressPool}>
                         <View style={styles.tripHistoryTitleViewInner}>
                             <Text
@@ -266,7 +270,6 @@ export default function HomePage() {
                     </TouchableOpacity>
                 </View>
             </BottomSheet>
-            
         </View>
     );
 }

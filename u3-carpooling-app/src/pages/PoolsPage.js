@@ -6,14 +6,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import RestAPI from "../hooks/Rest";
 
 const PoolsPage = () => {
-    const [callOne,   updateCallOne]   = useState(true);
-    const [recvOne,   updateRecvOne]   = useState(false);
-    const [callTwo,   updateCallTwo]   = useState(false);
-    const [recvTwo,   updateRecvTwo]   = useState(false);
+    const [callOne, updateCallOne] = useState(true);
+    const [recvOne, updateRecvOne] = useState(false);
+    const [callTwo, updateCallTwo] = useState(false);
+    const [recvTwo, updateRecvTwo] = useState(false);
     const [callThree, updateCallThree] = useState(false);
     const [recvThree, updateRecvThree] = useState(false);
-    const [callFour,  updateCallFour]  = useState(false);
-    const [recvFour,  updateRecvFour]  = useState(false);
+    const [callFour, updateCallFour] = useState(false);
+    const [recvFour, updateRecvFour] = useState(false);
 
     const onPressCancel = () => {
         console.log("Cancel Trip Pressed");
@@ -24,6 +24,8 @@ const PoolsPage = () => {
 
     let test = null;
     let pool = null;
+
+    const [username, setUsername] = useState("blanc.");
 
     const initDB = () => {
         // RestAPI({
@@ -90,12 +92,12 @@ const PoolsPage = () => {
         // });
 
         // ----------------- TESTS -----------------
-        
+
         offer = RestAPI(
             {
                 operation: "select",
                 table: "Offer",
-                userID: "3",
+                userID: "1",
             },
             {
                 userID: null,
@@ -104,17 +106,17 @@ const PoolsPage = () => {
             (runFlag = callOne)
         )[0];
 
-		// Only run the call once
-		if (callOne == true) {
-			updateCallOne(false);
+        // Only run the call once
+        if (callOne == true) {
+            updateCallOne(false);
         }
 
         // If we received valid data, move onto the next call
         if (recvOne == false && offer.poolID != null) {
-        	updateRecvOne(true);
-        	updateCallTwo(true);
+            updateRecvOne(true);
+            updateCallTwo(true);
         }
-        
+
         pool = RestAPI(
             {
                 operation: "select",
@@ -127,68 +129,61 @@ const PoolsPage = () => {
             (runFlag = callTwo)
         )[0];
 
-		// Only run the call once
-		if (callTwo == true) {
-			updateCallTwo(false);
-		}
+        // Only run the call once
+        if (callTwo == true) {
+            updateCallTwo(false);
+        }
 
-		// If we received valid data, move onto the next call
-		if (recvTwo == false && pool.licenceID != null) {
-			updateRecvTwo(true);
-			updateCallThree(true);
-		}
-        
-		licence = RestAPI(
-			{
-				operation: "select",
-				table: "Licence",
-				licenceID: pool.licenceID,
-			},
-			{
-				userID: null,
-			},
-			(runFlag = callThree)
-		)[0];
+        // If we received valid data, move onto the next call
+        if (recvTwo == false && pool.licenceID != null) {
+            updateRecvTwo(true);
+            updateCallThree(true);
+        }
 
-		// Only run the call once
-		if (callThree == true) {
-			updateCallThree(false);
-		}
+        licence = RestAPI(
+            {
+                operation: "select",
+                table: "Licence",
+                licenceID: pool.licenceID,
+            },
+            {
+                userID: null,
+            },
+            (runFlag = callThree)
+        )[0];
 
-		// If we received valid data, move onto the next call
-		if (recvThree == false && licence.userID != null) {
-			updateRecvThree(true);
-			updateCallFour(true);
-		}
+        // Only run the call once
+        if (callThree == true) {
+            updateCallThree(false);
+        }
 
-		user = RestAPI(
-			{
-				operation: "select",
-				table: "User",
-				userID: licence.userID,
-			},
-			{
-				name: null,
-			},
-			(runFlag = callFour)
-		)[0];
+        // If we received valid data, move onto the next call
+        if (recvThree == false && licence.userID != null) {
+            updateRecvThree(true);
+            updateCallFour(true);
+        }
 
-		// Only run the call once
-		if (callFour == true) {
-			updateCallFour(false);
-		}
+        user = RestAPI(
+            {
+                operation: "select",
+                table: "User",
+                userID: licence.userID,
+            },
+            {
+                name: null,
+            },
+            (runFlag = callFour)
+        )[0];
 
-		// NAME!!!!
-		if (user.name != null)
-			console.log("USER NAME:", user.name);
+        // Only run the call once
+        if (callFour == true) {
+            updateCallFour(false);
+        }
+
+        // Retrieve the driver's name
+        if (user.name != null) console.log("USER NAME:", user.name);
     };
     initDB();
-
-    const Item = ({ title }) => (
-        <View style={styles.item}>
-            <Text style={styles.title}>{title}</Text>
-        </View>
-    );
 
     return (
         <View id="pageFrame" style={styles.pageFrame}>
@@ -198,14 +193,20 @@ const PoolsPage = () => {
                 lineColor={"black"}
                 style={{ backgroundColor: "#f7f3eb" }}
             />
-            <Pressable style={{ flex: 1 }} onPress={onPressCancel}>
+            <Pressable
+                style={{
+                    flex: 1,
+                    alignSelf: "center",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "70%",
+                    backgroundColor: "red",
+                }}
+                onPress={onPressCancel}
+            >
                 <Text> TEST </Text>
+                <Text> {username} </Text>
             </Pressable>
-            <FlatList
-                data={test}
-                renderItem={({ item }) => <Item title={item.offerID} />}
-                keyExtractor={(item) => item.offerID}
-            />
         </View>
     );
 
