@@ -14,11 +14,9 @@ import * as Location from "expo-location";
 import RestAPI from "../hooks/Rest";
 import MapViewDirections from "react-native-maps-directions";
 import { black } from "color-name";
-import Navigation from "../navigation/Navigation";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 
-// const thingySamWants = useSelector((state) => state.mySlice.whatevertheywerecalled);
 const green = "#4CD835";
 const greenShadow = "#278A17";
 const edgePaddingValue = 70;
@@ -40,6 +38,11 @@ const edgePadding = {
 // }
 
 const LiveMap = (props) => {
+  const gUserID = useSelector((state) => state.mySlice.myUserID);
+  const gUserRole = useSelector((state) => state.mySlice.myUserRole);
+  const gStartLocation = useSelector((state) => state.mySlice.startLocation);
+  const gDestination = useSelector((state) => state.mySlice.gDestination);
+
   const [callOne, updateCallOne] = useState(true);
   const [recvOne, updateRecvOne] = useState(false);
   const [callTwo, updateCallTwo] = useState(false);
@@ -51,8 +54,8 @@ const LiveMap = (props) => {
     {
       operation: "select",
       table: "PoolSubscriber",
-      // userID: props.userID,
-      userID: "3",
+      userID: gUserID,
+      // userID: "3",
     },
     {
       userID: null,
@@ -176,12 +179,14 @@ const LiveMap = (props) => {
   const [showDirections, setShowDirections] = useState(false);
   const [IsReady, SetIsReady] = useState(false);
   const [origin, setOrigin] = useState({
-    // props.origin
+    // latitude: gStartLocation.latitude,
+    // longitude: gStartLocation.longitude,
     latitude: 51.38156107044501,
     longitude: -2.359066572043425,
   });
   const [destination, setDestination] = useState({
-    // props.destination
+    // latitude: gDestination.latitude,
+    // longitude: gDestination.longitude,
     latitude: 51.37943205963418,
     longitude: -2.3256547832841625,
   });
@@ -220,7 +225,7 @@ const LiveMap = (props) => {
 
   // Need to call this once when we have the origin, destination and waypoints
   useEffect(() => {
-    traceRoute();
+    props.showRoute && traceRoute();
   }, [waypoints]);
 
   useEffect(() => {
@@ -356,7 +361,7 @@ const LiveMap = (props) => {
               waypoints={waypoints}
             />
           )}
-          {markerElements}
+          {props.showRoute && markerElements}
         </MapView>
         {backButton == null ? null : <Text style={[styles.text]}>U3</Text>}
         {backButton == null ? null : (
