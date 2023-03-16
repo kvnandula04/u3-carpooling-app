@@ -1,35 +1,77 @@
 import React, { useState, useEffect, useCallback } from "react";
 import * as SplashScreen from "expo-splash-screen";
-import {
-  Text,
-  View,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import { Text, View, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import Logo from "../components/Logo";
 import useFonts from "../hooks/UseFonts";
 import GridBackground from "../../assets/grid-background";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector, useDispatch } from "react-redux";
+import { updateUserID} from "../../globalVariables/mySlice";
+import RestAPI from "../hooks/Rest";
 
 export default function Onboarding() {
   const [IsReady, SetIsReady] = useState(false);
-  const navigation = useNavigation();
   const [userName, setUserName] = useState("");
   const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
+  const [callOne, setCallOne] = useState(false);
+  const [callTwo, setCallTwo] = useState(false);
+  const [recvTwo, setRecvTwo] = useState(false);
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
 
-  const onContinuePressed = () => {
-    navigation.navigate("OldHomePage");
-  };
-
-  const checkTextInput = () => {
-    if (!userName.trim() || !firstName.trim() || !lastName.trim()) {
-      alert("Details missing!");
-    } else {
-      onContinuePressed();
+  const onSubmitPressed = () => {
+    if (!userName.trim() || !firstName.trim() || !password.trim()) {
+      alert("All fields must be filled. Please try again.");
+      return;
     }
+    if (password !== password2) {
+      alert("Passwords do not match! Please try again.");
+      return;
+    }
+    if (password.length < 5) {
+      alert("Password must be at least 6 characters. Please try again.");
+      return;
+    }
+    
+    console.log("Onboarding: Form submitted");
+    setCallOne(true);
   };
+
+  var result = RestAPI (
+    { operation: "insert", table: "User", name: firstName, email: userName+"@bath.ac.uk", pwdHash: password }, {},
+    ( callOne )  
+  );
+
+  console.log(result);
+
+  if ( callOne ) { 
+    if ( result == "sqlite3IntegrityError UNIQUE constraint failed Useremail" ) {
+      alert("User already exists. Please try a different username.");
+      setCallOne(false);
+    }
+    else if ( result == "success" ){
+      setCallTwo(true);
+      setCallOne(false);
+    }
+  }
+
+  const user = RestAPI ( 
+    { operation: "select", table: "User", email: userName+"@bath.ac.uk" },
+    { userID : null },
+    ( callTwo )
+  )[0];
+
+  if ( callTwo ) {
+    setCallTwo(false);
+  }
+
+  if ( !recvTwo && user.userID ) {
+    dispatch(updateUserID((user.userID)));
+    navigation.navigate("DriverVerification");
+    setRecvTwo(true);
+  }
 
   // Loading in fonts
   useEffect(() => {
@@ -56,12 +98,13 @@ export default function Onboarding() {
     return null;
   }
 
+  console.log("Render: Onboarding")
   return (
     <View style={styles.container}>
       <GridBackground
         position="absolute"
         zIndex={-5}
-        lineColor={"black"}
+        lineColor={"grey"}
         style={{ backgroundColor: "#e7ada0" }}
       />
 
@@ -70,7 +113,7 @@ export default function Onboarding() {
       </View>
 
       <View style={styles.flex2}>
-        <Text style={styles.heading}>The Boring{"\n"}Stuff...</Text>
+        <Text style={styles.heading}>Create an Account</Text>
       </View>
 
       <View style={styles.flex3}>
@@ -79,7 +122,7 @@ export default function Onboarding() {
           <View id="userNameButton" style={styles.button}>
             <TextInput
               style={styles.text}
-              placeholder="Bath Username"
+              placeholder="Bath Username  "
               value={userName}
               onChangeText={(userName) => setUserName(userName)}
             ></TextInput>
@@ -93,7 +136,7 @@ export default function Onboarding() {
           <View id="firstNameButton" style={styles.button}>
             <TextInput
               style={styles.text}
-              placeholder="First Name"
+              placeholder="First Name "
               value={firstName}
               onChangeText={(firstName) => setFirstName(firstName)}
             ></TextInput>
@@ -103,28 +146,43 @@ export default function Onboarding() {
             style={[styles.button, styles.shadow]}
           ></View>
         </View>
-        <View id="lastNameFrame" style={styles.frame}>
-          <View id="lastNameButton" style={styles.button}>
+        <View id="passwordFrame" style={styles.frame}>
+          <View id="passwordButton" style={styles.button}>
             <TextInput
               style={styles.text}
-              placeholder="Last Name"
-              value={lastName}
-              onChangeText={(lastName) => setLastName(lastName)}
+              placeholder="Password "
+              value={password}
+              onChangeText={(password) => setPassword(password)}
+              secureTextEntry={true}
             ></TextInput>
           </View>
           <View
-            id="lastNameShadow"
+            id="passwordShadow"
+            style={[styles.button, styles.shadow]}
+          ></View>
+        </View>
+        <View id="password2Frame" style={styles.frame}>
+          <View id="password2Button" style={styles.button}>
+            <TextInput
+              style={styles.text}
+              placeholder="Re-enter Password  "
+              value={password2}
+              onChangeText={(password2) => setPassword2(password2)}
+              secureTextEntry={true}
+            ></TextInput>
+          </View>
+          <View
+            id="password2Shadow"
             style={[styles.button, styles.shadow]}
           ></View>
         </View>
       </View>
 
-      {/* Select between driver and passenger */}
       <View style={styles.flex4}></View>
 
       <View style={styles.flex5}>
-        <TouchableOpacity style={styles.button2} onPress={checkTextInput}>
-          <Text style={styles.text}>continue.</Text>
+        <TouchableOpacity style={styles.button2} onPress={onSubmitPressed}>
+          <Text style={styles.text}>submit ></Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -136,17 +194,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   flex1: {
-    flex: 2.75,
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
   flex2: {
-    flex: 1.5,
+    flex: 3,
     justifyContent: "center",
     alignItems: "center",
   },
   flex3: {
-    flex: 3,
+    flex: 3.5,
     justifyContent: "center",
     alignItems: "center",
     marginTop: "5%",
@@ -185,7 +243,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   frame: {
-    width: "60%",
+    width: "75%",
     height: "25%",
     marginTop: "5%",
     // backgroundColor: "white",
@@ -211,6 +269,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: "atkinson-italic",
     color: "#000",
+    textAlign: "center",
   },
   button2: {
     justifyContent: "center",

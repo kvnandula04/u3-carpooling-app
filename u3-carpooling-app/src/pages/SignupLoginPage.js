@@ -1,19 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
 import * as SplashScreen from "expo-splash-screen";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Pressable,
-  SafeAreaView,
-  Button,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Pressable, SafeAreaView, Button } from "react-native";
 import Logo from "../components/Logo";
 import useFonts from "../hooks/UseFonts";
 import GridBackground from "../../assets/grid-background";
 import { useNavigation } from "@react-navigation/native";
-import { WebView } from "react-native-webview";
 
 export default function SignupLoginPage() {
   const [IsReady, SetIsReady] = useState(false);
@@ -23,24 +14,7 @@ export default function SignupLoginPage() {
   };
 
   const onLoginPressed = () => {
-    navigation.navigate("OldHomePage");
-  };
-
-  const [isEmailVerified, setIsEmailVerified] = useState(false);
-  const [showWebView, setShowWebView] = useState(false);
-  const [showView, setShowView] = useState(true);
-
-  const verifyEmail = () => {
-    setShowView(false);
-    setShowWebView(true);
-  };
-
-  const onNavigationStateChange = (navState) => {
-    if (navState.url === "https://moodle.bath.ac.uk/") {
-      setIsEmailVerified(true);
-      setShowView(true);
-      setShowWebView(false);
-    }
+    navigation.navigate("LoginPage");
   };
 
   // Loading in fonts
@@ -68,93 +42,46 @@ export default function SignupLoginPage() {
     return null;
   }
 
+  console.log("Render: SignupLoginPage");
   return (
     <View style={styles.container}>
-      {isEmailVerified ? (
-        <View style={[styles.inner, { flexDirection: "column" }]}>
-          <GridBackground
-            position="absolute"
-            zIndex={-5}
-            lineColor={"black"}
-            style={{ backgroundColor: "#f7f3eb" }}
-          />
-          <Text
-            style={{
-              fontFamily: "atkinson-italic",
-              color: "#000",
-              fontSize: 50,
-            }}
-          >
-            Email verified
+      <View style={styles.container}>
+        <GridBackground
+          position="absolute"
+          zIndex={-5}
+          lineColor={"lightgrey"}
+          style={{ backgroundColor: "#f7f3eb" }}
+        />
+
+        <View id style={styles.flex1}>
+          <Logo fontSize={86} />
+        </View>
+
+        <View id="headingAndJoin" style={styles.flex2}>
+          <Text id="headingText" style={styles.heading}>
+            Student{"\n"}Car Pooling
           </Text>
-          <TouchableOpacity onPress={onLoginPressed}>
-            <Text
-              style={{
-                fontFamily: "atkinson-italic",
-                color: "#1daf59",
-                fontSize: 30,
-                marginTop: "3%",
-              }}
+          <View id="joinFrame" style={styles.joinFrame}>
+            <Pressable
+              id="joinButton"
+              style={styles.joinButton}
+              onPress={onSignupPressed}
             >
-              {" "}
-              Continue >{" "}
-            </Text>
+              <Text style={styles.text}>Join</Text>
+            </Pressable>
+            <View
+              id="joinButtonShadow"
+              style={[styles.joinButton, styles.joinButtonShadow]}
+            ></View>
+          </View>
+        </View>
+
+        <View style={styles.flex3}>
+          <TouchableOpacity onPress={onLoginPressed}>
+            <Text style={styles.text2}>sign in</Text>
           </TouchableOpacity>
         </View>
-      ) : (
-        <View style={styles.container}>
-          {showView && (
-            <>
-              <GridBackground
-                position="absolute"
-                zIndex={-5}
-                lineColor={"black"}
-                style={{ backgroundColor: "#f7f3eb" }}
-              />
-
-              <View id style={styles.flex1}>
-                <Logo fontSize={86} marginTop={"15%"} />
-              </View>
-
-              <View id="headingAndJoin" style={styles.flex2}>
-                <Text id="headingText" style={styles.heading}>
-                  Student{"\n"}Car Pooling
-                </Text>
-                <View id="joinFrame" style={styles.joinFrame}>
-                  <Pressable
-                    id="joinButton"
-                    style={styles.joinButton}
-                    onPress={onSignupPressed}
-                  >
-                    <Text style={styles.text}>Join.</Text>
-                  </Pressable>
-                  <View
-                    id="joinButtonShadow"
-                    style={[styles.joinButton, styles.joinButtonShadow]}
-                  ></View>
-                </View>
-              </View>
-
-              <View style={styles.flex3}>
-                <TouchableOpacity onPress={verifyEmail}>
-                  <Text style={styles.text2}>sign in.</Text>
-                </TouchableOpacity>
-              </View>
-            </>
-          )}
-          {showWebView && (
-            <SafeAreaView style={styles.inner}>
-              <WebView
-                style={{ flex: 1 }}
-                source={{
-                  uri: "https://auth.bath.ac.uk/login?service=http%3A%2F%2Fmoodle.bath.ac.uk%2Flogin%2Findex.php%3Fauthldap_skipntlmsso%3D1",
-                }}
-                onNavigationStateChange={onNavigationStateChange}
-              />
-            </SafeAreaView>
-          )}
-        </View>
-      )}
+      </View>
     </View>
   );
 }
@@ -170,7 +97,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   flex1: {
-    flex: 1,
+    flex: 0.5,
     justifyContent: "center",
     alignItems: "center",
     // backgroundColor: "red",
@@ -179,6 +106,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    marginBottom: "10%",
+
     // backgroundColor: "blue",
   },
   flex3: {
@@ -200,8 +129,8 @@ const styles = StyleSheet.create({
   },
   joinFrame: {
     width: "40%",
-    height: "30%",
-    marginTop: "5%",
+    height: "25%",
+    marginTop: "20%",
     // backgroundColor: "white",
   },
   joinButton: {

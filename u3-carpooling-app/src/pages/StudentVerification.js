@@ -1,14 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import * as SplashScreen from "expo-splash-screen";
-import {
-  Text,
-  View,
-  StyleSheet,
-  Pressable,
-  Button,
-  SafeAreaView,
-  TouchableOpacity,
-} from "react-native";
+import { Text, View, StyleSheet, Pressable, Button, SafeAreaView, TouchableOpacity } from "react-native";
 import Logo from "../components/Logo";
 import useFonts from "../hooks/UseFonts";
 import GridBackground from "../../assets/grid-background";
@@ -19,7 +11,7 @@ export default function StudentVerification() {
   const [IsReady, SetIsReady] = useState(false);
   const navigation = useNavigation();
   const onSignedIn = () => {
-    navigation.navigate("DriverVerification");
+    navigation.navigate("Onboarding");
   };
 
   const [isEmailVerified, setIsEmailVerified] = useState(false);
@@ -27,12 +19,14 @@ export default function StudentVerification() {
   const [showView, setShowView] = useState(true);
 
   const verifyEmail = () => {
+    console.log("StudentVerification: opening web verification")
     setShowView(false);
     setShowWebView(true);
   };
 
   const onNavigationStateChange = (navState) => {
     if (navState.url === "https://moodle.bath.ac.uk/") {
+      console.log("StudentVerification: verification complete")
       setIsEmailVerified(true);
       setShowView(true);
       setShowWebView(false);
@@ -64,6 +58,7 @@ export default function StudentVerification() {
     return null;
   }
 
+  console.log("Render: StudentVerification")
   return (
     <View style={styles.container}>
       {isEmailVerified ? (
@@ -71,7 +66,7 @@ export default function StudentVerification() {
           <GridBackground
             position="absolute"
             zIndex={-5}
-            lineColor={"black"}
+            lineColor={"lightgrey"}
             style={{ backgroundColor: "#f7f3eb" }}
           />
           <Text
