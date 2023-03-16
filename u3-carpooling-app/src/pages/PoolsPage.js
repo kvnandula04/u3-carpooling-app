@@ -5,21 +5,11 @@ import LiveMap from "../components/LiveMap";
 import { SafeAreaView } from "react-native-safe-area-context";
 import RestAPI from "../hooks/Rest";
 import useFonts from "../hooks/UseFonts";
+import { useSelector, useDispatch } from "react-redux";
+import { updateUserRole } from "../../globalVariables/mySlice";
 
 const PoolsPage = () => {
-    // useEffect(() => {
-    //     async function prepare() {
-    //         try {
-    //             await useFonts();
-    //         } catch (e) {
-    //             console.warn(e);
-    //         } finally {
-    //             SetIsReady(true);
-    //         }
-    //     }
-
-    //     prepare();
-    // }, []);
+    const myUserRole = useSelector((state) => state.mySlice.myUserRole);
 
     const [callOne, updateCallOne] = useState(true);
     const [recvOne, updateRecvOne] = useState(false);
@@ -212,9 +202,25 @@ const PoolsPage = () => {
     };
     shedDB();
 
+    const onPressCommence = () => {
+        console.log("Commence Trip Pressed");
+    };
+    let commenceTrip = null;
+    if (myUserRole === 0) {
+        commenceTrip = (
+            <Pressable
+                id="commence"
+                style={styles.commence}
+                onPress={onPressCommence}
+            >
+                <Text> Commence Trip </Text>
+            </Pressable>
+        );
+    }
+
     return (
         <View id="pageFrame" style={styles.pageFrame}>
-            <Pressable
+            <View
                 style={{
                     flex: 1,
                     alignSelf: "center",
@@ -229,7 +235,8 @@ const PoolsPage = () => {
                 {shed_date}
                 {destin_depart}
                 <Text> Picked up by {user.name} </Text>
-            </Pressable>
+                {commenceTrip}
+            </View>
         </View>
     );
 };
@@ -237,6 +244,17 @@ const PoolsPage = () => {
 export default PoolsPage;
 
 const styles = StyleSheet.create({
+    commence: {
+        position: "absolute",
+        bottom: "-10%",
+        right: 0,
+        width: "50%",
+        height: "30%",
+        justifyContent: "center",
+        alignItems: "center",
+        flex: 1,
+        backgroundColor: "green",
+    },
     date: {
         // fontFamily: "atkinson-italic",
         fontSize: 22,
