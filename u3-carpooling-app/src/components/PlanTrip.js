@@ -68,8 +68,8 @@ const PlanTrip = ({ preferenceData }) => {
   const [callTwo, updateCallTwo] = useState(false);
   const [recvTwo, updateRecvTwo] = useState(false);
 
-  const myUserID = 6;
-  const myRole = 0;
+  const myUserID = 2;
+  const myRole = 1;
   //const poolID = null;
   //const settings = preferences;
 
@@ -128,33 +128,26 @@ const PlanTrip = ({ preferenceData }) => {
   }
 
   const [apreferences, asetPreferences] = useState(null);
+  const [aMatch, asetMatch] = useState(null);
 
   RestAPI(apreferences);
+  RestAPI(aMatch);
 
   function onMatchMePressed() {
-    //console.log("Preferences: ",preferences);
-    //asetPreferences({operation: "insert", table: "Offer", userID: myUserID.toString(), role: myRole.toString(), settings: JSON.stringify(preferences)});
+    //Driver
+    if(myRole === 1){
+      if(pool_table.poolID != null){
+        //Insert into Offer table the drivers preferences
+        asetPreferences({ operation: "insert", table: "Offer", userID: myUserID.toString(), poolID: pool_table.poolID.toString(), role: myRole.toString(), settings: JSON.stringify(preferences)});
 
-    asetPreferences({ operation: "matchmake" });
-
-    // //Driver
-    // if(myRole === 1){
-    //   if(pool_table.poolID != null){
-    //     //Insert into Offer table the drivers preferences
-    //     asetPreferences({ operation: "insert", table: "Offer", userID: myUserID.toString(), poolID: pool_table.poolID.toString(), role: myRole.toString(), settings: JSON.stringify(preferences)});
-
-    //     console.log("Working")
-
-    //     //Now run the matchmaking algorithm
-    //     asetPreferences({operation: "matchmake"})
-
-    //     console.log("Completed");
-    //   }
-    // }
-    // //Passenger
-    // else{
-    //   asetPreferences({ operation: "insert", table: "Offer", userID: myUserID.toString(), role: myRole.toString(), settings: JSON.stringify(preferences)});
-    // }
+        //Now run the matchmaking algorithm
+        asetMatch({operation: "matchmake"})
+      }
+    }
+    //Passenger
+    else{
+      asetPreferences({ operation: "insert", table: "Offer", userID: myUserID.toString(), role: myRole.toString(), settings: JSON.stringify(preferences)});
+    }
 
     //console.log(preferences)
     //navigation.navigate("LiveTripPage");
