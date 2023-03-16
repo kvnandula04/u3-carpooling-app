@@ -4,8 +4,23 @@ import GridBackground from "../../assets/grid-background";
 import LiveMap from "../components/LiveMap";
 import { SafeAreaView } from "react-native-safe-area-context";
 import RestAPI from "../hooks/Rest";
+import useFonts from "../hooks/UseFonts";
 
 const PoolsPage = () => {
+    // useEffect(() => {
+    //     async function prepare() {
+    //         try {
+    //             await useFonts();
+    //         } catch (e) {
+    //             console.warn(e);
+    //         } finally {
+    //             SetIsReady(true);
+    //         }
+    //     }
+
+    //     prepare();
+    // }, []);
+
     const [callOne, updateCallOne] = useState(true);
     const [recvOne, updateRecvOne] = useState(false);
     const [callTwo, updateCallTwo] = useState(false);
@@ -14,6 +29,12 @@ const PoolsPage = () => {
     const [recvThree, updateRecvThree] = useState(false);
     const [callFour, updateCallFour] = useState(false);
     const [recvFour, updateRecvFour] = useState(false);
+
+    // Schedule
+    const [shedCallOne, updateShedCallOne] = useState(true);
+    const [shedRecvOne, updateShedRecvOne] = useState(false);
+    const [shedCallTwo, updateShedCallTwo] = useState(false);
+    const [shedRecvTwo, updateShedRecvTwo] = useState(false);
 
     const onPressCancel = () => {
         console.log("Cancel Trip Pressed");
@@ -25,83 +46,25 @@ const PoolsPage = () => {
     let test = null;
     let pool = null;
 
-    const [username, setUsername] = useState("blanc.");
+    const [date, setDate] = useState("'date'");
+    const [time, setTime] = useState("'time'");
+    const [destination, setDestination] = useState("'destination'");
+    // const [driver, setDriver] = useState("'driver'");
+
+    let destin_depart = null;
+    let shed_date = null;
 
     const initDB = () => {
-        // RestAPI({
-        //     operation: "insert",
-        //     table: "User",
-        //     name: "Will",
-        //     email: "wb462@bath.ac.uk",
-        //     pwdHash: "$123",
-        // });
-        // RestAPI({
-        //     operation: "insert",
-        //     table: "User",
-        //     name: "Richard",
-        //     email: "rp123@bath.ac.uk",
-        //     pwdHash: "$456",
-        // });
-        // const will = RestAPI(
-        //     { operation: "select", table: "User", name: "Will" },
-        //     { userID: null },
-        //     (ranAlready = singleCall)
-        // )[0];
-        // const richard = RestAPI(
-        //     { operation: "select", table: "User", name: "Richard" },
-        //     { userID: null },
-        //     (ranAlready = singleCall)
-        // )[0];
-        // const vehicle = RestAPI(
-        //     { operation: "vehiclelookup", registrationNumber: "RO11RWW" },
-        //     { vehicleID: null },
-        //     (ranAlready = singleCall)
-        // )[0];
-        // RestAPI({
-        //     operation: "insert",
-        //     table: "Licence",
-        //     licenceNumber: "WTJ011132",
-        //     userID: will.userID,
-        //     vehicleID: vehicle.vehicleID,
-        // });
-        // const licence = RestAPI(
-        //     {
-        //         operation: "select",
-        //         table: "Licence",
-        //         licenceNumber: "WTJ011132",
-        //     },
-        //     { licenceID: null },
-        //     (ranAlready = singleCall)
-        // )[0];
-        // RestAPI({
-        //     operation: "insert",
-        //     table: "Pool",
-        //     licenceID: licence.licenceID,
-        // });
-        // RestAPI({
-        //     operation: "insert",
-        //     table: "PoolSubscriber",
-        //     poolID: 1,
-        //     userID: will.userID,
-        // });
-        // RestAPI({
-        //     operation: "insert",
-        //     table: "PoolSubscriber",
-        //     poolID: 1,
-        //     userID: richard.userID,
-        // });
-
-        // ----------------- TESTS -----------------
-
         offer = RestAPI(
             {
                 operation: "select",
                 table: "Offer",
-                userID: "1",
+                userID: "3",
             },
             {
                 userID: null,
                 poolID: null,
+                settings: { departure_time: "2", destination: "3" },
             },
             (runFlag = callOne)
         )[0];
@@ -116,6 +79,7 @@ const PoolsPage = () => {
             updateRecvOne(true);
             updateCallTwo(true);
         }
+        // console.log("OFFER:", typeof JSON.parse(offer.settings).departure_time);
 
         pool = RestAPI(
             {
@@ -156,7 +120,6 @@ const PoolsPage = () => {
         if (callThree == true) {
             updateCallThree(false);
         }
-
         // If we received valid data, move onto the next call
         if (recvThree == false && licence.userID != null) {
             updateRecvThree(true);
@@ -181,80 +144,110 @@ const PoolsPage = () => {
         }
 
         // Retrieve the driver's name
-        if (user.name != null) console.log("USER NAME:", user.name);
+        if (user.name != null) {
+            console.log("USER NAME:", user.name);
+            console.log("OFFER SETTINGS:", offer.settings.destination);
+            destin_depart = (
+                <Text id="text" style={styles.text}>
+                    {" "}
+                    {JSON.parse(offer.settings).departure_time} @{" "}
+                    {JSON.parse(offer.settings).destination}
+                </Text>
+            );
+        }
     };
     initDB();
 
+    const shedDB = () => {
+        shedOffer = RestAPI(
+            {
+                operation: "select",
+                table: "Offer",
+                userID: "3",
+            },
+            {
+                userID: null,
+                poolID: null,
+            },
+            (runFlag = shedCallOne)
+        )[0];
+
+        // Only run the call once
+        if (callOne == true) {
+            updateShedCallOne(false);
+        }
+
+        // If we received valid data, move onto the next call
+        if (shedRecvOne == false && shedOffer.poolID != null) {
+            updateShedRecvOne(true);
+            updateShedCallTwo(true);
+        }
+
+        shed = RestAPI(
+            {
+                operation: "select",
+                table: "Schedule",
+                poolID: shedOffer.poolID,
+            },
+            {
+                datetime: { date: null, time: null },
+                scheduleID: null,
+            },
+            (runFlag = shedCallTwo)
+        )[0];
+
+        // Only run the call once
+        if (shedCallTwo == true) {
+            updateShedCallTwo(false);
+        }
+
+        if (shed.scheduleID != null) {
+            console.log("Schedule DATE", shed.datetime);
+            shed_date = (
+                <Text id="date" style={styles.date}>
+                    {JSON.parse(shed.datetime).date}
+                </Text>
+            );
+        }
+    };
+    shedDB();
+
     return (
         <View id="pageFrame" style={styles.pageFrame}>
-            <GridBackground
-                position="absolute"
-                zIndex={-5}
-                lineColor={"black"}
-                style={{ backgroundColor: "#f7f3eb" }}
-            />
             <Pressable
                 style={{
                     flex: 1,
                     alignSelf: "center",
                     alignItems: "center",
                     justifyContent: "center",
-                    width: "70%",
+                    width: "85%",
+                    top: "5%",
                     backgroundColor: "red",
                 }}
                 onPress={onPressCancel}
             >
-                <Text> TEST </Text>
-                <Text> {username} </Text>
+                {shed_date}
+                {destin_depart}
+                <Text> Picked up by {user.name} </Text>
             </Pressable>
         </View>
     );
-
-    // return (
-    // <View id="pageFrame" style={styles.pageFrame}>
-    // <GridBackground
-    // position="absolute"
-    // zIndex={-5}
-    // lineColor={"black"}
-    // style={{ backgroundColor: "#f7f3eb" }}
-    // />
-    // <SafeAreaView id="poolFrame" style={styles.poolFrame}>
-    // <View id="poolCard" style={styles.poolCard}>
-    // <LiveMap
-    // cardStyle={styles.poolStyle}
-    // shadowStyle={styles.shadowStyle}
-    // text="U3"
-    // />
-    // <Pressable
-    // id="cancelButton"
-    // style={styles.cancelButton}
-    // onPress={onPressCancel}
-    // >
-    // <Text id="cancelText" style={styles.cancelText}>
-    // cancel trip
-    // </Text>
-    // </Pressable>
-    // </View>
-    // </SafeAreaView>
-    // <View id="matchFrame" style={styles.matchFrame}></View>
-    // <View id="sheduleFrame" style={styles.sheduleFrame}>
-    // <Pressable
-    // id="sheduleButton"
-    // style={styles.sheduleButton}
-    // onPress={onPressShedule}
-    // >
-    // <Text id="sheduleText" style={styles.sheduleText}>
-    // shedule Another Trip
-    // </Text>
-    // </Pressable>
-    // </View>
-    // </View>
-    // );
 };
 
 export default PoolsPage;
 
 const styles = StyleSheet.create({
+    date: {
+        // fontFamily: "atkinson-italic",
+        fontSize: 22,
+        fontWeight: "bold",
+        color: "#000",
+    },
+    text: {
+        // fontFamily: "atkinson-regular",
+        fontSize: 20,
+        color: "#000",
+    },
     pageFrame: {
         flex: 1,
     },

@@ -253,8 +253,8 @@ export default function HomePage() {
                         </Text>
                         <Text style={styles.tripHistoryTitle}>My Pools</Text>
                     </View>
-                    {/* <PoolsPage /> */}
-                    <TouchableOpacity onPress={onPressPool}>
+                    <PoolsPage />
+                    {/* <TouchableOpacity onPress={onPressPool}>
                         <View style={styles.tripHistoryTitleViewInner}>
                             <Text
                                 style={styles.tripHistoryTitleViewInnerHeading}
@@ -268,7 +268,7 @@ export default function HomePage() {
                                 Picked up by Richard
                             </Text>
                         </View>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
             </BottomSheet>
         </View>
