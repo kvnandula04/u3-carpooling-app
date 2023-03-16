@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SignupLoginPage from "../pages/SignupLoginPage";
 import StudentVerification from "../pages/StudentVerification";
 import DriverVerification from "../pages/DriverVerification";
+import LoginPage from "../pages/LoginPage";
 import LiveTripPage from "../pages/LiveTripPage";
 import ArrivedPage from "../pages/ArrivedPage";
 import ArrivedPageDriver from "../pages/ArrivedPageDriver";
@@ -21,34 +22,19 @@ const Navigation = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen
-                    name="SignupLoginPage"
-                    component={SignupLoginPage}
-                />
-                <Stack.Screen
-                    name="StudentVerification"
-                    component={StudentVerification}
-                />
-                <Stack.Screen
-                    name="DriverVerification"
-                    component={DriverVerification}
-                />
+                <Stack.Screen name="SignupLoginPage" component={SignupLoginPage} />
+                <Stack.Screen name="StudentVerification" component={StudentVerification} />
                 <Stack.Screen name="Onboarding" component={Onboarding} />
+                <Stack.Screen name="DriverVerification" component={DriverVerification} />
+                <Stack.Screen name="LoginPage" component={LoginPage} />
                 <Stack.Screen name="OldHomePage" component={OldHomePage} />
                 <Stack.Screen name="LiveMap" component={LiveMap} />
                 <Stack.Screen name="LiveTripPage" component={LiveTripPage} />
                 <Stack.Screen name="ProfilePage" component={ProfilePage} />
                 <Stack.Screen name="Preferences" component={Preferences} />
                 <Stack.Screen name="ArrivedPage" component={ArrivedPage} />
-                <Stack.Screen
-                    name="ArrivedPageDriver"
-                    component={ArrivedPageDriver}
-                />
-                <Stack.Screen
-                    name="PaymentPage"
-                    component={PaymentPage}
-                    initialParams={{ value: "" }}
-                />
+                <Stack.Screen name="ArrivedPageDriver" component={ArrivedPageDriver} />
+                <Stack.Screen name="PaymentPage" component={PaymentPage} initialParams={{ value: "" }} />
             </Stack.Navigator>
         </NavigationContainer>
     );
