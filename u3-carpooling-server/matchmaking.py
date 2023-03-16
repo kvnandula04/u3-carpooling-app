@@ -101,8 +101,17 @@ def runDatabase(tableOperate):
 
         list_of_drivers.append(driverDictionary)
 
+    
     #-------------------Adds passengers to list_of_passengers-------------------
-    get_passengers = tableOperate("select", {"table": "Offer", "role": 0})[0].get_data().decode("UTF-8")
+    response = tableOperate("select", {"table": "Offer", "role":0})
+    status = response[1]
+    body = response[0]
+    if status != "200": # If error status
+        print("ERROR:",status)
+        print("REASON:",body)
+        return
+    
+    get_passengers = body.get_data().decode("UTF-8")
     get_passengers_dictionary = json.loads(get_passengers)
 
     for passengers in get_passengers_dictionary:
