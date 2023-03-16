@@ -19,15 +19,23 @@ export default function RestAPI(params, template=null, runFlag=true) {
         "http://u3pool.ddns.net:3333/api",
         requestOptions
       );
-      
-      if (params.operation == "select" && response.status == "200") {
-        const data = await response.json();
-        console.log("REST recv: ", data);
-        setResult(data);
+
+      if (response.status == "200") {
+        if (params.operation == "select") {
+          const data = await response.json();
+          console.log("REST recv: ", data);
+          setResult(data);
+        }
+        else {
+          const data = await response.text();
+          console.log("REST recv: ", data);
+          setResult(data);
+        }
       }
       else {
         const data = await response.text();
-        console.warn("REST recv: ", data);         
+        console.warn("REST recv: ", data);     
+        setResult(data);
       }
       
     } catch (err) {
