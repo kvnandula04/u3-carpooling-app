@@ -5,6 +5,8 @@ import Logo from "../components/Logo";
 import useFonts from "../hooks/UseFonts";
 import GridBackground from "../../assets/grid-background";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import { updateUserID} from "../../globalVariables/mySlice";
 import RestAPI from "../hooks/Rest";
 
 export default function Onboarding() {
@@ -14,6 +16,7 @@ export default function Onboarding() {
   const [callOne, setCallOne] = useState(false);
   const [recvOne, setRecvOne] = useState(false);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const onSubmitPressed = () => {
     if (!userName.trim() || !password.trim()) {
