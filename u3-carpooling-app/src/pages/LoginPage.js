@@ -26,7 +26,7 @@ export default function Onboarding() {
     setRecvOne(false);
   };
 
-  user = RestAPI (
+  const user = RestAPI (
     { operation: "select", table: "User", email: userName+"@bath.ac.uk" }, 
     { userID: null, pwdHash: null },
     ( callOne )  

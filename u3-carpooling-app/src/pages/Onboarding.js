@@ -16,8 +16,8 @@ export default function Onboarding() {
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
   const [callOne, setCallOne] = useState(false);
+  const [recvOne, setRecvOne] = useState(false);
   const [callTwo, setCallTwo] = useState(false);
-  const [recvTwo, setRecvTwo] = useState(false);
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -30,30 +30,33 @@ export default function Onboarding() {
       alert("Passwords do not match! Please try again.");
       return;
     }
-    if (password.length < 5) {
+    if (password.length < 6) {
       alert("Password must be at least 6 characters. Please try again.");
       return;
     }
     
     console.log("Onboarding: Form submitted");
     setCallOne(true);
+    setRecvOne(false);
   };
 
-  var result = RestAPI (
+  const result = RestAPI (
     { operation: "insert", table: "User", name: firstName, email: userName+"@bath.ac.uk", pwdHash: password }, {},
     ( callOne )  
   );
 
-  console.log(result);
-
   if ( callOne ) { 
+    setCallOne(false);
+  }
+
+  if ( !recvOne ) {
     if ( result == "sqlite3IntegrityError UNIQUE constraint failed Useremail" ) {
       alert("User already exists. Please try a different username.");
-      setCallOne(false);
+      setRecvOne(true);
     }
     else if ( result == "success" ){
+      setRecvOne(true);
       setCallTwo(true);
-      setCallOne(false);
     }
   }
 
@@ -67,10 +70,9 @@ export default function Onboarding() {
     setCallTwo(false);
   }
 
-  if ( !recvTwo && user.userID ) {
+  if ( user.userID ) {
     dispatch(updateUserID((user.userID)));
     navigation.navigate("DriverVerification");
-    setRecvTwo(true);
   }
 
   // Loading in fonts
