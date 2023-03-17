@@ -39,6 +39,7 @@ export default function Onboarding() {
   if ( !recvOne ) {
   	if ( user.userID ) {
 	  if ( user.pwdHash === password ) {
+	    dispatch(updateUserID((user.userID)));
 	    navigation.navigate("OldHomePage");
 	    setRecvOne(true);
 	  }
