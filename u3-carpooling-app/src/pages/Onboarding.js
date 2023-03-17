@@ -5,7 +5,7 @@ import Logo from "../components/Logo";
 import useFonts from "../hooks/UseFonts";
 import GridBackground from "../../assets/grid-background";
 import { useNavigation } from "@react-navigation/native";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { updateUserID} from "../../globalVariables/mySlice";
 import RestAPI from "../hooks/Rest";
 
