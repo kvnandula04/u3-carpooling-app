@@ -1,27 +1,70 @@
 import React, { useState, useEffect, useCallback } from "react";
 import * as SplashScreen from "expo-splash-screen";
-import {
-  Text,
-  View,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  Pressable,
-} from "react-native";
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, Pressable } from "react-native";
 import Logo from "../components/Logo";
 import useFonts from "../hooks/UseFonts";
 import GridBackground from "../../assets/grid-background";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
+import RestAPI from "../hooks/Rest";
 
 export default function DriverVerification() {
   const [IsReady, SetIsReady] = useState(false);
+  const [numberPlate, setNumberPlate] = useState("");
+  const [licence, setLicence] = useState("");
+  const [callOne, setCallOne] = useState(false);
+  const [recvOne, setRecvOne] = useState(false);
+  const [callTwo, setCallTwo] = useState(false);
   const navigation = useNavigation();
+  const myUserID = useSelector((state) => state.mySlice.myUserID);
+  
   const onSkipPressed = () => {
-    navigation.navigate("Onboarding");
+    navigation.navigate("OldHomePage");
   };
-  const [numberPlate, setNumberPlate] = useState(""); // Here text contains the number plate
-  const [licence, setLicence] = useState(""); // Here text contains the number plate
+  const onSubmitPressed = () => {
+    if (!licence.trim() || !numberPlate.trim()) {
+      alert("All fields must be filled. Please try again.");
+      return;
+    }
+    
+    console.log("DriverVerification: Form submitted");
+    setCallOne(true);
+    setRecvOne(false);
+  };
 
+  const vehicle = RestAPI (
+    { operation: "vehiclelookup", registrationNumber: numberPlate.toUpperCase() }, 
+    { vehicleID: null },
+    callOne
+  )[0];
+
+  if ( callOne ) {
+    setCallOne(false);
+  }
+
+  console.log(vehicle);
+
+  if ( !recvOne ) {
+    if ( vehicle == "f") {
+      alert("Invalid vehicle registration. Please try again.");
+      setRecvOne(true);
+    }
+    else if ( vehicle.vehicleID ){
+      setRecvOne(true);
+      setCallTwo(true);
+    }
+  }
+  
+  RestAPI (
+    { operation: "insert", table: "Licence", licenceNumber: licence, userID: myUserID, vehicleID: vehicle.vehicleID }, {},
+    ( callTwo )
+  );
+
+  if ( callTwo ) {
+    setCallTwo(false);
+    navigation.navigate("OldHomePage");
+  }
+  
   // Loading in fonts
   useEffect(() => {
     async function prepare() {
@@ -47,12 +90,13 @@ export default function DriverVerification() {
     return null;
   }
 
+  console.log("Render: DriverVerification")
   return (
     <View style={styles.container}>
       <GridBackground
         position="absolute"
         zIndex={-5}
-        lineColor={"black"}
+        lineColor={"grey"}
         style={{ backgroundColor: "#2e73da" }}
       />
 
@@ -70,7 +114,7 @@ export default function DriverVerification() {
           <View id="numberPlateButton" style={styles.button}>
             <TextInput
               style={styles.text}
-              placeholder="Registration Number"
+              placeholder="Registration Number   "
               value={numberPlate}
               onChangeText={(numberPlate) => setNumberPlate(numberPlate)}
             ></TextInput>
@@ -84,7 +128,7 @@ export default function DriverVerification() {
           <View id="licenceButton" style={styles.button}>
             <TextInput
               style={styles.text}
-              placeholder="Licence Number"
+              placeholder="Licence Number  "
               value={licence}
               onChangeText={(licence) => setLicence(licence)}
             ></TextInput>
@@ -97,12 +141,18 @@ export default function DriverVerification() {
       </View>
 
       <View style={styles.flex4}>
-        <TouchableOpacity style={styles.skipButton} onPress={onSkipPressed}>
-          <Text style={styles.text}>skip.</Text>
+        <TouchableOpacity style={styles.submitButton} onPress={onSubmitPressed}>
+          <Text style={styles.text}>submit ></Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.flex5}>
+        <TouchableOpacity style={styles.skipButton} onPress={onSkipPressed}>
+          <Text style={styles.text}>skip ></Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.flex6}>
         <View style={styles.circle1}></View>
         <View style={styles.circle2}></View>
       </View>
@@ -120,23 +170,29 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   flex2: {
-    flex: 2,
+    flex: 3,
     justifyContent: "center",
     alignItems: "center",
   },
   flex3: {
-    flex: 1,
+    flex: 1.5,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: "10%",
+    marginTop: "15%",
   },
   flex4: {
     flex: 2,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: "10%",
+    marginTop: "15%",
   },
   flex5: {
+    flex: 2,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: "10%",
+  },
+  flex6: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
@@ -165,7 +221,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   frame: {
-    width: "70%",
+    width: "80%",
     height: "80%",
     marginTop: "5%",
     // backgroundColor: "white",
@@ -191,8 +247,13 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: "atkinson-italic",
     color: "#f7f3eb",
+    textAlign: "center",
   },
   skipButton: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  submitButton: {
     justifyContent: "center",
     alignItems: "center",
   },
