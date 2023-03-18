@@ -1,12 +1,18 @@
 import React, { useState, useEffect, useCallback } from "react";
 import * as SplashScreen from "expo-splash-screen";
-import { Text, View, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 import Logo from "../components/Logo";
 import useFonts from "../hooks/UseFonts";
 import GridBackground from "../../assets/grid-background";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
-import { updateUserID} from "../../globalVariables/mySlice";
+import { updateUserID } from "../../globalVariables/mySlice";
 import RestAPI from "../hooks/Rest";
 
 export default function Onboarding() {
@@ -34,44 +40,50 @@ export default function Onboarding() {
       alert("Password must be at least 6 characters. Please try again.");
       return;
     }
-    
+
     console.log("Onboarding: Form submitted");
     setCallOne(true);
     setRecvOne(false);
   };
 
-  const result = RestAPI (
-    { operation: "insert", table: "User", name: firstName, email: userName+"@bath.ac.uk", pwdHash: password }, {},
-    ( callOne )  
+  const result = RestAPI(
+    {
+      operation: "insert",
+      table: "User",
+      name: firstName,
+      email: userName + "@bath.ac.uk",
+      pwdHash: password,
+    },
+    {},
+    callOne
   );
 
-  if ( callOne ) { 
+  if (callOne) {
     setCallOne(false);
   }
 
-  if ( !recvOne ) {
-    if ( result == "sqlite3IntegrityError UNIQUE constraint failed Useremail" ) {
+  if (!recvOne) {
+    if (result == "sqlite3IntegrityError UNIQUE constraint failed Useremail") {
       alert("User already exists. Please try a different username.");
       setRecvOne(true);
-    }
-    else if ( result == "success" ){
+    } else if (result == "success") {
       setRecvOne(true);
       setCallTwo(true);
     }
   }
 
-  const user = RestAPI ( 
-    { operation: "select", table: "User", email: userName+"@bath.ac.uk" },
-    { userID : null },
-    ( callTwo )
+  const user = RestAPI(
+    { operation: "select", table: "User", email: userName + "@bath.ac.uk" },
+    { userID: null },
+    callTwo
   )[0];
 
-  if ( callTwo ) {
+  if (callTwo) {
     setCallTwo(false);
   }
 
-  if ( user.userID ) {
-    dispatch(updateUserID((user.userID)));
+  if (user.userID) {
+    dispatch(updateUserID(user.userID));
     navigation.navigate("DriverVerification");
   }
 
@@ -100,18 +112,18 @@ export default function Onboarding() {
     return null;
   }
 
-  console.log("Render: Onboarding")
+  console.log("Render: Onboarding");
   return (
     <View style={styles.container}>
       <GridBackground
         position="absolute"
         zIndex={-5}
         lineColor={"grey"}
-        style={{ backgroundColor: "#e7ada0" }}
+        style={{ backgroundColor: "#1daf59" }}
       />
 
       <View style={styles.flex1}>
-        <Logo fontSize={40} color={"#000"} marginTop={"15%"} />
+        <Logo fontSize={50} color={"#f7f3eb"} marginTop={"15%"} />
       </View>
 
       <View style={styles.flex2}>
@@ -124,7 +136,7 @@ export default function Onboarding() {
           <View id="userNameButton" style={styles.button}>
             <TextInput
               style={styles.text}
-              placeholder="Bath Username  "
+              placeholder="Bath Username"
               value={userName}
               onChangeText={(userName) => setUserName(userName)}
             ></TextInput>
@@ -138,7 +150,7 @@ export default function Onboarding() {
           <View id="firstNameButton" style={styles.button}>
             <TextInput
               style={styles.text}
-              placeholder="First Name "
+              placeholder="First Name"
               value={firstName}
               onChangeText={(firstName) => setFirstName(firstName)}
             ></TextInput>
@@ -152,7 +164,7 @@ export default function Onboarding() {
           <View id="passwordButton" style={styles.button}>
             <TextInput
               style={styles.text}
-              placeholder="Password "
+              placeholder="Password"
               value={password}
               onChangeText={(password) => setPassword(password)}
               secureTextEntry={true}
@@ -167,7 +179,7 @@ export default function Onboarding() {
           <View id="password2Button" style={styles.button}>
             <TextInput
               style={styles.text}
-              placeholder="Re-enter Password  "
+              placeholder="Re-enter Password"
               value={password2}
               onChangeText={(password2) => setPassword2(password2)}
               secureTextEntry={true}
@@ -184,7 +196,7 @@ export default function Onboarding() {
 
       <View style={styles.flex5}>
         <TouchableOpacity style={styles.button2} onPress={onSubmitPressed}>
-          <Text style={styles.text}>submit ></Text>
+          <Text style={[styles.text, { color: "#f7f3eb" }]}>submit ></Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -196,7 +208,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   flex1: {
-    flex: 1,
+    flex: 3,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -226,7 +238,7 @@ const styles = StyleSheet.create({
   heading: {
     fontFamily: "atkinson-italic",
     fontSize: 54,
-    color: "#5dada0",
+    color: "#f7f3eb",
     lineHeight: 53,
     shadowColor: "#000",
     shadowOpacity: 1,
@@ -240,7 +252,7 @@ const styles = StyleSheet.create({
   subheading: {
     fontFamily: "atkinson-italic",
     fontSize: 24,
-    color: "#000",
+    color: "#f7f3eb",
     lineHeight: 53,
     textAlign: "center",
   },
@@ -256,7 +268,7 @@ const styles = StyleSheet.create({
     borderRadius: 32,
     borderColor: "#000",
     borderWidth: 5,
-    backgroundColor: "#beddd6",
+    backgroundColor: "#ffb800",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -270,27 +282,11 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 24,
     fontFamily: "atkinson-italic",
-    color: "#000",
+    color: "#1774fb",
     textAlign: "center",
   },
   button2: {
     justifyContent: "center",
     alignItems: "center",
-  },
-  circle1: {
-    width: 30,
-    height: 30,
-    borderRadius: 1000,
-    backgroundColor: "#000000",
-    marginRight: "1%",
-  },
-  circle2: {
-    width: 30,
-    height: 30,
-    borderRadius: 1000,
-    borderWidth: 6,
-    borderColor: "#000000",
-    backgroundColor: "#ffb800",
-    marginLeft: "1%",
   },
 });
