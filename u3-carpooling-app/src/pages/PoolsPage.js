@@ -213,14 +213,14 @@ const PoolsPage = () => {
                 style={styles.commence}
                 onPress={onPressCommence}
             >
-                <Text> Commence Trip </Text>
+                <Text style={styles.text}> Commence Trip </Text>
             </Pressable>
         );
     }
 
     let username = null;
     if (user.name != null) {
-        username = <Text> Picked up by {user.name} </Text>;
+        username = <Text style={styles.text}> Picked up by {user.name} </Text>;
     }
 
     return (
@@ -235,7 +235,7 @@ const PoolsPage = () => {
                     top: "5%",
                     // backgroundColor: "red",
                 }}
-                onPress={onPressCancel}
+                // onPress={onPressCancel}
             >
                 {shed_date}
                 {destin_depart}
@@ -262,13 +262,15 @@ const styles = StyleSheet.create({
     },
     date: {
         // fontFamily: "atkinson-italic",
+        fontFamily: "Roboto",
         fontSize: 22,
         fontWeight: "bold",
         color: "#000",
     },
     text: {
         // fontFamily: "atkinson-regular",
-        fontSize: 20,
+        fontFamily: "Roboto",
+        fontSize: 16,
         color: "#000",
     },
     pageFrame: {
