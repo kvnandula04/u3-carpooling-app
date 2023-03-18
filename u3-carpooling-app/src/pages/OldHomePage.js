@@ -23,13 +23,12 @@ import { updateUserRole } from "../../globalVariables/mySlice";
 import PoolsPage from "./PoolsPage";
 
 const cream = "#F7F3EB";
-const charcol = "#646464";
+const yellow = "#FFB800";
 const green = "#4CD835";
 const greenShadow = "#278A17";
 const charcoal = "#3F3F3F";
 const black = "#272727";
 const blue = "#1774ff";
-const orange = "#F55726";
 
 export default function HomePage() {
     const [role, setRole] = useState(myUserRole);
@@ -145,13 +144,16 @@ export default function HomePage() {
     }
 
     let mainColour = cream;
-    let secondColour = charcol;
-    if (role === 0) {
-        mainColour = charcol;
+    let secondColour = yellow;
+    let switchIcon = "directions-car";
+    if (myUserRole === 0) {
+        mainColour = yellow;
         secondColour = cream;
+        switchIcon = "directions-car";
     } else {
         mainColour = cream;
-        secondColour = charcol;
+        secondColour = yellow;
+        switchIcon = "airline-seat-recline-normal";
     }
 
     return (
@@ -170,8 +172,8 @@ export default function HomePage() {
                     onPress={onPressSwitch}
                 >
                     <Icon
-                        style={styles.icon}
-                        name="person"
+                        // style={{ padding: 10 }}
+                        name={switchIcon}
                         color="#000"
                         size={50}
                     />
@@ -188,7 +190,7 @@ export default function HomePage() {
                 </View>
                 <Pressable
                     id="profile"
-                    style={styles.profileButton}
+                    style={[styles.profileButton, { borderWidth: 0 }]}
                     onPress={onPressProfile}
                 >
                     <Text style={styles.profileText}>Me.</Text>
@@ -254,21 +256,6 @@ export default function HomePage() {
                         <Text style={styles.tripHistoryTitle}>My Pools</Text>
                     </View>
                     <PoolsPage />
-                    {/* <TouchableOpacity onPress={onPressPool}>
-                        <View style={styles.tripHistoryTitleViewInner}>
-                            <Text
-                                style={styles.tripHistoryTitleViewInnerHeading}
-                            >
-                                Friday 9th December 2022
-                            </Text>
-                            <Text style={styles.tripHistoryTitleViewInnerBody}>
-                                10:30 @ University of Bath
-                            </Text>
-                            <Text style={styles.tripHistoryTitleViewInnerBody}>
-                                Picked up by Richard
-                            </Text>
-                        </View>
-                    </TouchableOpacity> */}
                 </View>
             </BottomSheet>
         </View>
@@ -293,7 +280,12 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         margin: "3%",
-        marginBottom: "10%",
+        bottom: "4%",
+        height: "70%",
+
+        // borderRadius: 10000,
+        // borderColor: "black",
+        // borderWidth: 3,
         // backgroundColor: "green",
     },
     flexInner1: {
@@ -447,7 +439,7 @@ const styles = StyleSheet.create({
     tripHistoryTitleShadow: {
         position: "absolute",
         top: 4,
-        color: orange,
+        color: yellow,
         marginTop: "5%",
     },
     tripHistoryTitleViewInner: {
