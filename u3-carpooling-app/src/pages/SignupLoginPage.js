@@ -1,6 +1,14 @@
 import React, { useState, useEffect, useCallback } from "react";
 import * as SplashScreen from "expo-splash-screen";
-import { StyleSheet, Text, View, TouchableOpacity, Pressable, SafeAreaView, Button } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Pressable,
+  SafeAreaView,
+  Button,
+} from "react-native";
 import Logo from "../components/Logo";
 import useFonts from "../hooks/UseFonts";
 import GridBackground from "../../assets/grid-background";
@@ -54,7 +62,7 @@ export default function SignupLoginPage() {
         />
 
         <View id style={styles.flex1}>
-          <Logo fontSize={86} />
+          <Logo fontSize={86} marginTop={"15%"} />
         </View>
 
         <View id="headingAndJoin" style={styles.flex2}>
@@ -78,7 +86,7 @@ export default function SignupLoginPage() {
 
         <View style={styles.flex3}>
           <TouchableOpacity onPress={onLoginPressed}>
-            <Text style={styles.text2}>sign in</Text>
+            <Text style={styles.text2}>sign in ></Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -89,6 +97,7 @@ export default function SignupLoginPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#000",
   },
   inner: {
     flex: 1,
@@ -97,7 +106,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   flex1: {
-    flex: 0.5,
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
     // backgroundColor: "red",
@@ -107,7 +116,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginBottom: "10%",
-
     // backgroundColor: "blue",
   },
   flex3: {
@@ -129,8 +137,8 @@ const styles = StyleSheet.create({
   },
   joinFrame: {
     width: "40%",
-    height: "25%",
-    marginTop: "20%",
+    height: "30%",
+    marginTop: "5%",
     // backgroundColor: "white",
   },
   joinButton: {
