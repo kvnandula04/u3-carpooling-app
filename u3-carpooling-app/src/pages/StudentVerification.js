@@ -1,6 +1,14 @@
 import React, { useState, useEffect, useCallback } from "react";
 import * as SplashScreen from "expo-splash-screen";
-import { Text, View, StyleSheet, Pressable, Button, SafeAreaView, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Pressable,
+  Button,
+  SafeAreaView,
+  TouchableOpacity,
+} from "react-native";
 import Logo from "../components/Logo";
 import useFonts from "../hooks/UseFonts";
 import GridBackground from "../../assets/grid-background";
@@ -19,14 +27,14 @@ export default function StudentVerification() {
   const [showView, setShowView] = useState(true);
 
   const verifyEmail = () => {
-    console.log("StudentVerification: opening web verification")
+    console.log("StudentVerification: opening web verification");
     setShowView(false);
     setShowWebView(true);
   };
 
   const onNavigationStateChange = (navState) => {
     if (navState.url === "https://moodle.bath.ac.uk/") {
-      console.log("StudentVerification: verification complete")
+      console.log("StudentVerification: verification complete");
       setIsEmailVerified(true);
       setShowView(true);
       setShowWebView(false);
@@ -58,7 +66,7 @@ export default function StudentVerification() {
     return null;
   }
 
-  console.log("Render: StudentVerification")
+  console.log("Render: StudentVerification");
   return (
     <View style={styles.container}>
       {isEmailVerified ? (
@@ -187,7 +195,7 @@ const styles = StyleSheet.create({
     fontSize: 54,
     color: "#f7f3eb",
     lineHeight: 53,
-    shadowColor: "#000000",
+    shadowColor: "#000",
     shadowOpacity: 1,
     shadowRadius: 2,
     shadowOffset: {
@@ -228,7 +236,7 @@ const styles = StyleSheet.create({
     height: 30,
     borderRadius: 1000,
     borderWidth: 6,
-    borderColor: "#000000",
+    borderColor: "#000",
     backgroundColor: "#ffb800",
     marginRight: "1%",
   },
@@ -236,7 +244,7 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 1000,
-    backgroundColor: "#000000",
+    backgroundColor: "#000",
     marginLeft: "1%",
   },
 });
