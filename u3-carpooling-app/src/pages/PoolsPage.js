@@ -206,7 +206,7 @@ const PoolsPage = () => {
         console.log("Commence Trip Pressed");
     };
     let commenceTrip = null;
-    if (myUserRole === 0) {
+    if (myUserRole === 0 && user.name != null) {
         commenceTrip = (
             <Pressable
                 id="commence"
@@ -216,6 +216,11 @@ const PoolsPage = () => {
                 <Text> Commence Trip </Text>
             </Pressable>
         );
+    }
+
+    let username = null;
+    if (user.name != null) {
+        username = <Text> Picked up by {user.name} </Text>;
     }
 
     return (
@@ -228,13 +233,13 @@ const PoolsPage = () => {
                     justifyContent: "center",
                     width: "85%",
                     top: "5%",
-                    backgroundColor: "red",
+                    // backgroundColor: "red",
                 }}
                 onPress={onPressCancel}
             >
                 {shed_date}
                 {destin_depart}
-                <Text> Picked up by {user.name} </Text>
+                {username}
                 {commenceTrip}
             </View>
         </View>
@@ -253,7 +258,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         flex: 1,
-        backgroundColor: "green",
+        // backgroundColor: "green",
     },
     date: {
         // fontFamily: "atkinson-italic",
