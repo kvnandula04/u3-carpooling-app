@@ -32,11 +32,11 @@ const ArrivedPage = () => {
 
     // background grid colour to represent role
     let secondColour = yellow;
-    if (myUserRole === 0) {
-        secondColour = cream;
-    } else {
-        secondColour = yellow;
-    }
+    // if (myUserRole === 0) {
+    //     secondColour = cream;
+    // } else {
+    //     secondColour = yellow;
+    // }
 
     const onPressMap = () => {
         console.log("Take to Map");
