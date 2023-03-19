@@ -66,6 +66,9 @@ export default function SignupLoginPage() {
         </View>
 
         <View id="headingAndJoin" style={styles.flex2}>
+          <Text id="logoText" style={styles.logo}>
+            U3
+          </Text>
           <Text id="headingText" style={styles.heading}>
             Student{"\n"}Car Pooling
           </Text>
@@ -108,7 +111,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   flex1: {
-    flex: 1,
+    flex: 0.75,
     justifyContent: "center",
     alignItems: "center",
     // backgroundColor: "red",
@@ -123,6 +126,18 @@ const styles = StyleSheet.create({
   heading: {
     fontFamily: "syne",
     fontSize: 40,
+    shadowColor: "#3dd37a",
+    shadowOpacity: 1,
+    shadowRadius: 2,
+    shadowOffset: {
+      height: 4,
+      width: 4,
+    },
+    textAlign: "center",
+  },
+  logo: {
+    fontFamily: "syne",
+    fontSize: 70,
     shadowColor: "#3dd37a",
     shadowOpacity: 1,
     shadowRadius: 2,
