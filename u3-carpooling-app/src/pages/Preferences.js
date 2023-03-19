@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import {
-    View,
-    Text,
-    TextInput,
-    Button,
-    StyleSheet,
-    ScrollView,
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import RestAPI from "../hooks/Rest";
 import { useNavigation } from "@react-navigation/native";
@@ -13,165 +14,233 @@ import { useRoute } from "@react-navigation/native";
 import GridBackground from "../../assets/grid-background";
 import { useSelector, useDispatch } from "react-redux";
 import { updateUserRole } from "../../globalVariables/mySlice";
+import Logo from "../components/Logo";
 
 const cream = "#F7F3EB";
-const charcol = "#646464";
-const green = "#4CD835";
-const greenShadow = "#278A17";
-const charcoal = "#3F3F3F";
-const black = "#272727";
-const blue = "#1774ff";
-const orange = "#F55726";
+const yellow = "#F2C94C";
+const black = "#000";
+const white = "#FFF";
 
 export default function Preferences() {
-    const navigation = useNavigation();
-    const [role, setRole] = useState(myUserRole);
-    const myUserRole = useSelector((state) => state.mySlice.myUserRole);
+  const navigation = useNavigation();
+  const [role, setRole] = useState(myUserRole);
+  const myUserRole = useSelector((state) => state.mySlice.myUserRole);
 
-    const route = useRoute();
-    const { message } = route.params;
+  const route = useRoute();
+  const { message } = route.params;
 
-    const [preferences, setPreferences] = useState({
-        location: message.location,
-        destination: message.destination,
-        departure_time: message.departure_time,
-        arrival_time: message.arrival_time,
-        detour_distance: message.detour_distance,
-        rating: message.rating,
-        seats: message.seats,
-        prePage: false,
+  const [preferences, setPreferences] = useState({
+    location: message.location,
+    destination: message.destination,
+    departure_time: message.departure_time,
+    arrival_time: message.arrival_time,
+    detour_distance: message.detour_distance,
+    rating: message.rating,
+    seats: message.seats,
+    prePage: false,
+  });
+
+  //console.log("Preferences page- preferences: ",preferences);
+
+  const onPressBack = () => {
+    navigation.navigate("OldHomePage", { messagePage: preferences });
+  };
+
+  const [apreferences, asetPreferences] = useState(null);
+
+  RestAPI(
+    // { operation: "insert", table: "Offer", userID: "3", poolID: "3", role: "1", settings: JSON.stringify(preferences)}
+    apreferences
+  );
+
+  const handleSavePreferences = () => {
+    asetPreferences({
+      operation: "insert",
+      table: "Offer",
+      userID: "3",
+      poolID: "3",
+      role: "1",
+      settings: JSON.stringify(preferences),
     });
+  };
 
-    //console.log("Preferences page- preferences: ",preferences);
+  let mainColour = cream;
+  let secondColour = yellow;
+  let textColour = black;
+  if (myUserRole === 1) {
+    mainColour = cream;
+    secondColour = yellow;
+    textColour = white;
+  } else {
+    mainColour = yellow;
+    secondColour = cream;
+    textColour = black;
+  }
 
-    const onPressBack = () => {
-        navigation.navigate("OldHomePage", { messagePage: preferences });
-    };
+  return (
+    <View style={styles.container}>
+      <GridBackground
+        position="absolute"
+        zIndex={-5}
+        lineColor={mainColour}
+        style={{ backgroundColor: secondColour }}
+      />
 
-    const [apreferences, asetPreferences] = useState(null);
+      <View style={styles.flex1}>
+        <Logo fontSize={50} color={textColour} marginTop={"15%"} />
+      </View>
 
-    RestAPI(
-        // { operation: "insert", table: "Offer", userID: "3", poolID: "3", role: "1", settings: JSON.stringify(preferences)}
-        apreferences
-    );
+      <View style={styles.flex2}>
+        <Text style={styles.title}>Preferences</Text>
+        <Text style={styles.subtitle}>Enter your preferences:</Text>
+      </View>
 
-    const handleSavePreferences = () => {
-        asetPreferences({
-            operation: "insert",
-            table: "Offer",
-            userID: "3",
-            poolID: "3",
-            role: "1",
-            settings: JSON.stringify(preferences),
-        });
-    };
-
-    let mainColour = cream;
-    let secondColour = charcol;
-    if (myUserRole === 1) {
-        mainColour = charcol;
-        secondColour = cream;
-    } else {
-        mainColour = cream;
-        secondColour = charcol;
-    }
-
-    return (
-        <View style={styles.container}>
-            <GridBackground
-                position="absolute"
-                zIndex={-5}
-                lineColor={mainColour}
-                style={{ backgroundColor: secondColour }}
+      <View style={styles.scrollView}>
+        <Text style={styles.label}>Maximum Detour Distance</Text>
+        <View id="distanceFrame" style={styles.frame}>
+          <View id="distanceButton" style={styles.button}>
+            <TextInput
+              style={styles.text}
+              placeholder="2"
+              value={preferences.detour_distance}
+              onChangeText={(text) =>
+                setPreferences({
+                  ...preferences,
+                  detour_distance: text,
+                })
+              }
+              keyboardType="numeric"
             />
-            <View style={styles.scrollView}>
-                <Text style={styles.title}>Preferences</Text>
-                <Text style={styles.subtitle}>Enter your preferences here</Text>
-
-                <Text style={styles.label}>Maximum Detour Distance</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Enter Maximum Detour Distance"
-                    value={preferences.detour_distance}
-                    onChangeText={(text) =>
-                        setPreferences({
-                            ...preferences,
-                            detour_distance: text,
-                        })
-                    }
-                    keyboardType="numeric"
-                />
-
-                <Text style={styles.label}>Ratings</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Enter ratings"
-                    value={preferences.rating}
-                    onChangeText={(text) =>
-                        setPreferences({ ...preferences, rating: text })
-                    }
-                    keyboardType="numeric"
-                />
-
-                <Text style={styles.label}>Seats Available</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Enter number of seats available"
-                    value={preferences.seats}
-                    onChangeText={(text) =>
-                        setPreferences({ ...preferences, seats: text })
-                    }
-                    keyboardType="numeric"
-                />
-
-                <Button
-                    title="Save Preferences (back to home)"
-                    onPress={onPressBack}
-                />
-
-                <Button
-                    title="Save Preferences"
-                    onPress={handleSavePreferences}
-                />
-            </View>
+          </View>
+          <View
+            id="userNameShadow"
+            style={[styles.button, styles.shadow]}
+          ></View>
         </View>
-    );
+
+        <Text style={styles.label}>Ratings</Text>
+        <View id="distanceFrame" style={styles.frame}>
+          <View id="distanceButton" style={styles.button}>
+            <TextInput
+              style={styles.text}
+              placeholder="5"
+              value={preferences.rating}
+              onChangeText={(text) =>
+                setPreferences({ ...preferences, rating: text })
+              }
+              keyboardType="numeric"
+            />
+          </View>
+          <View
+            id="userNameShadow"
+            style={[styles.button, styles.shadow]}
+          ></View>
+        </View>
+
+        <Text style={styles.label}>Seats Available</Text>
+        <View id="distanceFrame" style={styles.frame}>
+          <View id="distanceButton" style={styles.button}>
+            <TextInput
+              style={styles.text}
+              placeholder="1"
+              value={preferences.seats}
+              onChangeText={(text) =>
+                setPreferences({ ...preferences, seats: text })
+              }
+              keyboardType="numeric"
+            />
+          </View>
+          <View
+            id="userNameShadow"
+            style={[styles.button, styles.shadow]}
+          ></View>
+        </View>
+      </View>
+
+      <View style={styles.flex3}>
+        <TouchableOpacity style={styles.button2} onPress={onPressBack}>
+          <Text style={[styles.text, { color: textColour }]}>
+            save and go back
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    title: {
-        fontSize: 30,
-        fontWeight: "bold",
-        marginBottom: 10,
-    },
-    subtitle: {
-        fontSize: 20,
-        marginBottom: 20,
-    },
-    label: {
-        fontSize: 20,
-        marginBottom: 10,
-        backgroundColor: "white",
-    },
-    input: {
-        height: 40,
-        width: 300,
-        borderColor: "gray",
-        borderWidth: 1,
-        marginBottom: 20,
-        backgroundColor: "white",
-    },
-    scrollView: {
-        marginHorizontal: 20,
-        top: "-10%",
-        // backgroundColor: "blue",
-        alignItems: "center",
-        justifyContent: "center",
-    },
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  flex1: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  flex2: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  scrollView: {
+    flex: 2.5,
+    marginHorizontal: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    // backgroundColor: "blue",
+  },
+  flex3: {
+    flex: 0.75,
+  },
+  title: {
+    fontSize: 54,
+    fontFamily: "atkinson-italic",
+    marginBottom: "1%",
+  },
+  subtitle: {
+    fontSize: 24,
+    fontFamily: "atkinson-italic",
+  },
+  label: {
+    fontSize: 20,
+    fontFamily: "atkinson-italic",
+    marginBottom: "1%",
+  },
+  frame: {
+    width: 150,
+    height: 70,
+    marginBottom: "7%",
+    // backgroundColor: "white",
+  },
+  button: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 32,
+    borderColor: "#000",
+    borderWidth: 5,
+    backgroundColor: "#ffb800",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  shadow: {
+    zIndex: -1,
+    position: "absolute",
+    backgroundColor: "#000",
+    top: 6,
+    left: 6,
+  },
+  text: {
+    fontSize: 24,
+    fontFamily: "atkinson-italic",
+    color: "#1774ff",
+    textAlign: "center",
+  },
+  button2: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: "2%",
+  },
 });
