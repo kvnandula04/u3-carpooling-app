@@ -19,7 +19,6 @@ const black = "#272727";
 const blue = "#1774ff";
 
 const PlanTrip = ({ preferenceData }) => {
-    const myUserRole = useSelector((state) => state.mySlice.myUserRole);
     // background grid colour to represent role
     let mainColour = yellow;
     let secondColour = yellow;
@@ -36,10 +35,6 @@ const PlanTrip = ({ preferenceData }) => {
     const [startLocation, setStartLocation] = useState();
     const [destination, setDestination] = useState();
 
-    const [id, setID] = useState(
-        useSelector((state) => state.mySlice.myUserID)
-    );
-    const IdToBeChangedTo = 11623; //this is the id that will be changed to, dumb value for now
     const [preferences, setPreferences] = useState({
         location: "53 Hungerford Rd",
         destination: "University of Bath",
@@ -78,25 +73,19 @@ const PlanTrip = ({ preferenceData }) => {
     }
 
     const dispatch = useDispatch();
-
-    // function changeIDinPageandReduxStore (val){
-    //   dispatch(updateUserID((val)));
-    //   setID((val));
-    //   console.log("page and store ID: " + id.toString());
-    // }
-    //changeIDinPageandReduxStore(IdToBeChangedTo),
-
     const navigation = useNavigation();
+    const myUserID = useSelector((state) => state.mySlice.myUserID);
+    const myUserRole = useSelector((state) => state.mySlice.myUserRole);
 
     const [callOne, updateCallOne] = useState(true);
     const [recvOne, updateRecvOne] = useState(false);
     const [callTwo, updateCallTwo] = useState(false);
     const [recvTwo, updateRecvTwo] = useState(false);
-
-    const myUserID = 2;
-    const myRole = 1;
-    //const poolID = null;
-    //const settings = preferences;
+    const [callThree, updateCallThree] = useState(false);
+    const [recvThree, updateRecvThree] = useState(false);
+    const [callOffer, updateCallOffer] = useState(false);
+    const [recvOffer, updateRecvOffer] = useState(false);
+    const [callMatch, updateCallMatch] = useState(false);
 
     var licence_table = null;
     var pool_table = null;
@@ -110,20 +99,47 @@ const PlanTrip = ({ preferenceData }) => {
         {
             licenceID: null,
         },
-        (runFlag = callOne)
+        ( callOne )
     )[0];
 
     // Only run the call once
-    if (callOne == true) {
+    if ( callOne )
         updateCallOne(false);
-    }
 
     // If we received valid data, move onto the next call
-    if (recvOne == false && licence_table.licenceID != null) {
+    if ( !recvOne && licence_table.licenceID ) {
         console.log("licence ID: ", licence_table.licenceID);
 
         updateRecvOne(true);
-        updateCallTwo(true);
+    }
+
+    function onMatchMePressed() {
+        //Driver
+        if (myUserRole === 1) {
+            updateCallTwo(true);            
+        }
+        //Passenger
+        else {
+            updateCallOffer(true);
+        }
+
+        //console.log(preferences)
+        //navigation.navigate("LiveTripPage");
+    }
+
+    res = RestAPI(
+        { operation: "insert", table: "Pool", licenceID: licence_table.licenceID }, {},
+        ( callTwo )
+    );
+
+    if ( callTwo ) {
+        console.log("PlanTrip: Inserting driver pool")
+        updateCallTwo(false);
+    }
+
+    if ( !recvTwo && res == "success" ) {
+        updateRecvTwo(true);
+        updateCallThree(true);
     }
 
     pool_table = RestAPI(
@@ -135,60 +151,45 @@ const PlanTrip = ({ preferenceData }) => {
         {
             poolID: null,
         },
-        (runFlag = callTwo)
+        ( callThree )
     )[0];
 
-    // Only run the call once
-    if (callTwo == true) {
-        updateCallTwo(false);
+    if ( callThree ) {
+        updateCallThree(false);
     }
 
-    if (recvTwo == false && pool_table.poolID != null) {
+    if ( !recvThree && pool_table.poolID ) {
         console.log("Pool ID: ", pool_table.poolID);
-
-        // Do whatever you want with the poolID in here
-        // if you want to use it somewhere else, wrap it in an "if (pool_table.poolID != null)" clause
-
-        updateRecvTwo(true);
+        updateRecvThree(true);
+        updateCallOffer(true);
     }
+    
+    res = RestAPI(
+        { operation: "insert", table: "Offer", userID: myUserID, poolID: pool_table.poolID, role: myUserRole, settings: JSON.stringify(preferences)}, {},
+        ( callOffer )
+    );
 
-    const [apreferences, asetPreferences] = useState(null);
-    const [aMatch, asetMatch] = useState(null);
+    if ( callOffer ) {
+        if ( myUserRole )
+            console.log("PlanTrip: Inserting driver offer");
+        else
+            console.log("PlanTrip: Inserting passenger offer");
+        updateCallOffer(false);
+    }
+        
+    if ( !recvOffer && res == "success" ) {
+        updateRecvOffer(true);
+        updateCallMatch(true);
+    }
+    
+    RestAPI(
+        {operation:"matchmaking"}, {},
+        ( callMatch )
+    );
 
-    RestAPI(apreferences);
-    RestAPI(aMatch);
-
-    function onMatchMePressed() {
-        //Driver
-        if (myRole === 1) {
-            if (pool_table.poolID != null) {
-                //Insert into Offer table the drivers preferences
-                asetPreferences({
-                    operation: "insert",
-                    table: "Offer",
-                    userID: myUserID.toString(),
-                    poolID: pool_table.poolID.toString(),
-                    role: myRole.toString(),
-                    settings: JSON.stringify(preferences),
-                });
-
-                //Now run the matchmaking algorithm
-                asetMatch({ operation: "matchmake" });
-            }
-        }
-        //Passenger
-        else {
-            asetPreferences({
-                operation: "insert",
-                table: "Offer",
-                userID: myUserID.toString(),
-                role: myRole.toString(),
-                settings: JSON.stringify(preferences),
-            });
-        }
-
-        //console.log(preferences)
-        //navigation.navigate("LiveTripPage");
+    if ( callMatch ) {
+        console.log("PlanTrip: Running matchmaking")
+        updateCallMatch(false);
     }
 
     useEffect(() => {
@@ -226,6 +227,7 @@ const PlanTrip = ({ preferenceData }) => {
             });
     }, [destination]);
 
+    console.log("Render: PlanTrip");
     return (
         <View id="planTripFrame" style={styles.planTripFrame}>
             <View
