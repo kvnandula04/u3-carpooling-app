@@ -17,7 +17,7 @@ import { updateUserRole } from "../../globalVariables/mySlice";
 import Logo from "../components/Logo";
 
 const cream = "#F7F3EB";
-const yellow = "#F2C94C";
+const yellow = "#FFB800";
 const black = "#000";
 const white = "#FFF";
 
@@ -50,7 +50,7 @@ export default function Preferences() {
   if (myUserRole === 1) {
     mainColour = cream;
     secondColour = yellow;
-    textColour = white;
+    textColour = black;
   } else {
     mainColour = yellow;
     secondColour = cream;
@@ -67,7 +67,7 @@ export default function Preferences() {
       />
 
       <View style={styles.flex1}>
-        <Logo fontSize={50} color={textColour} marginTop={"15%"} />
+        <Logo fontSize={86} color={textColour} marginTop={"15%"} />
       </View>
 
       <View style={styles.flex2}>
@@ -78,7 +78,10 @@ export default function Preferences() {
       <View style={styles.scrollView}>
         <Text style={styles.label}>Maximum Detour Distance</Text>
         <View id="distanceFrame" style={styles.frame}>
-          <View id="distanceButton" style={styles.button}>
+          <View
+            id="distanceButton"
+            style={[styles.button, { backgroundColor: mainColour }]}
+          >
             <TextInput
               style={styles.text}
               placeholder="2"
@@ -100,7 +103,10 @@ export default function Preferences() {
 
         <Text style={styles.label}>Ratings</Text>
         <View id="distanceFrame" style={styles.frame}>
-          <View id="distanceButton" style={styles.button}>
+          <View
+            id="distanceButton"
+            style={[styles.button, { backgroundColor: mainColour }]}
+          >
             <TextInput
               style={styles.text}
               placeholder="5"
@@ -119,7 +125,10 @@ export default function Preferences() {
 
         <Text style={styles.label}>Seats Available</Text>
         <View id="distanceFrame" style={styles.frame}>
-          <View id="distanceButton" style={styles.button}>
+          <View
+            id="distanceButton"
+            style={[styles.button, { backgroundColor: mainColour }]}
+          >
             <TextInput
               style={styles.text}
               placeholder="1"
@@ -201,7 +210,6 @@ const styles = StyleSheet.create({
     borderRadius: 32,
     borderColor: "#000",
     borderWidth: 5,
-    backgroundColor: "#ffb800",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -213,7 +221,7 @@ const styles = StyleSheet.create({
     left: 6,
   },
   text: {
-    fontSize: 24,
+    fontSize: 36,
     fontFamily: "atkinson-italic",
     color: "#1774ff",
     textAlign: "center",

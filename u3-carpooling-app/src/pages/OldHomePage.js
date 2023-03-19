@@ -56,7 +56,6 @@ export default function HomePage() {
     messagePage = route.params;
     if (messagePage !== undefined) {
       if (alreadyRun === false && messagePage.messagePage.prePage === false) {
-        
         setPreferences({
           ...preferences,
           detour_distance: messagePage.messagePage.detour_distance,
