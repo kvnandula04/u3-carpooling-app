@@ -6,6 +6,7 @@ import {
     StyleSheet,
     TextInput,
     TouchableOpacity,
+    Keyboard,
 } from "react-native";
 import Logo from "../components/Logo";
 import useFonts from "../hooks/UseFonts";
@@ -26,6 +27,28 @@ export default function Onboarding() {
     const [callTwo, setCallTwo] = useState(false);
     const navigation = useNavigation();
     const dispatch = useDispatch();
+
+    const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener(
+            "keyboardDidShow",
+            () => {
+                setKeyboardVisible(true);
+            }
+        );
+        const keyboardDidHideListener = Keyboard.addListener(
+            "keyboardDidHide",
+            () => {
+                setKeyboardVisible(false);
+            }
+        );
+
+        return () => {
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
+        };
+    }, []);
 
     const onSubmitPressed = () => {
         if (!userName.trim() || !firstName.trim() || !password.trim()) {
@@ -128,9 +151,11 @@ export default function Onboarding() {
                 <Logo fontSize={50} color={"#f7f3eb"} marginTop={"15%"} />
             </View>
 
-            <View style={styles.flex2}>
-                <Text style={styles.heading}>Create an Account</Text>
-            </View>
+            {!isKeyboardVisible && (
+                <View style={styles.flex2}>
+                    <Text style={styles.heading}>Create an Account</Text>
+                </View>
+            )}
 
             <View style={styles.flex3}>
                 <Text style={styles.subheading}> Enter your details: </Text>
@@ -198,8 +223,6 @@ export default function Onboarding() {
                 </View>
             </View>
 
-            {/* <View style={styles.flex4}></View> */}
-
             <View style={styles.flex5}>
                 <TouchableOpacity
                     style={styles.button2}
@@ -212,6 +235,13 @@ export default function Onboarding() {
                     </Text>
                 </TouchableOpacity>
             </View>
+            {!isKeyboardVisible && (
+                <View style={styles.circleFrame}>
+                    <View style={styles.circle2}></View>
+                    <View style={styles.circle1}></View>
+                    <View style={styles.circle2}></View>
+                </View>
+            )}
         </View>
     );
 }
@@ -239,17 +269,13 @@ const styles = StyleSheet.create({
         // marginTop: "5%",
         // backgroundColor: "red",
     },
-    flex4: {
-        flex: 2,
-        justifyContent: "center",
-        alignItems: "center",
-    },
     flex5: {
-        flex: 2,
+        flex: 1,
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "flex-start",
         // paddingBottom: "15%",
+        // backgroundColor: "blue",
     },
     heading: {
         fontFamily: "atkinson-italic",
@@ -308,5 +334,31 @@ const styles = StyleSheet.create({
         // backgroundColor: "#1774fb",
         marginTop: "2%",
         // padding: "5%",
+    },
+    circleFrame: {
+        flex: 0.1,
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "flex-end",
+        marginTop: "10%",
+        paddingBottom: "10%",
+        // backgroundColor: "blue",
+    },
+    circle1: {
+        width: 35,
+        height: 35,
+        borderRadius: 1000,
+        borderWidth: 6,
+        borderColor: "#000",
+        backgroundColor: "#ffb800",
+        marginHorizontal: "1%",
+    },
+    circle2: {
+        width: 25,
+        height: 25,
+        bottom: 5,
+        borderRadius: 1000,
+        backgroundColor: "#000",
+        marginHorizontal: "1%",
     },
 });

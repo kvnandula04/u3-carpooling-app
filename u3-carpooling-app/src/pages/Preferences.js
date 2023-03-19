@@ -40,28 +40,8 @@ export default function Preferences() {
     prePage: false,
   });
 
-  //console.log("Preferences page- preferences: ",preferences);
-
   const onPressBack = () => {
     navigation.navigate("OldHomePage", { messagePage: preferences });
-  };
-
-  const [apreferences, asetPreferences] = useState(null);
-
-  RestAPI(
-    // { operation: "insert", table: "Offer", userID: "3", poolID: "3", role: "1", settings: JSON.stringify(preferences)}
-    apreferences
-  );
-
-  const handleSavePreferences = () => {
-    asetPreferences({
-      operation: "insert",
-      table: "Offer",
-      userID: "3",
-      poolID: "3",
-      role: "1",
-      settings: JSON.stringify(preferences),
-    });
   };
 
   let mainColour = cream;
