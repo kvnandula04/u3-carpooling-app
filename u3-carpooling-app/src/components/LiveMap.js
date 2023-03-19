@@ -311,7 +311,7 @@ const LiveMap = (props) => {
     };
     focusStyle = {
       borderWidth: 10,
-      borderRadius: 32,
+      borderRadius: 62,
       overflow: "hidden",
       borderColor: greenShadow,
     };
@@ -369,8 +369,8 @@ const LiveMap = (props) => {
             style={styles.backButton}
             onPress={() => navigation.goBack()}
           >
-            <Text style={[styles.back, styles.backShadow]}>back.</Text>
             <Text style={[styles.back]}>back.</Text>
+            <Text style={[styles.back, styles.backShadow]}>back.</Text>
           </Pressable>
         )}
       </View>
@@ -404,10 +404,10 @@ const styles = StyleSheet.create({
   backButton: {
     position: "absolute",
     height: 70,
-    width: 130,
-    bottom: 5,
-    left: 5,
-    alignItems: "center",
+    width: "50%",
+    bottom: "2%",
+    left: "7%",
+    alignItems: "flex-start",
     justifyContent: "center",
     // backgroundColor: "red",
   },
@@ -415,13 +415,11 @@ const styles = StyleSheet.create({
     position: "absolute",
     fontFamily: "syne-bold",
     fontSize: 48,
-    fontStyle: "italic",
-    fontWeight: "700",
     color: green,
   },
   backShadow: {
-    top: 5,
-    left: 5,
+    bottom: "2%",
+    left: "3%",
     color: greenShadow,
   },
 });
