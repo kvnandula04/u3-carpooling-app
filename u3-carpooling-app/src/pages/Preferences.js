@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  KeyboardAvoidingView,
 } from "react-native";
 import RestAPI from "../hooks/Rest";
 import { useNavigation } from "@react-navigation/native";
@@ -58,134 +59,157 @@ export default function Preferences() {
   }
 
   return (
-    <View style={styles.container}>
-      <GridBackground
-        position="absolute"
-        zIndex={-5}
-        lineColor={mainColour}
-        style={{ backgroundColor: secondColour }}
-      />
+    <KeyboardAvoidingView
+      style={{ flex: 1, flexDirection: "column", justifyContent: "center" }}
+      behavior="height"
+      enabled
+    >
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
+        {/* <View style={styles.container}> */}
+        <GridBackground
+          position="absolute"
+          zIndex={-5}
+          lineColor={mainColour}
+          style={{ backgroundColor: secondColour }}
+        />
 
-      <View style={styles.flex1}>
-        <Logo fontSize={86} color={textColour} marginTop={"15%"} />
-      </View>
-
-      <View style={styles.flex2}>
-        <Text style={styles.title}>Preferences</Text>
-        <Text style={styles.subtitle}>Enter your preferences:</Text>
-      </View>
-
-      <View style={styles.scrollView}>
-        <Text style={styles.label}>Maximum Detour Distance</Text>
-        <View id="distanceFrame" style={styles.frame}>
-          <View
-            id="distanceButton"
-            style={[styles.button, { backgroundColor: mainColour }]}
-          >
-            <TextInput
-              style={styles.text}
-              placeholder="2"
-              value={preferences.detour_distance}
-              onChangeText={(text) =>
-                setPreferences({
-                  ...preferences,
-                  detour_distance: text,
-                })
-              }
-              keyboardType="numeric"
-            />
-          </View>
-          <View
-            id="userNameShadow"
-            style={[styles.button, styles.shadow]}
-          ></View>
+        <View style={styles.flex1}>
+          <Logo fontSize={86} color={textColour} marginTop={"15%"} />
         </View>
 
-        <Text style={styles.label}>Ratings</Text>
-        <View id="distanceFrame" style={styles.frame}>
-          <View
-            id="distanceButton"
-            style={[styles.button, { backgroundColor: mainColour }]}
+        <View style={styles.flex2}>
+          <Text
+            style={[
+              styles.title,
+              {
+                color: mainColour,
+              },
+            ]}
           >
-            <TextInput
-              style={styles.text}
-              placeholder="5"
-              value={preferences.rating}
-              onChangeText={(text) =>
-                setPreferences({ ...preferences, rating: text })
-              }
-              keyboardType="numeric"
-            />
-          </View>
-          <View
-            id="userNameShadow"
-            style={[styles.button, styles.shadow]}
-          ></View>
-        </View>
-
-        <Text style={styles.label}>Seats Available</Text>
-        <View id="distanceFrame" style={styles.frame}>
-          <View
-            id="distanceButton"
-            style={[styles.button, { backgroundColor: mainColour }]}
-          >
-            <TextInput
-              style={styles.text}
-              placeholder="1"
-              value={preferences.seats}
-              onChangeText={(text) =>
-                setPreferences({ ...preferences, seats: text })
-              }
-              keyboardType="numeric"
-            />
-          </View>
-          <View
-            id="userNameShadow"
-            style={[styles.button, styles.shadow]}
-          ></View>
-        </View>
-      </View>
-
-      <View style={styles.flex3}>
-        <TouchableOpacity style={styles.button2} onPress={onPressBack}>
-          <Text style={[styles.text, { color: textColour }]}>
-            save and go back
+            Preferences
           </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+          {/* <Text style={styles.subtitle}>Enter your preferences:</Text> */}
+        </View>
+
+        <View style={styles.scrollView}>
+          <Text style={styles.label}>Maximum Detour Distance</Text>
+          <View id="distanceFrame" style={styles.frame}>
+            <View
+              id="distanceButton"
+              style={[styles.button, { backgroundColor: mainColour }]}
+            >
+              <TextInput
+                style={styles.text}
+                placeholder="2"
+                value={preferences.detour_distance}
+                onChangeText={(text) =>
+                  setPreferences({
+                    ...preferences,
+                    detour_distance: text,
+                  })
+                }
+                keyboardType="numeric"
+              />
+            </View>
+            <View
+              id="userNameShadow"
+              style={[styles.button, styles.shadow]}
+            ></View>
+          </View>
+
+          <Text style={styles.label}>Ratings</Text>
+          <View id="distanceFrame" style={styles.frame}>
+            <View
+              id="distanceButton"
+              style={[styles.button, { backgroundColor: mainColour }]}
+            >
+              <TextInput
+                style={styles.text}
+                placeholder="5"
+                value={preferences.rating}
+                onChangeText={(text) =>
+                  setPreferences({ ...preferences, rating: text })
+                }
+                keyboardType="numeric"
+              />
+            </View>
+            <View
+              id="userNameShadow"
+              style={[styles.button, styles.shadow]}
+            ></View>
+          </View>
+
+          <Text style={styles.label}>Seats Available</Text>
+          <View id="distanceFrame" style={styles.frame}>
+            <View
+              id="distanceButton"
+              style={[styles.button, { backgroundColor: mainColour }]}
+            >
+              <TextInput
+                style={styles.text}
+                placeholder="1"
+                value={preferences.seats}
+                onChangeText={(text) =>
+                  setPreferences({ ...preferences, seats: text })
+                }
+                keyboardType="numeric"
+              />
+            </View>
+            <View
+              id="userNameShadow"
+              style={[styles.button, styles.shadow]}
+            ></View>
+          </View>
+        </View>
+
+        <View style={styles.flex3}>
+          <TouchableOpacity style={styles.button2} onPress={onPressBack}>
+            <Text style={[styles.text, { color: textColour }]}>
+              save + go back.
+            </Text>
+          </TouchableOpacity>
+        </View>
+        {/* </View> */}
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    // backgroundColor: "#fff",
+    // alignItems: "center",
+    // justifyContent: "center",
   },
   flex1: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    // backgroundColor: "red",
   },
   flex2: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-end",
+    // backgroundColor: "blue",
   },
   scrollView: {
     flex: 2.5,
     marginHorizontal: 20,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     // backgroundColor: "blue",
   },
   flex3: {
-    flex: 0.75,
+    flex: 1,
+    // backgroundColor: "green",
   },
   title: {
-    fontSize: 54,
+    fontSize: 60,
     fontFamily: "atkinson-italic",
     marginBottom: "1%",
   },
@@ -227,8 +251,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   button2: {
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
-    marginBottom: "2%",
+    // marginBottom: "2%",
+    padding: "5%",
+    // backgroundColor: "#F7F3EB",
   },
 });
