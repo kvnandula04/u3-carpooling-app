@@ -42,10 +42,10 @@ export default function DriverVerification() {
     const vehicle = RestAPI(
         {
             operation: "vehiclelookup",
-            registrationNumber: numberPlate.toUpperCase(),
+            registrationNumber: numberPlate.toUpperCase().replace(/\s/g,""),
         },
         { vehicleID: null },
-        callOne
+        ( callOne )
     )[0];
 
     if (callOne) {
