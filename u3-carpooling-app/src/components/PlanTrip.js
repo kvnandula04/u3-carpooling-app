@@ -22,7 +22,7 @@ const PlanTrip = ({ preferenceData }) => {
     // background grid colour to represent role
     let mainColour = yellow;
     let secondColour = yellow;
-    if (myUserRole === 1) {
+    if (myUserRole === 0) {
         mainColour = yellow;
         secondColour = cream;
     } else {
@@ -99,15 +99,14 @@ const PlanTrip = ({ preferenceData }) => {
         {
             licenceID: null,
         },
-        ( callOne )
+        callOne
     )[0];
 
     // Only run the call once
-    if ( callOne )
-        updateCallOne(false);
+    if (callOne) updateCallOne(false);
 
     // If we received valid data, move onto the next call
-    if ( !recvOne && licence_table.licenceID ) {
+    if (!recvOne && licence_table.licenceID) {
         console.log("licence ID: ", licence_table.licenceID);
 
         updateRecvOne(true);
@@ -116,7 +115,7 @@ const PlanTrip = ({ preferenceData }) => {
     function onMatchMePressed() {
         //Driver
         if (myUserRole === 1) {
-            updateCallTwo(true);            
+            updateCallTwo(true);
         }
         //Passenger
         else {
@@ -128,16 +127,21 @@ const PlanTrip = ({ preferenceData }) => {
     }
 
     res = RestAPI(
-        { operation: "insert", table: "Pool", licenceID: licence_table.licenceID }, {},
-        ( callTwo )
+        {
+            operation: "insert",
+            table: "Pool",
+            licenceID: licence_table.licenceID,
+        },
+        {},
+        callTwo
     );
 
-    if ( callTwo ) {
-        console.log("PlanTrip: Inserting driver pool")
+    if (callTwo) {
+        console.log("PlanTrip: Inserting driver pool");
         updateCallTwo(false);
     }
 
-    if ( !recvTwo && res == "success" ) {
+    if (!recvTwo && res == "success") {
         updateRecvTwo(true);
         updateCallThree(true);
     }
@@ -151,44 +155,47 @@ const PlanTrip = ({ preferenceData }) => {
         {
             poolID: null,
         },
-        ( callThree )
+        callThree
     )[0];
 
-    if ( callThree ) {
+    if (callThree) {
         updateCallThree(false);
     }
 
-    if ( !recvThree && pool_table.poolID ) {
+    if (!recvThree && pool_table.poolID) {
         console.log("Pool ID: ", pool_table.poolID);
         updateRecvThree(true);
         updateCallOffer(true);
     }
-    
+
     res = RestAPI(
-        { operation: "insert", table: "Offer", userID: myUserID, poolID: pool_table.poolID, role: myUserRole, settings: JSON.stringify(preferences)}, {},
-        ( callOffer )
+        {
+            operation: "insert",
+            table: "Offer",
+            userID: myUserID,
+            poolID: pool_table.poolID,
+            role: myUserRole,
+            settings: JSON.stringify(preferences),
+        },
+        {},
+        callOffer
     );
 
-    if ( callOffer ) {
-        if ( myUserRole )
-            console.log("PlanTrip: Inserting driver offer");
-        else
-            console.log("PlanTrip: Inserting passenger offer");
+    if (callOffer) {
+        if (myUserRole) console.log("PlanTrip: Inserting driver offer");
+        else console.log("PlanTrip: Inserting passenger offer");
         updateCallOffer(false);
     }
-        
-    if ( !recvOffer && res == "success" ) {
+
+    if (!recvOffer && res == "success") {
         updateRecvOffer(true);
         updateCallMatch(true);
     }
-    
-    RestAPI(
-        {operation:"matchmaking"}, {},
-        ( callMatch )
-    );
 
-    if ( callMatch ) {
-        console.log("PlanTrip: Running matchmaking")
+    RestAPI({ operation: "matchmaking" }, {}, callMatch);
+
+    if (callMatch) {
+        console.log("PlanTrip: Running matchmaking");
         updateCallMatch(false);
     }
 
@@ -232,16 +239,24 @@ const PlanTrip = ({ preferenceData }) => {
         <View id="planTripFrame" style={styles.planTripFrame}>
             <View
                 id="planTripCard"
-                style={[styles.planTripCard, { backgroundColor: secondColour }]}
+                style={[
+                    styles.planTripCard,
+                    myUserRole == 0
+                        ? { backgroundColor: yellow }
+                        : { backgroundColor: cream },
+                ]}
             >
                 <View id="planTripTitleView" style={[styles.planTripTitleView]}>
                     <Text
                         style={[
                             styles.planTripTitle,
-                            {
-                                color: mainColour,
-                                backgroundColor: secondColour,
-                            },
+                            myUserRole == 0
+                                ? { color: cream }
+                                : { color: yellow },
+                            // {
+                            //     color: mainColour,
+                            //     backgroundColor: secondColour,
+                            // },
                         ]}
                     >
                         Plan a trip
