@@ -139,6 +139,7 @@ const PlanTrip = ({ preferenceData }) => {
     if (callTwo) {
         console.log("PlanTrip: Inserting driver pool");
         updateCallTwo(false);
+        updateRecvTwo(false);
     }
 
     if (!recvTwo && res == "success") {
@@ -160,6 +161,7 @@ const PlanTrip = ({ preferenceData }) => {
 
     if (callThree) {
         updateCallThree(false);
+        updateRecvThree(false);
     }
 
     if (!recvThree && pool_table.poolID) {
@@ -185,6 +187,7 @@ const PlanTrip = ({ preferenceData }) => {
         if (myUserRole) console.log("PlanTrip: Inserting driver offer");
         else console.log("PlanTrip: Inserting passenger offer");
         updateCallOffer(false);
+        updateRecvOffer(false);
     }
 
     if (!recvOffer && res == "success") {
@@ -192,7 +195,7 @@ const PlanTrip = ({ preferenceData }) => {
         updateCallMatch(true);
     }
 
-    RestAPI({ operation: "matchmaking" }, {}, callMatch);
+    RestAPI({ operation: "matchmake" }, {}, callMatch);
 
     if (callMatch) {
         console.log("PlanTrip: Running matchmaking");
