@@ -27,6 +27,7 @@ const blue = "#1774ff";
 
 export default function LiveTripPage() {
     const navigation = useNavigation();
+
     const myUserRole = useSelector((state) => state.mySlice.myUserRole);
 
     // background grid colour to represent role
@@ -122,12 +123,12 @@ export default function LiveTripPage() {
                     onPress={onPressMap}
                     showRoute={true}
                 />
-                <LiveTripDuration
+                {/* <LiveTripDuration
                     style={
                         inFocus[1] === 1 ? styles.selected : styles.notSelected
                     }
                     onPress={onPressDur}
-                />
+                /> */}
                 <LiveETA
                     style={
                         inFocus[2] === 1 ? styles.selected : styles.notSelected
