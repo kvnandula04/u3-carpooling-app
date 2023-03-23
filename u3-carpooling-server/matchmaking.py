@@ -314,6 +314,7 @@ def matchmaking_algorithm(app, tableOperate):
             if j not in matched_passengers:
                 unmatched_passengers.add(j)
 
+        alreadyAddedPassengers = []
         #Add matched pairs to database
         for i in matched_drivers:
 
@@ -339,7 +340,9 @@ def matchmaking_algorithm(app, tableOperate):
                     already_inputted_driver = True
                     tableOperate("insert", {"table": "PoolSubscriber",  "poolID": driver_pool_id, "userID": driver_user_id})
 
-                tableOperate("insert", {"table": "PoolSubscriber",  "poolID": driver_pool_id, "userID": passenger_user_id})
-
+                if driver_pool_id != None:
+                    if passenger_user_id not in alreadyAddedPassengers:
+                        tableOperate("insert", {"table": "PoolSubscriber",  "poolID": driver_pool_id, "userID": passenger_user_id})
+                        alreadyAddedPassengers.append(passenger_user_id)
                 #tableOperate("delete", {"table": "Offer", "offerID": passenger_offer_id})
             #tableOperate("delete", {"table": "Offer", "offerID": driver_offer_id})
