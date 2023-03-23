@@ -134,7 +134,7 @@ def runDatabase(tableOperate):
 
 #Convert time to minutes
 def time_to_minutes(h):
-    delta = timedelta(hours=int(h.split(':')[0]), minutes=int(h.split(':')[1]), seconds=int(h.split(':')[2]))
+    delta = timedelta(hours=int(h.split(':')[0]), minutes=int(h.split(':')[1]))
     minutes = delta.total_seconds()/60
     return minutes
 
@@ -162,7 +162,7 @@ def get_data(address):
 
 #Calculate the score for a driver and passenger pair
 def score_driver_passenger_pair(driver, passenger):
-    score = 0
+    score = 0    
 
     drivers_location = get_data(driver['location'])
     passengers_location = get_data(passenger['location'])
@@ -188,6 +188,9 @@ def score_driver_passenger_pair(driver, passenger):
 
     driver_time = time_to_minutes(driver['departure_time'])
     passenger_time = time_to_minutes(passenger['departure_time'])
+
+    #print("driver: ",driver['userID']," ",driver_time)
+    #print("passenger: ",passenger['userID']," ",passenger_time)
 
     if driver_time == passenger_time:
         score = score
@@ -241,6 +244,8 @@ def matchmaking_algorithm(app, tableOperate):
             for j, passenger in enumerate(list_of_passengers):
                 pair_score = score_driver_passenger_pair(driver, passenger)
                 scores[(i, j)] = pair_score
+
+        #print("Scores: ", scores)
 
         #Match drivers and passengers section
 
@@ -336,5 +341,5 @@ def matchmaking_algorithm(app, tableOperate):
 
                 tableOperate("insert", {"table": "PoolSubscriber",  "poolID": driver_pool_id, "userID": passenger_user_id})
 
-                tableOperate("delete", {"table": "Offer", "offerID": passenger_offer_id})
-            tableOperate("delete", {"table": "Offer", "offerID": driver_offer_id})
+                #tableOperate("delete", {"table": "Offer", "offerID": passenger_offer_id})
+            #tableOperate("delete", {"table": "Offer", "offerID": driver_offer_id})
