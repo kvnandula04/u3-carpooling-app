@@ -83,6 +83,10 @@ export default function LiveTripPage() {
     return null;
   }
 
+  const onPressDone = () => {
+    navigation.navigate("ArrivedPage");
+  };
+
   return (
     <View id="pageFrame" style={styles.pageFrame}>
       <GridBackground
@@ -138,6 +142,17 @@ export default function LiveTripPage() {
                     onPress={onPressPick}
                 /> */}
       </View>
+      <View id="doneFrame" style={styles.doneFrame}>
+        <Pressable
+          id="doneButton"
+          style={styles.doneButton}
+          onPress={onPressDone}
+        >
+          <Text style={[styles.doneText, { fontFamily: "atkinson" }]}>
+            Done
+          </Text>
+        </Pressable>
+      </View>
       <View id="reportFrame" style={styles.reportFrame}>
         <Pressable
           id="reportButton"
@@ -176,6 +191,17 @@ const styles = StyleSheet.create({
   },
   notSelected: {
     flex: 2,
+  },
+  doneFrame: {
+    flex: 1,
+  },
+  doneButton: {
+    flex: 1,
+    width: "100%",
+    backgroundColor: green,
+  },
+  doneText: {
+    fontSize: 32,
   },
   reportFrame: {
     flex: 1,
