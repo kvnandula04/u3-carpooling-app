@@ -297,6 +297,7 @@ import {
   
       if (d < 100) {
         console.log("WE'VE ARRIVED");
+        navigation.navigate("Arrived");
       }
     }, [currentUserLocation]);
   
