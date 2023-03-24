@@ -1,5 +1,5 @@
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import GridBackground from "../../assets/grid-background";
 import LiveMap from "../components/LiveMap";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -7,9 +7,21 @@ import RestAPI from "../hooks/Rest";
 import useFonts from "../hooks/UseFonts";
 import { useSelector, useDispatch } from "react-redux";
 import { updateUserRole } from "../../globalVariables/mySlice";
+import { Button } from "react-native-elements";
+
+function useForceUpdate() {
+  const [value, setValue] = useState(0); // integer state
+  return () => setValue((value) => value + 1); // update state to force render
+  // A function that increment 👆🏻 the previous state like here
+  // is better than directly setting `setValue(value + 1)`
+  // console.log("useForceUpdate");
+}
 
 const PoolsPage = () => {
+  const forceUpdate = useForceUpdate();
+  // class PoolsPage extends Component {
   const myUserRole = useSelector((state) => state.mySlice.myUserRole);
+  const myUserID = useSelector((state) => state.mySlice.myUserID);
 
   const [callOne, updateCallOne] = useState(true);
   const [recvOne, updateRecvOne] = useState(false);
@@ -49,7 +61,7 @@ const PoolsPage = () => {
       {
         operation: "select",
         table: "Offer",
-        userID: "3",
+        userID: myUserID,
       },
       {
         userID: null,
@@ -153,7 +165,7 @@ const PoolsPage = () => {
       {
         operation: "select",
         table: "Offer",
-        userID: "3",
+        userID: myUserID,
       },
       {
         userID: null,
@@ -199,14 +211,16 @@ const PoolsPage = () => {
         </Text>
       );
     }
+    console.log("blissssssssssssssssssed");
   };
   shedDB();
 
   const onPressCommence = () => {
     console.log("Commence Trip Pressed");
   };
+
   let commenceTrip = null;
-  if (myUserRole === 0 && user.name != null) {
+  if (myUserRole === 1 && user.name != null) {
     commenceTrip = (
       <Pressable
         id="commence"
@@ -225,6 +239,7 @@ const PoolsPage = () => {
 
   return (
     <View id="pageFrame" style={styles.pageFrame}>
+      <Button onPress={forceUpdate} title="Re-fresh" />
       <View
         style={{
           flex: 1,
