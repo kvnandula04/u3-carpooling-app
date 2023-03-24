@@ -16,6 +16,7 @@ export const mySlice = createSlice({
         gJourneyDuration: 0,
         gETA: 0,
         gJourneyDistance: 0,
+        startLocationText: "",
     },
     reducers: {
         updateUserID: (state, action) => {
@@ -39,6 +40,9 @@ export const mySlice = createSlice({
         updateJourneyDistance: (state, action) => {
             state.gJourneyDistance = action.payload;
         },
+        updateStartLocationText: (state, action) => {
+            state.startLocationText = action.payload;
+        },
     },
 });
 
@@ -46,6 +50,7 @@ export const {
     updateUserID,
     updateUserRole,
     updateStartLocation,
+    updateStartLocationText,
     updateDestination,
     updateJourneyDuration,
     updateJourneyDistance,

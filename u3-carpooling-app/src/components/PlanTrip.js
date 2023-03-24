@@ -31,12 +31,10 @@ const PlanTrip = ({ preferenceData }) => {
     }
 
     const [alreadyRun, setAlreadyRun] = useState(false);
-
     const [startLocation, setStartLocation] = useState();
     const [destination, setDestination] = useState();
-
     const [preferences, setPreferences] = useState({
-        location: "53 Hungerford Rd",
+        location: null,
         destination: "University of Bath",
         departure_time: null,
         arrival_time: null,
@@ -46,13 +44,20 @@ const PlanTrip = ({ preferenceData }) => {
         prePage: false,
     });
 
+    const dispatch = useDispatch();
+    const navigation = useNavigation();
+    const myUserID = useSelector((state) => state.mySlice.myUserID);
+    const myUserRole = useSelector((state) => state.mySlice.myUserRole);
+    const myUserLocation = useSelector((state) => state.mySlice.startLocationText);
+    
     var today = new Date();
-    var departure_time = today.toLocaleTimeString("en", { hour: '2-digit', hour12: false, minute: '2-digit' });
+    var departure_time = today.toLocaleTimeString("en", { hour: 'numerical', hour12: false, minute: 'numerical' });
     departure_time = departure_time.substring(0, departure_time.length - 3);
     today.setHours(today.getHours() + 1);
-    var arrival_time = today.toLocaleTimeString("en", { hour: '2-digit', hour12: false, minute: '2-digit' });
+    var arrival_time = today.toLocaleTimeString("en", { hour: 'numerical', hour12: false, minute: 'numerical' });
     arrival_time = arrival_time.substring(0, arrival_time.length - 3);
 
+    
     //preferences data, make sre to check if the
     if (!alreadyRun) {
         if (
@@ -75,6 +80,13 @@ const PlanTrip = ({ preferenceData }) => {
         }
     }
 
+    useEffect(() => {
+        setPreferences({
+            ...preferences,
+            location: myUserLocation, 
+        });
+    }, [myUserLocation]);
+
     if (
         preferences.detour_distance != preferenceData.detour_distance ||
         preferences.rating != preferenceData.rating ||
@@ -82,11 +94,6 @@ const PlanTrip = ({ preferenceData }) => {
     ) {
         setAlreadyRun(false);
     }
-
-    const dispatch = useDispatch();
-    const navigation = useNavigation();
-    const myUserID = useSelector((state) => state.mySlice.myUserID);
-    const myUserRole = useSelector((state) => state.mySlice.myUserRole);
 
     const [callOne, updateCallOne] = useState(true);
     const [recvOne, updateRecvOne] = useState(false);
@@ -417,6 +424,7 @@ const styles = StyleSheet.create({
     inputText: {
         fontFamily: "atkinson-regular",
         fontSize: 18,
+        width: "55%",
     },
     matchMeButton: {
         width: "45%",

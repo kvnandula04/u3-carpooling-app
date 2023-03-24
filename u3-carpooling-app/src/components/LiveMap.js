@@ -15,7 +15,8 @@ import {
   import MapViewDirections from "react-native-maps-directions";
   import { black } from "color-name";
   import { useNavigation } from "@react-navigation/native";
-  import { useSelector } from "react-redux";
+  import { useSelector, useDispatch } from "react-redux";
+  import { updateStartLocationText } from "../../globalVariables/mySlice";
   
   const green = "#4CD835";
   const greenShadow = "#278A17";
@@ -49,6 +50,7 @@ import {
     const [recvTwo, updateRecvTwo] = useState(false);
     const [allDatabaseLocations, setAllDatabaseLocations] = useState();
     const [waypoints, setWaypoints] = useState([]);
+    const dispatch = useDispatch();
   
     const offer = RestAPI(
       {
@@ -192,6 +194,42 @@ import {
     });
   
     const [currentUserLocation, setCurrentUserLocation] = useState();
+    const [currentUserLocationText, setCurrentUserLocationText] = useState();
+    const [callLocation, setCallLocation] = useState(false);
+
+    if (!callLocation && currentUserLocation)
+      setCallLocation(true);
+
+    useEffect(() => {
+      if (!callLocation) {
+        return;
+      } 
+      if (!currentUserLocation) {
+        return;
+      }
+      if (!currentUserLocation.coords) {
+        return;
+      }
+      if (currentUserLocationText) {
+        return;
+      }
+
+      // 51.385787811300894, -2.3840034846566227
+      // latlng=${currentUserLocation.coords.latitude},${currentUserLocation.coords.longitude}
+      fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=51.385787811300894,-2.3840034846566227&location_type=ROOFTOP&result_type=street_address&key=${GOOGLE_MAPS_APIKEY}`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          let res = data.results[0];
+          let formatted_address = res.formatted_address;
+          setCurrentUserLocationText(formatted_address);
+        });
+    }, [callLocation, currentUserLocation]);
+
+    useEffect(() => {
+      dispatch(updateStartLocationText(currentUserLocationText));
+    }, [currentUserLocationText]);
   
     const _getLocationAsync = async () => {
       this.location = await Location.watchPositionAsync(
@@ -203,7 +241,8 @@ import {
         (newLocation) => {
           let coords = newLocation.coords;
           // this.props.getMyLocation sets my reducer state my_location
-          setCurrentUserLocation(coords);
+          if(!currentUserLocation)
+            setCurrentUserLocation(coords);
         },
         (error) => console.log(error)
       );
@@ -217,8 +256,9 @@ import {
         let { statusbackground } =
           await Location.requestBackgroundPermissionsAsync();
         let location = await Location.getCurrentPositionAsync({});
-        _getLocationAsync(); // removed this. at the beginning
-        setCurrentUserLocation(location);
+        //_getLocationAsync(); // removed this. at the beginning
+        if(!currentUserLocation)
+          setCurrentUserLocation(location);
         moveCamera(location.coords);
       })();
     }, [_getLocationAsync]);
@@ -423,3 +463,4 @@ import {
       color: greenShadow,
     },
   });
+

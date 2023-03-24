@@ -88,7 +88,6 @@ export default function HomePage() {
         //global variable - stores user role
         dispatch(updateUserRole((myUserRole + 1) % 2));
         setRole(myUserRole);
-        console.log(myUserRole);
     };
     const onPressProfile = () => {
         navigation.navigate("ProfilePage");
