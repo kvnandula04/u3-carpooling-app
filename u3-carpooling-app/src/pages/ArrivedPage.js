@@ -55,7 +55,7 @@ const ArrivedPage = () => {
         getBarCodeScannerPermissions();
     }, []);
     const userNo = useSelector((state) => state.mySlice.myUserID);
-    const result = ReturnSpecDriver(userNo);
+    const result = ReturnSpecDriver(userNo.toString());
 
     function showAlert() {
         Alert.alert(
