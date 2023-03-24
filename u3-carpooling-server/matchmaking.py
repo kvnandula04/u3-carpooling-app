@@ -133,9 +133,19 @@ def runDatabase(tableOperate):
         list_of_passengers.append(passengerDictionary)
 
 #Convert time to minutes
-def time_to_minutes(h):
-    delta = timedelta(hours=int(h.split(':')[0]), minutes=int(h.split(':')[1]))
-    minutes = delta.total_seconds()/60
+def time_to_minutes(time):
+    if time == None:
+        minutes = 0
+    else:
+        time = time.split(':')
+    
+        if len(time) == 1:
+            minutes = int(time[0]) * 60
+        elif len(time) == 2:
+            minutes = int(time[0]) * 60 + int(time[1])
+        else:
+            minutes = int(time[0]) * 60 + int(time[1]) + int(time[2]) / 60
+
     return minutes
 
 #Turn full address into address with + instead of spaces
@@ -148,7 +158,7 @@ def get_data(address):
 
     address_for_API = address_to_url(address)
 
-    API_KEY = 'AIzaSyAoAyqKYF_RayDjJ80HZTX3OluSChv7qgY'
+    API_KEY = 'AIzaSyBj4AXl-R9nquGKnOnAi1Rerkm9h2y0t40'
     URL = 'https://maps.googleapis.com/maps/api/geocode/json?address='+address_for_API+'&key='+API_KEY
 
     response = urlopen(URL)
