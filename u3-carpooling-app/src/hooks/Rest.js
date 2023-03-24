@@ -20,21 +20,14 @@ export default function RestAPI(params, template=null, runFlag=true) {
         requestOptions
       );
 
-      if (response.status == "200") {
-        if (params.operation == "select" || params.operation == "vehiclelookup") {
-          const data = await response.json();
-          console.log("REST recv: ", data);
-          setResult(data);
-        }
-        else {
-          const data = await response.text();
-          console.log("REST recv: ", data);
-          setResult(data);
-        }
+      if (response.status == "200" && (params.operation == "select" || params.operation == "vehiclelookup")) {
+        const data = await response.json();
+        console.log("REST recv: ", data);
+        setResult(data);
       }
       else {
         const data = await response.text();
-        console.warn("REST recv: ", data);     
+        console.log("REST recv: ", data);     
         setResult(data);
       }
       
