@@ -66,9 +66,6 @@ export default function SignupLoginPage() {
         </View>
 
         <View id="headingAndJoin" style={styles.flex2}>
-          <Text id="logoText" style={styles.logo}>
-            U3
-          </Text>
           <Text id="headingText" style={styles.heading}>
             Student{"\n"}Car Pooling
           </Text>
