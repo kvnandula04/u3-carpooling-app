@@ -84,7 +84,11 @@ export default function LiveTripPage() {
   }
 
   const onPressDone = () => {
-    navigation.navigate("ArrivedPage");
+    if (myUserRole === 0) {
+      navigation.navigate("ArrivedPage");
+    } else {
+      navigation.navigate("ArrivedPageDriver");
+    }
   };
 
   return (
