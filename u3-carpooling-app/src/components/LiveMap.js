@@ -50,7 +50,7 @@ import {
     const [allDatabaseLocations, setAllDatabaseLocations] = useState();
     const [waypoints, setWaypoints] = useState([]);
   
-    offer = RestAPI(
+    const offer = RestAPI(
       {
         operation: "select",
         table: "PoolSubscriber",
@@ -61,7 +61,7 @@ import {
         userID: null,
         poolID: null,
       },
-      (runFlag = callOne)
+      (callOne)
     )[0];
   
     // Only run the call once
@@ -75,7 +75,7 @@ import {
       updateCallTwo(true);
     }
   
-    pool = RestAPI(
+    const pool = RestAPI(
       {
         operation: "select",
         table: "Offer",
@@ -84,7 +84,7 @@ import {
       {
         settings: null,
       },
-      (runFlag = callTwo)
+      (callTwo)
     );
   
     // Only run the call once
@@ -217,7 +217,7 @@ import {
         let { statusbackground } =
           await Location.requestBackgroundPermissionsAsync();
         let location = await Location.getCurrentPositionAsync({});
-        _getLocationAsync(); // removed this. at the beginning
+        // _getLocationAsync(); // removed this. at the beginning
         setCurrentUserLocation(location);
         moveCamera(location.coords);
       })();
