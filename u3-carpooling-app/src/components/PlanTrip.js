@@ -38,23 +38,34 @@ const PlanTrip = ({ preferenceData }) => {
     const [preferences, setPreferences] = useState({
         location: "53 Hungerford Rd",
         destination: "University of Bath",
-        departure_time: "9:45",
-        arrival_time: "10:05",
+        departure_time: null,
+        arrival_time: null,
         detour_distance: "2",
         rating: "5",
         seats: "1",
         prePage: false,
     });
 
+    var today = new Date();
+    var departure_time = today.toLocaleTimeString("en", { hour: '2-digit', hour12: false, minute: '2-digit' });
+    departure_time = departure_time.substring(0, departure_time.length - 3);
+    today.setHours(today.getHours() + 1);
+    var arrival_time = today.toLocaleTimeString("en", { hour: '2-digit', hour12: false, minute: '2-digit' });
+    arrival_time = arrival_time.substring(0, arrival_time.length - 3);
+
     //preferences data, make sre to check if the
     if (!alreadyRun) {
         if (
             preferenceData.detour_distance != "2" ||
             preferenceData.rating != "5" ||
-            preferenceData.seats != "1"
+            preferenceData.seats != "1" ||
+            !preferences.departure_time ||
+            !preferences.arrival_time
         ) {
             setPreferences({
                 ...preferences,
+                departure_time: departure_time,
+                arrival_time: arrival_time,
                 detour_distance: preferenceData.detour_distance,
                 rating: preferenceData.rating,
                 seats: preferenceData.seats,
@@ -87,10 +98,7 @@ const PlanTrip = ({ preferenceData }) => {
     const [recvOffer, updateRecvOffer] = useState(false);
     const [callMatch, updateCallMatch] = useState(false);
 
-    var licence_table = null;
-    var pool_table = null;
-
-    licence_table = RestAPI(
+    const licence_table = RestAPI(
         {
             operation: "select",
             table: "Licence",
@@ -126,7 +134,7 @@ const PlanTrip = ({ preferenceData }) => {
         //navigation.navigate("LiveTripPage");
     }
 
-    res = RestAPI(
+    var res = RestAPI(
         {
             operation: "insert",
             table: "Pool",
@@ -147,7 +155,7 @@ const PlanTrip = ({ preferenceData }) => {
         updateCallThree(true);
     }
 
-    pool_table = RestAPI(
+    const pool_table = RestAPI(
         {
             operation: "select",
             table: "Pool",
