@@ -58,14 +58,12 @@ const PlanTrip = ({ preferenceData }) => {
     hour12: false,
     minute: "numeric",
   });
-  departure_time = departure_time.substring(0, departure_time.length - 3);
   today.setHours(today.getHours() + 1);
   var arrival_time = today.toLocaleTimeString("en", {
     hour: "numeric",
     hour12: false,
     minute: "numeric",
   });
-  arrival_time = arrival_time.substring(0, arrival_time.length - 3);
 
   //preferences data, make sre to check if the
   if (!alreadyRun) {

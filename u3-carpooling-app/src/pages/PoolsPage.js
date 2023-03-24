@@ -8,6 +8,7 @@ import useFonts from "../hooks/UseFonts";
 import { useSelector, useDispatch } from "react-redux";
 import { updateUserRole } from "../../globalVariables/mySlice";
 import { Button } from "react-native-elements";
+import { useNavigation } from "@react-navigation/native";
 
 function useForceUpdate() {
   const [value, setValue] = useState(0); // integer state
@@ -19,6 +20,7 @@ function useForceUpdate() {
 
 const PoolsPage = () => {
   const forceUpdate = useForceUpdate();
+  const navigation = useNavigation();
   // class PoolsPage extends Component {
   const myUserRole = useSelector((state) => state.mySlice.myUserRole);
   const myUserID = useSelector((state) => state.mySlice.myUserID);
@@ -216,11 +218,13 @@ const PoolsPage = () => {
   shedDB();
 
   const onPressCommence = () => {
-    console.log("Commence Trip Pressed");
+    // console.log("Commence Trip Pressed");
+    navigation.navigate("LiveTripPage");
   };
 
   let commenceTrip = null;
-  if (myUserRole === 1 && user.name != null) {
+  // if (myUserRole === 1 && user.name != null) {
+  if (user.name != null) {
     commenceTrip = (
       <Pressable
         id="commence"
