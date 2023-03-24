@@ -193,7 +193,7 @@ import {
   
     const [currentUserLocation, setCurrentUserLocation] = useState();
   
-    _getLocationAsync = async () => {
+    const _getLocationAsync = async () => {
       this.location = await Location.watchPositionAsync(
         {
           enableHighAccuracy: true,
@@ -217,11 +217,11 @@ import {
         let { statusbackground } =
           await Location.requestBackgroundPermissionsAsync();
         let location = await Location.getCurrentPositionAsync({});
-        // _getLocationAsync(); // removed this. at the beginning
+        _getLocationAsync(); // removed this. at the beginning
         setCurrentUserLocation(location);
         moveCamera(location.coords);
       })();
-    }, []);
+    }, [_getLocationAsync]);
   
     // Need to call this once when we have the origin, destination and waypoints
     useEffect(() => {
