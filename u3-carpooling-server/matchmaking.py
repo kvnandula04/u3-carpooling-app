@@ -8,7 +8,7 @@ list_of_drivers = []
 list_of_passengers = []
 
 lower_bound_score = 0.0
-upper_bound_score = 2.0
+upper_bound_score = 100000.0
 
 #Scoring system
 weights = {
@@ -188,6 +188,8 @@ def score_driver_passenger_pair(driver, passenger):
     location_distance = dist
     score += dist * weights['location']
 
+    #print("Score after location: ", score)
+
     # Destination
     lat1, lon1 = drivers_destination
     lat2, lon2 = passengers_destination
@@ -195,6 +197,8 @@ def score_driver_passenger_pair(driver, passenger):
     dist *= 100
     destination_distance = dist
     score += dist * weights['destination']
+
+    #print("Score after destination: ", score)
 
     driver_time = time_to_minutes(driver['departure_time'])
     passenger_time = time_to_minutes(passenger['departure_time'])
@@ -215,11 +219,15 @@ def score_driver_passenger_pair(driver, passenger):
             score += score * (weights['departure_time'] * 7.5)
         else:
             score += score * (weights['departure_time'] * 10)
+    
+    #print("Score after departure time: ", score)
 
     if int(location_distance) < int(driver['detour_distance']) and int(destination_distance) < int(driver['detour_distance']):
         score = score
     else:
         score = score * (weights['detour_distance'] * 10)
+
+    #print("Score after detour distance: ", score)
 
     # Passenger rating
     if passenger['rating'] == 5 and passenger['rating'] > 4:
@@ -251,9 +259,10 @@ def matchmaking_algorithm(app, tableOperate):
         scores = {}
 
         for i, driver in enumerate(list_of_drivers):
-            for j, passenger in enumerate(list_of_passengers):
-                pair_score = score_driver_passenger_pair(driver, passenger)
-                scores[(i, j)] = pair_score
+            if driver['poolID'] != None:
+                for j, passenger in enumerate(list_of_passengers):
+                    pair_score = score_driver_passenger_pair(driver, passenger)
+                    scores[(i, j)] = pair_score
 
         #print("Scores: ", scores)
 
@@ -287,18 +296,24 @@ def matchmaking_algorithm(app, tableOperate):
                 driver_scores.sort(key=lambda x: x[1], reverse=True)
                 for j, score in driver_scores:
                     if score <= upper_bound_score and score >= lower_bound_score and j not in matched_passengers:
-                        if check_best_match(i, j):
-                            matched_pairs.append((i, j, score))
-                            matched_drivers.add(i)
-                            matched_passengers.add(j)
-                            remaining_seats -= 1
-                            for driver, passenger in check_driver_passenger_pair.copy():
-                                if passenger == j:
-                                    check_driver_passenger_pair.discard((driver, j))
-                            if remaining_seats == 0:
-                                break
-                        else:
-                            check_driver_passenger_pair.add((i,j))
+                        #print("Driver: ", i, " Passenger: ", j, " Score: ", score)
+                        matched_pairs.append((i, j, score))
+                        matched_drivers.add(i)
+                        matched_passengers.add(j)
+                        remaining_seats -= 1
+                        #print("Matched pairs: ", matched_pairs)
+                        # if check_best_match(i, j):
+                        #     matched_pairs.append((i, j, score))
+                        #     matched_drivers.add(i)
+                        #     matched_passengers.add(j)
+                        #     remaining_seats -= 1
+                        #     for driver, passenger in check_driver_passenger_pair.copy():
+                        #         if passenger == j:
+                        #             check_driver_passenger_pair.discard((driver, j))
+                        #     if remaining_seats == 0:
+                        #         break
+                        # else:
+                        #     check_driver_passenger_pair.add((i,j))
 
         #Checks to see if the driver has any seats left and if so, adds the passenger to the matched pairs
         for driver_check, passenger_check in check_driver_passenger_pair.copy():
@@ -325,8 +340,10 @@ def matchmaking_algorithm(app, tableOperate):
                 unmatched_passengers.add(j)
 
         alreadyAddedPassengers = []
+
         #Add matched pairs to database
         for i in matched_drivers:
+            #print(matched_drivers)
 
             driver_pairs = [(j, score) for (d, j, score) in matched_pairs if d == i]
             already_inputted_driver = False
@@ -353,6 +370,7 @@ def matchmaking_algorithm(app, tableOperate):
                 if driver_pool_id != None:
                     if passenger_user_id not in alreadyAddedPassengers:
                         tableOperate("insert", {"table": "PoolSubscriber",  "poolID": driver_pool_id, "userID": passenger_user_id})
+                        tableOperate("update", {"table": "Offer", "userID": passenger_user_id, "poolID": driver_pool_id})
                         alreadyAddedPassengers.append(passenger_user_id)
                 #tableOperate("delete", {"table": "Offer", "offerID": passenger_offer_id})
             #tableOperate("delete", {"table": "Offer", "offerID": driver_offer_id})
