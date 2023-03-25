@@ -45,6 +45,7 @@ export default function ArrivedPageDriver() {
             {
                 userID: null,
                 poolID: null,
+                name: null,
             },
             (runFlag = callOne)
         )[0];
@@ -58,25 +59,28 @@ export default function ArrivedPageDriver() {
     getDriver();
 
     function RenderOrNot() {
-        if (result.name !== "") {
-            if (code === 1) {
-                setDriver(
-                    result.email + result.name + result.pwdHash + result.userID
-                );
+        if (code === 1) {
+            setDriver(
+                result.email + result.name + result.pwdHash + result.userID
+            );
+            if (result.name !== null) {
                 return <QRCode id={"QRCode"} value={driver} level={"L"} />;
-            } else {
-                return (
-                    <Pressable
-                        id="qr"
-                        style={styles.qrButton}
-                        onPress={() => setCode(1)}
-                    >
-                        <Text id="qrButtonText" style={styles.qrButtonText}>
-                            generate QR code.
-                        </Text>
-                    </Pressable>
-                );
             }
+            else {
+                return <Text id="loadingText" style={styles.subTitle}> Loading... </Text>;
+            }
+        } else {
+            return (
+                <Pressable
+                    id="qr"
+                    style={styles.qrButton}
+                    onPress={() => setCode(1)}
+                >
+                    <Text id="qrButtonText" style={styles.qrButtonText}>
+                        generate QR code.
+                    </Text>
+                </Pressable>
+            );
         }
     }
 
