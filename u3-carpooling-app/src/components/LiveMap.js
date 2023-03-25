@@ -268,9 +268,9 @@ import {
       props.showRoute && traceRoute();
     }, [waypoints]);
   
-    useEffect(() => {
-      _getLocationAsync();
-    }, []);
+    // useEffect(() => {
+      // _getLocationAsync();
+    // }, []);
   
     useEffect(() => {
       if (!currentUserLocation) {
