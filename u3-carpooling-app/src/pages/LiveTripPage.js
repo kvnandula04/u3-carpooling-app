@@ -16,6 +16,7 @@ import LiveToPickup from "../components/LiveToPickup";
 import UseFonts from "../hooks/UseFonts";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
+import Logo from "../components/Logo";
 
 const cream = "#F7F3EB";
 const yellow = "#FFB800";
@@ -50,7 +51,7 @@ export default function LiveTripPage() {
     setInFocus([0, 1, 0, 0]);
   };
   const onPressETA = () => {
-    setInFocus([0, 0, 1, 0]);
+    // setInFocus([0, 0, 1, 0]);
   };
   const onPressPick = () => {
     setInFocus([0, 0, 0, 1]);
@@ -84,7 +85,7 @@ export default function LiveTripPage() {
   }
 
   const onPressDone = () => {
-    if (myUserRole === 0) {
+    if (myUserRole == 0) {
       navigation.navigate("ArrivedPage");
     } else {
       navigation.navigate("ArrivedPageDriver");
@@ -101,6 +102,18 @@ export default function LiveTripPage() {
           backgroundColor: "#272727",
         }}
       />
+      <SafeAreaView
+        id="logoFrame"
+        style={{
+          flex: 0.7,
+          alignItems: "center",
+          justifyContent: "center",
+          marginTop: "-3%",
+          marginBottom: "3%",
+        }}
+      >
+        <Logo fontSize={65} color={secondColour} />
+      </SafeAreaView>
       <View id="cardFrame" style={styles.cardFrame}>
         <LiveMap
           style={inFocus[0] === 1 ? styles.selected : styles.notSelected}
@@ -108,7 +121,7 @@ export default function LiveTripPage() {
           shadow={greenShadow}
           cardStyle={{
             width: "100%",
-            height: "145%",
+            height: "125%",
             marginBottom: 5,
             borderColor: green,
             borderWidth: 5,
@@ -152,10 +165,12 @@ export default function LiveTripPage() {
           style={styles.doneButton}
           onPress={onPressDone}
         >
-          <Text style={[styles.doneText, { fontFamily: "atkinson" }]}>
-            Done
-          </Text>
+          <Text style={styles.text}>Arrived.</Text>
         </Pressable>
+        <View
+          id="doneButtonShadow"
+          style={[styles.doneButton, styles.doneButtonShadow]}
+        ></View>
       </View>
       <View id="reportFrame" style={styles.reportFrame}>
         <Pressable
@@ -184,10 +199,10 @@ const styles = StyleSheet.create({
     backgroundColor: black,
   },
   cardFrame: {
-    flex: 2,
+    flex: 5,
     alignSelf: "center",
     width: "85%",
-    marginTop: "45%",
+    // marginTop: "30%",
     // backgroundColor: "red",
   },
   selected: {
@@ -196,16 +211,34 @@ const styles = StyleSheet.create({
   notSelected: {
     flex: 2,
   },
+  text: {
+    fontSize: 36,
+    fontFamily: "atkinson",
+    color: "#ffffff",
+  },
   doneFrame: {
     flex: 1,
+    width: "45%",
+    height: "60%",
+    marginTop: "5%",
+    // backgroundColor: "white",
   },
   doneButton: {
-    flex: 1,
     width: "100%",
-    backgroundColor: green,
+    height: "120%",
+    borderRadius: 32,
+    borderColor: "#000",
+    borderWidth: 5,
+    backgroundColor: "#3dd37a",
+    justifyContent: "center",
+    alignItems: "center",
   },
-  doneText: {
-    fontSize: 32,
+  doneButtonShadow: {
+    zIndex: -1,
+    position: "absolute",
+    backgroundColor: "#000",
+    top: 6,
+    left: 6,
   },
   reportFrame: {
     flex: 1,
@@ -219,8 +252,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-end",
-    padding: "7%",
-    marginBottom: "5%",
+    padding: "6%",
+    // marginBottom: "5%",
     // backgroundColor: "blue",
   },
   reportText: {

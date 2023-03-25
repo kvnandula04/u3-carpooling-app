@@ -7,7 +7,7 @@ import RestAPI from "../hooks/Rest";
 import useFonts from "../hooks/UseFonts";
 import { useSelector, useDispatch } from "react-redux";
 import { updateUserRole } from "../../globalVariables/mySlice";
-import { Button } from "react-native-elements";
+import { Button, Icon } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 
 function useForceUpdate() {
@@ -243,7 +243,13 @@ const PoolsPage = () => {
 
   return (
     <View id="pageFrame" style={styles.pageFrame}>
-      <Button onPress={forceUpdate} title="Re-fresh" />
+      <Icon
+        style={styles.icon}
+        name="refresh"
+        color="#FFB800"
+        size={40}
+        onPress={forceUpdate}
+      />
       <View
         style={{
           flex: 1,
@@ -268,6 +274,9 @@ const PoolsPage = () => {
 export default PoolsPage;
 
 const styles = StyleSheet.create({
+  icon: {
+    paddingTop: "5%",
+  },
   commence: {
     position: "absolute",
     bottom: "-10%",
