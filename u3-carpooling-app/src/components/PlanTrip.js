@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useState, useEffect } from "react";
 import { TextInput } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
@@ -138,12 +138,19 @@ const PlanTrip = ({ preferenceData }) => {
     //Driver
     if (myUserRole === 1) {
       updateCallTwo(true);
+      Alert.alert(
+        "Offer Request",
+        "Your request has been sent. We will match you with someone..."
+      );
     }
     //Passenger
     else {
       updateCallOffer(true);
+      Alert.alert(
+        "Match found!",
+        "You have been matched with a driver. Your pool has been created."
+      );
     }
-
     //console.log(preferences)
     //navigation.navigate("LiveTripPage");
   }
