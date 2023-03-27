@@ -6,7 +6,7 @@ import React, {
   useMemo,
 } from "react";
 import * as SplashScreen from "expo-splash-screen";
-import { Text, View, StyleSheet, Pressable } from "react-native";
+import { Text, View, StyleSheet, Pressable, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import useFonts from "../hooks/UseFonts";
 import GridBackground from "../../assets/grid-background";
@@ -85,6 +85,7 @@ export default function HomePage() {
     //global variable - stores user role
     dispatch(updateUserRole((myUserRole + 1) % 2));
     setRole(myUserRole);
+    Alert.alert("Switched to " + (myUserRole === 0 ? "Driver" : "Passenger"));
   };
   const onPressProfile = () => {
     navigation.navigate("ProfilePage");
