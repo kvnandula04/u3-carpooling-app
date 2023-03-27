@@ -184,27 +184,26 @@ export default function Preferences() {
               ></View>
             </View>
           )}
-
           <CheckBox
             center
             title="Luggage?"
             checked={luggage}
             onPress={() => setLuggage(!luggage)}
-            style={{ backgroundColor: mainColour }}
+            containerStyle={{ backgroundColor: "rgba(52, 52, 52, 0)" }}
             textStyle={{
-              fontSize: 20,
+              fontSize: 24,
               color: textColour,
               fontFamily: "atkinson-italic",
             }}
           />
-
           <CheckBox
             center
             title="Same gender?"
             checked={gender}
             onPress={() => setGender(!gender)}
+            containerStyle={{ backgroundColor: "rgba(52, 52, 52, 0)" }}
             textStyle={{
-              fontSize: 20,
+              fontSize: 24,
               color: textColour,
               fontFamily: "atkinson-italic",
             }}
