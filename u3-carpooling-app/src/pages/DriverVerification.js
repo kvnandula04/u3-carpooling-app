@@ -35,8 +35,9 @@ export default function DriverVerification() {
         }
 
         console.log("DriverVerification: Form submitted");
-        setCallOne(true);
-        setRecvOne(false);
+        navigation.navigate("OldHomePage");
+        // setCallOne(true);
+        // setRecvOne(false);
     };
 
     const vehicle = RestAPI(

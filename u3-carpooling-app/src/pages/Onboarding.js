@@ -67,8 +67,10 @@ export default function Onboarding() {
     }
 
     console.log("Onboarding: Form submitted");
-    setCallOne(true);
-    setRecvOne(false);
+    dispatch(updateUserID(0));
+    navigation.navigate("DriverVerification");
+    //setCallOne(true);
+    //setRecvOne(false);
   };
 
   const result = RestAPI(

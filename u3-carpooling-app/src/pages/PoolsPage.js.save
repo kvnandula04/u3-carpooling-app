@@ -1,4 +1,4 @@
-import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+rrgimport { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import React, { Component, useEffect, useState } from "react";
 import GridBackground from "../../assets/grid-background";
 import LiveMap from "../components/LiveMap";
@@ -217,11 +217,6 @@ const PoolsPage = () => {
   };
   // shedDB();
 
-  user = 
-    {
-      name: "Will",
-    };
-
   const onPressCommence = () => {
     // console.log("Commence Trip Pressed");
     navigation.navigate("LiveTripPage");
@@ -229,7 +224,8 @@ const PoolsPage = () => {
 
   let commenceTrip = null;
   // if (myUserRole === 1 && user.name != null) {
-  if (user.name != null) {
+  userName = "Will"
+  if (userName != null) {
     commenceTrip = (
       <Pressable
         id="commence"

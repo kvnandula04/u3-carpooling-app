@@ -102,7 +102,7 @@ const PlanTrip = ({ preferenceData }) => {
     setAlreadyRun(false);
   }
 
-  const [callOne, updateCallOne] = useState(true);
+  const [callOne, updateCallOne] = useState(false);
   const [recvOne, updateRecvOne] = useState(false);
   const [callTwo, updateCallTwo] = useState(false);
   const [recvTwo, updateRecvTwo] = useState(false);

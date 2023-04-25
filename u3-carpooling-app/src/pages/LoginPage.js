@@ -34,8 +34,10 @@ export default function Onboarding() {
     }
 
     console.log("LoginPage: Form submitted");
-    setCallOne(true);
-    setRecvOne(false);
+    // setCallOne(true);
+    // setRecvOne(false);
+    dispatch(updateUserID(0));
+    navigation.navigate("OldHomePage");
   };
 
   const user = RestAPI(
