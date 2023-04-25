@@ -6,7 +6,7 @@ import React, {
   useMemo,
 } from "react";
 import * as SplashScreen from "expo-splash-screen";
-import { Text, View, StyleSheet, Pressable } from "react-native";
+import { Text, View, StyleSheet, Pressable, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import useFonts from "../hooks/UseFonts";
 import GridBackground from "../../assets/grid-background";
@@ -22,14 +22,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { updateUserRole } from "../../globalVariables/mySlice";
 import PoolsPage from "./PoolsPage";
 import Logo from "../components/Logo";
-
-const cream = "#F7F3EB";
-const yellow = "#FFB800";
-const green = "#4CD835";
-const greenShadow = "#278A17";
-const charcoal = "#3F3F3F";
-const black = "#272727";
-const blue = "#1774ff";
 
 export default function HomePage() {
   const [role, setRole] = useState(myUserRole);
@@ -97,7 +89,6 @@ export default function HomePage() {
     navigation.navigate("Preferences", { message: preferences });
     setAlreadyRun(false);
   };
-
   const onPressPool = () => {
     navigation.navigate("LiveTripPage");
   };
@@ -126,17 +117,23 @@ export default function HomePage() {
     return null;
   }
 
-  let mainColour = cream;
-  let secondColour = yellow;
-  let switchIcon = "directions-car";
-  if (myUserRole === 0) {
-    mainColour = yellow;
-    secondColour = cream;
-    switchIcon = "airline-seat-recline-normal";
-  } else {
-    mainColour = cream;
-    secondColour = yellow;
-    switchIcon = "directions-car";
+  function onMatchMePressed() {
+    //Driver
+    if (myUserRole === 1) {
+      Alert.alert(
+        "Offer Request",
+        "Your request has been sent. We will match you with someone..."
+      );
+    }
+    //Passenger
+    else {
+      Alert.alert(
+        "Match found!",
+        "You have been matched with a driver. Your pool has been created."
+      );
+    }
+    //console.log(preferences)
+    //navigation.navigate("LiveTripPage");
   }
 
   return (
@@ -144,83 +141,120 @@ export default function HomePage() {
       <GridBackground
         position="absolute"
         zIndex={-5}
-        lineColor={mainColour}
-        style={{ backgroundColor: secondColour }}
+        lineColor={"black"}
+        style={{ backgroundColor: "#f7f3eb" }}
       />
 
-      <SafeAreaView style={styles.headerFrame}>
-        <Pressable
-          id="spacer"
-          style={[styles.profileButton, { marginLeft: "-3%" }]}
-          onPress={onPressSwitch}
-        >
-          <Icon
-            // style={{  marginBottom: -10}}
-            name={switchIcon}
-            color="#000"
-            size={50}
-          />
-        </Pressable>
-        <Logo fontSize={65} color={"#000"} />
-        <Pressable
-          id="profile"
-          style={[styles.profileButton, { marginRight: "-3%" }]}
-          onPress={onPressProfile}
-        >
-          <Text style={styles.profileText}>Me.</Text>
-        </Pressable>
-      </SafeAreaView>
-
-      <View style={styles.mapFrame}>
-        <View id="map" style={styles.flexInner22}>
-          <LiveMap
-            cardStyle={styles.cardStyle}
-            shadowStyle={styles.shadowStyle}
-            onPress={onPressMap}
-            showRoute={false}
-          />
+      <View style={styles.flex1}>
+        <View id="empty" style={styles.flexInner1} />
+        <View if="logo" style={styles.flexInner2}>
+          <Logo fontSize={64} color={"#000"} marginTop={"5%"} />
         </View>
+        <View id="empty" style={styles.flexInner3} />
       </View>
 
-      <View id="planFrame" style={styles.planFrame}>
-        <View id="preferFrame" style={styles.preferFrame}>
-          <Pressable
-            id="preferButton"
-            style={styles.preferButton}
-            onPress={onPressPrefer}
-          >
-            <Text id="preferText" style={styles.preferText}>
-              Preferences
-            </Text>
-            <Icon style={styles.icon} name="settings" color="#000" size={30} />
-          </Pressable>
-        </View>
-        <View id="planTripFrame" style={styles.planTripFrame}>
-          <PlanTrip preferenceData={new_preferences} />
-        </View>
-      </View>
-
-      <View style={styles.bottomSpacer}></View>
-
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={1}
-        snapPoints={snapPoints}
-        style={styles.bottomSheet}
-        handleIndicatorStyle={styles.bottomSheetHandle}
-      >
-        <View id="tripHistoryCard" style={styles.tripHistoryCard}>
-          <View id="tripHistoryTitleView" style={styles.tripHistoryTitleView}>
-            <Text
-              style={[styles.tripHistoryTitle, styles.tripHistoryTitleShadow]}
+      <View style={styles.flex2}>
+        <View style={styles.flexInner23}>
+          <View style={styles.button}>
+            <Pressable
+              onPress={onPressMap}
+              style={{
+                flex: 1,
+                width: "100%",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
             >
-              My Pools
-            </Text>
-            <Text style={styles.tripHistoryTitle}>My Pools</Text>
+              <Text style={styles.text2}>Map</Text>
+            </Pressable>
           </View>
-          <PoolsPage />
+          <View style={[styles.button, styles.shadow]} />
         </View>
-      </BottomSheet>
+        <View style={styles.flexInner21}>
+          <View style={styles.button}>
+            <Pressable
+              onPress={onPressProfile}
+              style={{
+                flex: 1,
+                width: "100%",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text style={styles.text2}>Profile</Text>
+            </Pressable>
+          </View>
+          <View style={[styles.button, styles.shadow]} />
+        </View>
+        <View style={styles.flexInner21}>
+          <View style={styles.button}>
+            <Pressable
+              onPress={onPressSwitch}
+              style={{
+                flex: 1,
+                width: "100%",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text style={styles.text2}>
+                Change to {myUserRole ? "Passenger" : "Driver"}
+              </Text>
+            </Pressable>
+          </View>
+          <View style={[styles.button, styles.shadow]} />
+        </View>
+        <View style={styles.flexInner22}>
+          <View style={styles.button}>
+            <Pressable
+              onPress={onPressPool}
+              style={{
+                flex: 1,
+                width: "100%",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text style={styles.text2}>My Pools</Text>
+            </Pressable>
+          </View>
+          <View style={[styles.button, styles.shadow]} />
+        </View>
+        <View style={styles.flexInner23}>
+          <View style={styles.button}>
+            <Pressable
+              onPress={onPressPrefer}
+              style={{
+                flex: 1,
+                width: "100%",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text style={styles.text2}>Trip Preferences</Text>
+            </Pressable>
+          </View>
+          <View style={[styles.button, styles.shadow]} />
+        </View>
+        <View style={styles.flexInner24}>
+          <View style={styles.button11}>
+            <Pressable
+              onPress={onMatchMePressed}
+              style={{
+                flex: 1,
+                width: "100%",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text style={[styles.text2, { color: "#000000" }]}>Match me</Text>
+            </Pressable>
+          </View>
+          <View style={[styles.button, styles.shadow]} />
+        </View>
+      </View>
+
+      <View style={styles.flex3}></View>
     </View>
   );
 }
@@ -229,18 +263,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  headerFrame: {
-    flex: 0.6,
-    flexDirection: "row",
-    marginBottom: "-7%",
-    // backgroundColor: "red",
-  },
-  profileButton: {
+  flex1: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    margin: "2%",
-    // backgroundColor: "green",
+    flexDirection: "row",
+    // backgroundColor: "red",
   },
   flexInner1: {
     flex: 1,
@@ -260,102 +286,48 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     // backgroundColor: "yellow",
   },
-  mapFrame: {
-    flex: 1.8,
+  flex2: {
+    flex: 3,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: "5%",
-    // backgroundColor: "purple",
+    // backgroundColor: "orange",
   },
   flexInner21: {
     flex: 1,
-    flexDirection: "row",
-    width: "100%",
-    justifyContent: "space-between",
-    // backgroundColor: "blue",
+    width: "80%",
+    // backgroundColor: "purple",
   },
   flexInner22: {
-    flex: 6,
-    width: "80%",
-    marginTop: "-2%",
-  },
-  planFrame: {
-    flex: 2,
-    marginBottom: "3%",
-  },
-  preferFrame: {
-    flex: 0.75,
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
-    marginBottom: "-1%",
-    // backgroundColor: "pink",
-  },
-  preferButton: {
     flex: 1,
-    paddingHorizontal: "5%",
-    marginTop: "1.5%",
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
-    flexDirection: "row",
-    // backgroundColor: "red",
-  },
-  preferText: {
-    fontFamily: "syne-bold",
-    fontSize: 20,
-    // color: "#3DD37A",
-    marginRight: "1%",
-    bottom: "1%",
-  },
-  preferNotif: {
-    width: 30,
-    height: 30,
-    borderRadius: 1000,
-    backgroundColor: "#3dd37a",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  preferNotifText: {
-    fontFamily: "atkinson-italic",
-    fontSize: 18,
-    color: "#000",
-    textAlign: "center",
-  },
-  planTripFrame: {
-    flex: 5,
-    width: "90%",
-    alignSelf: "center",
-    // justifyContent: "center",
-    // alignItems: "center",
-  },
-  bottomSpacer: {
-    flex: 0.75,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "flex-end",
+    width: "80%",
     // backgroundColor: "pink",
+  },
+  flexInner23: {
+    flex: 1,
+    width: "80%",
+    // backgroundColor: "brown",
+  },
+  flexInner24: {
+    flex: 1,
+    width: "80%",
+    // backgroundColor: "brown",
+  },
+  flex3: {
+    flex: 0.3,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "flex-end",
   },
   profileText: {
     fontFamily: "atkinson-italic",
     fontSize: 34,
-
-    // marginTop: "15%",
-    // marginRight: "15%",
+    marginTop: "15%",
+    marginRight: "15%",
   },
-  cardStyle: {
-    width: "100%",
-    height: "100%",
-    borderColor: green,
-    borderWidth: 5,
-    borderRadius: 32,
-    overflow: "hidden",
-  },
-  shadowStyle: {
-    zIndex: -1,
-    position: "absolute",
-    top: 6,
-    left: 6,
-    backgroundColor: greenShadow,
-    borderColor: greenShadow,
+  text: {
+    fontFamily: "syne-bold",
+    fontSize: 18,
+    color: "#000",
   },
   heading: {
     fontFamily: "atkinson-italic",
@@ -371,32 +343,62 @@ const styles = StyleSheet.create({
     },
     textAlign: "center",
   },
+  button: {
+    width: "100%",
+    height: "65%",
+    backgroundColor: "#efece8",
+    borderWidth: 5,
+    borderRadius: 32,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  button11: {
+    width: "100%",
+    height: "65%",
+    backgroundColor: "#ffaa00",
+    borderWidth: 5,
+    borderRadius: 32,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  text2: {
+    fontFamily: "syne-bold",
+    fontSize: 25,
+    color: "#9747ff",
+  },
+  shadow: {
+    zIndex: -1,
+    backgroundColor: "#000",
+    position: "absolute",
+    top: 6,
+    left: 6,
+  },
+  body: {
+    fontFamily: "atkinson-regular",
+    fontSize: 18,
+  },
+  bodyBoldItalic: {
+    fontFamily: "atkinson-italic",
+    fontSize: 18,
+  },
   tripHistoryCard: {
     width: "100%",
     height: "390%",
-    marginTop: -15,
+    borderRadius: 32,
+    borderColor: "#000",
+    borderWidth: 5,
+    backgroundColor: "#fff",
   },
   tripHistoryTitleView: {
     justifyContent: "flex-start",
     alignItems: "center",
-    alignSelf: "center",
-    width: "70%",
-    height: "20%",
-    // backgroundColor: "black",
   },
   tripHistoryTitle: {
-    position: "absolute",
     fontFamily: "syne",
-    fontSize: 34,
-    marginTop: "7%",
-    color: blue,
-    lineHeight: 35,
-  },
-  tripHistoryTitleShadow: {
-    position: "absolute",
-    top: 4,
-    color: yellow,
-    marginTop: "7%",
+    fontSize: 28,
+    textDecorationLine: "underline",
+    marginTop: "5%",
+    color: "#1774ff",
   },
   tripHistoryTitleViewInner: {
     justifyContent: "flex-start",
@@ -412,20 +414,5 @@ const styles = StyleSheet.create({
     fontFamily: "atkinson-regular",
     fontSize: 20,
     color: "#000",
-  },
-  bottomSheet: {
-    borderRadius: 32,
-    borderColor: blue,
-    backgroundColor: "black",
-    color: "black",
-    borderWidth: 5,
-    overflow: "hidden",
-  },
-  bottomSheetHandle: {
-    backgroundColor: blue,
-    width: 70,
-    height: 5,
-    borderRadius: 5,
-    color: "black",
   },
 });
