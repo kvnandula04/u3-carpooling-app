@@ -363,7 +363,7 @@ const styles = StyleSheet.create({
   },
   text2: {
     fontFamily: "syne-bold",
-    fontSize: 25,
+    fontSize: 20,
     color: "#9747ff",
   },
   shadow: {
