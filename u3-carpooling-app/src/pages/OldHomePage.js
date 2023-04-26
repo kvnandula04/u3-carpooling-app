@@ -90,7 +90,7 @@ export default function HomePage() {
     setAlreadyRun(false);
   };
   const onPressPool = () => {
-    navigation.navigate("LiveTripPage");
+    navigation.navigate("PoolsPage");
   };
 
   useEffect(() => {

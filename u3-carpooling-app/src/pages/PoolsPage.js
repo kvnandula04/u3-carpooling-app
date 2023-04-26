@@ -205,22 +205,28 @@ const PoolsPage = () => {
       updateShedCallTwo(false);
     }
 
-    if (shed.scheduleID != null) {
-      console.log("Schedule DATE", shed.datetime);
-      shed_date = (
+    shed_date = (
+      <View style={{ flex: 1, backgroundColor: "red" }}>
         <Text id="date" style={styles.date}>
-          {JSON.parse(shed.datetime).date}
+          11:11
         </Text>
-      );
-    }
+      </View>
+    );
+    // if (shed.scheduleID != null) {
+    // console.log("Schedule DATE", shed.datetime);
+    // shed_date = (
+    //   <Text id="date" style={styles.date}>
+    //     {JSON.parse(shed.datetime).date}
+    //   </Text>
+    // );
+    // }
     console.log("blissssssssssssssssssed");
   };
   // shedDB();
 
-  user = 
-    {
-      name: "Will",
-    };
+  user = {
+    name: "Will",
+  };
 
   const onPressCommence = () => {
     // console.log("Commence Trip Pressed");
@@ -229,25 +235,21 @@ const PoolsPage = () => {
 
   let commenceTrip = null;
   // if (myUserRole === 1 && user.name != null) {
-  if (user.name != null) {
-    commenceTrip = (
-      <Pressable
-        id="commence"
-        style={styles.commence}
-        onPress={onPressCommence}
-      >
-        <Text style={styles.text}> Commence Trip </Text>
-      </Pressable>
-    );
-  }
+  // if (user.name != null) {
+  commenceTrip = (
+    <Pressable id="commence" style={styles.commence} onPress={onPressCommence}>
+      <Text style={styles.text}> Commence Trip </Text>
+    </Pressable>
+  );
+  // }
 
   let username = null;
-  if (user.name != null) {
-    username = <Text style={styles.text}> Picked up by {user.name} </Text>;
-  }
+  // if (user.name != null) {
+  username = <Text style={styles.text}> Picked up by {user.name} </Text>;
+  // }
 
   return (
-    <View id="pageFrame" style={styles.pageFrame}>
+    <SafeAreaView id="pageFrame" style={styles.pageFrame}>
       <Icon
         style={styles.icon}
         name="refresh"
@@ -257,22 +259,34 @@ const PoolsPage = () => {
       />
       <View
         style={{
-          flex: 1,
+          flex: 0.5,
           alignSelf: "center",
           alignItems: "center",
           justifyContent: "center",
           width: "85%",
-          top: "5%",
+          // top: "5%",
           // backgroundColor: "red",
         }}
         // onPress={onPressCancel}
       >
-        {shed_date}
-        {destin_depart}
-        {username}
-        {commenceTrip}
+        <View style={{}}>
+          <Text id="date" style={styles.date}>
+            11:11
+          </Text>
+        </View>
+        <Text id="text" style={styles.text}>
+          11:34 @ University of Bath
+        </Text>
+        <Text style={styles.text}> Picked up by Will </Text>
+        <Pressable
+          id="commence"
+          style={styles.commence}
+          onPress={onPressCommence}
+        >
+          <Text style={(styles.text, { color: "white" })}> Commence Trip </Text>
+        </Pressable>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -280,22 +294,30 @@ export default PoolsPage;
 
 const styles = StyleSheet.create({
   icon: {
-    paddingTop: "5%",
+    // paddingTop: "5%",
+    // alignSelf: "flex-end"
+    // marginBottom: "5%",
+    // flex: 1,
   },
   commence: {
-    position: "absolute",
-    bottom: "-10%",
+    // position: "absolute",
+    // bottom: "-10%",
     right: 0,
-    width: "50%",
-    height: "30%",
+    // width: "50%",
+    // height: "30%",
+    marginTop: "10%",
+    padding: "5%",
     justifyContent: "center",
     alignItems: "center",
-    flex: 1,
-    // backgroundColor: "green",
+    // flex: 1,
+    backgroundColor: "green",
+    borderRadius: 32,
   },
   date: {
     // fontFamily: "atkinson-italic",
+    backgroundColor: "#FFB800",
     fontFamily: "Roboto",
+    fontStyle: "italic",
     fontSize: 22,
     fontWeight: "bold",
     color: "#000",
@@ -308,6 +330,7 @@ const styles = StyleSheet.create({
   },
   pageFrame: {
     flex: 1,
+    justifyContent: "center",
   },
   poolFrame: {
     flex: 5,
